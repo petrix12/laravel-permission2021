@@ -60,144 +60,18 @@
     + $ git commit -m "Instalación de Laravel Permission"
     + $ git push -u origin main
 
-
-
-
-
-
-
-## Generaración de datos de prueba:
-1. Creación de factories:
-    + $ php artisan make:factory CourseFactory
-    + $ php artisan make:factory ImageFactory
-    + $ php artisan make:factory RequerimentFactory
-    + $ php artisan make:factory GoalFactory
-    + $ php artisan make:factory AudienceFactory
-    + $ php artisan make:factory SectionFactory
-    + $ php artisan make:factory DescriptionFactory
-    + $ php artisan make:factory LessonFactory
-    + $ php artisan make:factory ReviewFactory
-2. Programar el método **definition** del factory **CourseFactory**:
-    ```php
-    public function definition()
-    {
-        $title = $this->faker->sentence();
-
-        return [
-            'title' => $title,
-            'subtitle' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
-            'status' => $this->faker->randomElement([Course::BORRADOR, Course::REVISION, Course::PUBLICADO]),
-            'slug' => Str::slug($title),
-            'user_id' => $this->faker->randomElement([1, 2, 3, 4, 5]),
-            'level_id' => Level::all()->random()->id,
-            'category_id' => Category::all()->random()->id,
-            'price_id' => Price::all()->random()->id,
-        ];
-    }
-    ```
-    + Importar la definición de las clases:
-    ```php
-    use App\Models\Category;
-    use App\Models\Course;
-    use App\Models\Level;
-    use App\Models\Price;
-    use Illuminate\Support\Str;
-    ```
-3. Programar el método **definition** del factory **ImageFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'url' => 'courses/' . $this->faker->image('public/storage/courses', 640, 480, null, false)
-        ];
-    }
-    ```
-4. Programar el método **definition** del factory **RequerimentFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->sentence()
-        ];
-    }
-    ```
-5. Programar el método **definition** del factory **GoalFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->sentence()
-        ];
-    }
-    ```
-6. Programar el método **definition** del factory **AudienceFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->sentence()
-        ];
-    }
-    ```
-7. Programar el método **definition** del factory **SectionFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->sentence()
-        ];
-    }
-    ```
-8. Programar el método **definition** del factory **DescriptionFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->paragraph()
-        ];
-    }
-    ```
-9. Programar el método **definition** del factory **LessonFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'name' => $this->faker->sentence(),
-            'url' => 'https://youtu.be/DgDxAzbkOSs',
-            'iframe' => '<iframe width="560" height="315" src="https://www.youtube.com/embed/DgDxAzbkOSs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-            'platform_id' => 1
-        ];
-    }
-    ```
-10. Programar el método **definition** del factory **ReviewFactory**:
-    ```php
-    public function definition()
-    {
-        return [
-            'comment' => $this->faker->text(),
-            'rating' => $this->faker->randomElement([3, 4, 5]),
-            'user_id' => User::all()->random()->id
-        ];
-    }
-    ```
-    + Importar la definición del modelo User:
-    ```php
-    use App\Models\User;
-    ```
-11. Creación de seeders:
+## Generaración de datos iniciales:
+1. Creación de seeders:
     + $ php artisan make:seeder UserSeeder
-    + $ php artisan make:seeder LevelSeeder
-    + $ php artisan make:seeder CategorySeeder
-    + $ php artisan make:seeder PriceSeeder
-    + $ php artisan make:seeder CourseSeeder
-    + $ php artisan make:seeder PlatformSeeder
     + $ php artisan make:seeder RoleSeeder
-    + $ php artisan make:seeder PermissionSeeder
-12. Programar método **run** del seeder **UserSeeder**:
+2. Programar método **run** del seeder **UserSeeder**:
     ```php
     public function run()
     {
+        /*
+            NOTA: En producción dejar solo los datos del adiministrador inicial (y establecer un password seguro
+            desde la aplicación) y comentar la creación de los 99 usuarios de prueba.
+        */
         $user = User::create([
             'name' => 'Pedro Jesús Bazó Canelón',
             'email' => 'bazo.pedro@gmail.com',
@@ -211,227 +85,69 @@
     ```php
     use App\Models\User;
     ```
-13. Programar método **run** del seeder **LevelSeeder**:
+3. Programar método **run** del seeder **RoleSeeder**:
     ```php
     public function run()
     {
-        Level::create([
-            'name' => 'Nivel básico'
-        ]);
+        /* Adaptar estas instucciones a los roles y permisos requerido por tu aplicación  */
+        $rolAdmin = Role::create(['name' => 'Admin']);
+        $rolRol1 = Role::create(['name' => 'Rol1']);
+        $rolRol2 = Role::create(['name' => 'Rol2']);
 
-        Level::create([
-            'name' => 'Nivel intermedio'
-        ]);
+        Permission::create(['name' => 'Admin'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Rol1'])->syncRoles($rolAdmin, $rolRol1);
+        Permission::create(['name' => 'Rol2'])->syncRoles($rolAdmin, $rolRol2);
 
-        Level::create([
-            'name' => 'Nivel avanzado'
-        ]);
+        Permission::create(['name' => 'crud.users.index'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.users.create'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.users.edit'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.users.destroy'])->syncRoles($rolAdmin);
+        
+        Permission::create(['name' => 'crud.roles.index'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.roles.create'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.roles.edit'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.roles.destroy'])->syncRoles($rolAdmin);
+        
+        Permission::create(['name' => 'crud.permissions.index'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.permissions.create'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.permissions.edit'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'crud.permissions.destroy'])->syncRoles($rolAdmin);
+
+        Permission::create(['name' => 'crud.rol1.index'])->syncRoles($rolAdmin, $rolRol1);
+        Permission::create(['name' => 'crud.rol1.create'])->syncRoles($rolAdmin, $rolRol1);
+        Permission::create(['name' => 'crud.rol1.edit'])->syncRoles($rolAdmin, $rolRol1);
+        Permission::create(['name' => 'crud.rol1.destroy'])->syncRoles($rolAdmin);
+
+        Permission::create(['name' => 'crud.rol2.index'])->syncRoles($rolAdmin, $rolRol2);
+        Permission::create(['name' => 'crud.rol2.create'])->syncRoles($rolAdmin, $rolRol2);
+        Permission::create(['name' => 'crud.rol2.edit'])->syncRoles($rolAdmin, $rolRol2);
+        Permission::create(['name' => 'crud.rol2.destroy'])->syncRoles($rolAdmin);
     }
     ```
-    + Importar la definición del modelo **Level**:
-    ```php
-    use App\Models\Level;
-    ```
-14. Programar método **run** del seeder **CategorySeeder**:
-    ```php
-    public function run()
-    {
-        Category::create([
-            'name' => 'Genealogía'
-        ]);
-
-        Category::create([
-            'name' => 'Bibliotecología'
-        ]);
-
-        Category::create([
-            'name' => 'Gerencial'
-        ]);
-
-        Category::create([
-            'name' => 'Sistemas'
-        ]);
-
-        Category::create([
-            'name' => 'Ventas'
-        ]);
-
-        Category::create([
-            'name' => 'Atención al cliente'
-        ]);
-
-        Category::create([
-            'name' => 'Herramienta informática'
-        ]);
-    }
-    ```
-    + Importar la definición del modelo **Category**:
-    ```php
-    use App\Models\Category;
-    ```
-15. Programar método **run** del seeder **PriceSeeder**:
-    ```php
-    public function run()
-    {
-        Price::create([
-            'name' => 'Gratis',
-            'value' => 0
-        ]);
-
-        Price::create([
-            'name' => '19.99 US$ (nivel 1)',
-            'value' => 19.99
-        ]);
-
-        Price::create([
-            'name' => '49.99 US$ (nivel 2)',
-            'value' => 49.99
-        ]);
-
-        Price::create([
-            'name' => '99.99 US$ (nivel 2)',
-            'value' => 99.99
-        ]);
-    }
-    ```
-    + Importar la definición del modelo **Price**:
-    ```php
-    use App\Models\Price;
-    ```
-16. Programar método **run** del seeder **CourseSeeder**:
-    ```php
-    public function run()
-    {
-        $courses = Course::factory(100)->create();
-
-        foreach ($courses as $course) {
-            Review::factory(5)->create([
-                'course_id' => $course->id
-            ]);
-            Image::factory(1)->create([
-                'imageable_id' => $course->id,
-                'imageable_type' => 'App\Models\Course'
-            ]);
-
-            Requeriment::factory(4)->create([
-                'course_id' => $course->id
-            ]);
-
-            Goal::factory(4)->create([
-                'course_id' => $course->id
-            ]);
-
-            Audience::factory(4)->create([
-                'course_id' => $course->id
-            ]);
-
-            $sections = Section::factory(4)->create(['course_id' => $course->id]);
-
-            foreach ($sections as $section) {
-                $lessons = Lesson::factory(4)->create(['section_id' => $section->id]);
-
-                foreach ($lessons as $lesson) {
-                    Description::factory(1)->create(['lesson_id' => $lesson->id]);
-                }
-            }
-        }
-    }
-    ```
-    + Importar las siguientes definiciones de clases:
-    ```php
-    use App\Models\Audience;
-    use App\Models\Course;
-    use App\Models\Description;
-    use App\Models\Goal;
-    use App\Models\Image;
-    use App\Models\Lesson;
-    use App\Models\Requeriment;
-    use App\Models\Review;
-    use App\Models\Section;
-    ```
-17. Programar método **run** del seeder **PlatformSeeder**:
-    ```php
-    public function run()
-    {
-        Platform::create([
-            'name' => 'Youtube'
-        ]);
-
-        Platform::create([
-            'name' => 'Vimeo'
-        ]);
-    }
-    ```
-    + Importar la definición del modelo **Platform**:
-    ```php
-    use App\Models\Platform;
-    ```
-18. Programar método **run** del seeder **RoleSeeder**:
-    ```php
-    public function run()
-    {
-        $role = Role::create(['name' => 'Admin']);
-        $role->permissions()->attach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
-
-        $role = Role::create(['name' => 'Instructor']);
-        $role->syncPermissions(['Crear cursos', 'Leer cursos', 'Actualizar cursos', 'Eliminar cursos']);
-    }
-    ```
-    + Importar la definición del modelo **Role**:
-    ```php
-    use Spatie\Permission\Models\Role;
-    ```
-19. Programar método **run** del seeder **PermissionSeeder**:
-    ```php
-    public function run()
-    {
-        Permission::create(['name' => 'Crear cursos']);
-        Permission::create(['name' => 'Leer cursos']);
-        Permission::create(['name' => 'Actualizar cursos']);
-        Permission::create(['name' => 'Eliminar cursos']);
-        Permission::create(['name' => 'Ver dashboard']);
-        Permission::create(['name' => 'Crear role']);
-        Permission::create(['name' => 'Listar role']);
-        Permission::create(['name' => 'Editar role']);
-        Permission::create(['name' => 'Eliminar role']);
-        Permission::create(['name' => 'Leer usuarios']);
-        Permission::create(['name' => 'Editar usuarios']);
-    }
-    ```
-    + Importar la definición del modelo **Permission**:
+    + Importar la definición de los modelos **Permissions** y **Role**:
     ```php
     use Spatie\Permission\Models\Permission;
+    use Spatie\Permission\Models\Role;
     ```
-20. Programar método **run** del seeder **DatabaseSeeder**:
+4. Programar método **run** del seeder **DatabaseSeeder**:
     ```php
     public function run()
     {
-        Storage::deleteDirectory('courses');
-        Storage::makeDirectory('courses');
-        
-        $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
-
         $this->call(UserSeeder::class);
-        $this->call(LevelSeeder::class);
-        $this->call(CategorySeeder::class);
-        $this->call(PriceSeeder::class);
-        $this->call(PlatformSeeder::class);
-        $this->call(CourseSeeder::class);
     }
     ```
-    + Importar la definición del facade **Storage**:
-    ```php
-    use Illuminate\Support\Facades\Storage;
-    ```
-21. Generar enlace a almacenamiento:
-    + $ php artisan storage:link
-22. Restablecer la base de datos y ejecutar los seeders:
+5. Restablecer la base de datos y ejecutar los seeders:
     + $ php artisan migrate:fresh --seed
-23. Crear commit:
+6. Crear commit:
     + $ git add .
-    + $ git commit -m "Generaración de datos de prueba"
+    + $ git commit -m "Generaración de datos iniciales"
     + $ git push -u origin main
+
+
+
+
+
 
 ## Integración de plantilla AdminLTE
 + [Laravel AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE)
