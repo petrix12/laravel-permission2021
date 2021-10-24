@@ -144,15 +144,22 @@
     + $ git commit -m "Generaración de datos iniciales"
     + $ git push -u origin main
 
-
-
-
-
-
 ## Integración de plantilla AdminLTE
 + [Laravel AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE)
 + [Plantilla AdminLTE](https://adminlte.io/themes/v3/index.html)
-1. Modificar el provider **app\Providers\RouteServiceProvider.php**:
+1. Instalar AdminLTE: 
+	+ $ composer require jeroennoten/laravel-adminlte
+    + $ php artisan adminlte:install
+2. Crear archivo de rutas **routes\admin.php** para administrar privilegios de usuarios:
+    ```php
+    <?php
+
+    use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\Admin\HomeController;
+
+    Route::get('',[HomeController::class, 'index']);
+    ``` 
+3. Registrar el nuevo archivo de rutas en el provider **app\Providers\RouteServiceProvider.php** y establecer la ruta de inicio a la raíz:
     ```php
     ≡
     class RouteServiceProvider extends ServiceProvider
@@ -175,52 +182,49 @@
     }
     ≡
     ```
-2. Crear archivo de rutas **routes\admin.php**:
-    ```php
-    <?php
-
-    use Illuminate\Support\Facades\Route;
-    use App\Http\Controllers\Admin\HomeController;
-
-    Route::get('',[HomeController::class, 'index']);
-    ```    
-3. Crear contralador **HomeController** para administrador:
+4. Crear contralador **HomeController** para administrar rutas de los administradores:
     + $ php artisan make:controller Admin\HomeController
-4. Definir el método **index** en el controlador **HomeController**:
+5. Definir el método **index** en el controlador **HomeController**:
     ```php
     public function index(){
         return view('admin.index');
     }
     ```
-5. Diseñar vista para pruebas **resources\views\admin\index.blade.php**:
+6. Diseñar vista para pruebas **resources\views\admin\index.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Cursos Sefar Universal')
+    @section('title', 'Sistemas de roles y permisos | Soluciones++')
 
     @section('content_header')
-        <h1>Cursos Sefar Universal</h1>
+        <h1>Sistemas de roles y permisos</h1>
     @stop
 
     @section('content')
-        <p>Cursos Sefar Universal</p>
+        <p>Sistemas de roles y permisos</p>
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="#">
+        {{-- ARCHIVOS CSS REQUERIDOS POR LA APLICACIÓN --}}
     @stop
 
     @section('js')
-
+        {{-- ARCHIVOS JS REQUERIDOS POR LA APLICACIÓN --}}
     @stop
     ```
-6. Instalar AdminLTE: 
-	+ $ composer require jeroennoten/laravel-adminlte
-    + $ php artisan adminlte:install
 7. Crear commit:
     + $ git add .
     + $ git commit -m "Integración de plantilla AdminLTE"
     + $ git push -u origin main
+
+
+
+
+
+
+
+
+
 
 ## Personalización inicial de la aplicación:
 + [Laravel Jetstream](https://jetstream.laravel.com/2.x/introduction.html)
