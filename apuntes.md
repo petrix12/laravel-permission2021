@@ -27,8 +27,6 @@
 1. Crear proyecto en la página de [GitHub](https://github.com) con el nombre: **laravel-permission2021**.
     + **Description**: Plantilla para un sistema de roles y permisos con Laravel Permission.
     + **Public**.
-
-
 2. En la ubicación raíz del proyecto en la terminal de la máquina local:
     + $ git init
     + $ git add .
@@ -36,10 +34,6 @@
     + $ git branch -M main
     + $ git remote add origin https://github.com/petrix12/laravel-permission2021.git
     + $ git push -u origin main
-
-
-
-
 
 ## Instalación de Laravel Permission
 + [Laravel Permission](https://spatie.be/docs/laravel-permission/v3/basic-usage/basic-usage)
@@ -65,6 +59,12 @@
     + $ git add .
     + $ git commit -m "Instalación de Laravel Permission"
     + $ git push -u origin main
+
+
+
+
+
+
 
 ## Generaración de datos de prueba:
 1. Creación de factories:
