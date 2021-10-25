@@ -327,11 +327,6 @@
     + $ git commit -m "Personalización inicial de la aplicación"
     + $ git push -u origin main
 
-
-
-
-
-
 ## Diseño del Frontend de la aplicación:
 + [Documentación de Tailwind](https://tailwindcss.com/docs)
 + [Componentes de Tailwind](https://tailwindcomponents.com)
@@ -339,134 +334,22 @@
 + [Banco de imagenes Pixabay](https://pixabay.com/es)
 + [Banco de imagenes Pixel](https://www.pexels.com/es-es)
 + [Optimizador de imagen](https://tinypng.com)
-1. Crear contraolador **HomeController**:
-    + $ php artisan make:controller HomeController
-2. Definir método **__invoke** en el controlador **app\Http\Controllers\HomeController.php**:
-    ```php
-    public function __invoke()
-    {
-        $courses = Course::where('status','3')->latest()->get()->take(12);
-        return view('welcome', compact('courses'));
-    }
-    ```
-    + Importar la definción del modelo **Course**:
-    ```php
-    use App\Models\Course;
-    ```
-3. Redefinir ruta raíz y crear las ruta para obtener los cursos, para matricularse y control de avance del usuario en **routes\web.php**:
-    ```php
-    Route::get('/', HomeController::class)->name('home');
-
-    Route::get('cursos', [CourseController::class, 'index'])->name('courses.index');
-    Route::get('cursos/{course}', [CourseController::class, 'show'])->name('courses.show');
-    Route::post('courses/{course}/enrolled', [CourseController::class, 'enrolled'])->middleware('auth')->name('courses.enrolled');
-    
-    Route::get('course-status/{course}', function ($course) {
-        return "Aquí vas a poder llevar el control de tu avence";
-    })->name('courses.status');
-    ```
-    + Importar la definción de los controladores **CourseController** y **HomeController**:
-    ```php
-    use App\Http\Controllers\CourseController;
-    use App\Http\Controllers\HomeController; 
-    ```
-4. Crear controlador **CourseController**:
-    + $ php artisan make:controller CourseController       
-5. Programar el controlador **app\Http\Controllers\CourseController.php**:
-    ```php
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Illuminate\Http\Request;
-    use App\Models\Course;
-
-    class CourseController extends Controller
-    {
-        public function index(){
-            return view('courses.index');
-        }
-
-        public function show(Course $course){
-            $this->authorize('published', $course);
-
-            $similares = Course::where('category_id', $course->category_id)
-                            ->where('id','!=',$course->id)
-                            ->where('status', 3)
-                            ->latest('id')
-                            ->take(5)
-                            ->get();
-            return view('courses.show',compact('course', 'similares'));
-        }
-
-        public function enrolled(Course $course){
-            // Agrega un registro a la tabla intermedia course_user
-            $course->students()->attach(auth()->user()->id);
-            return redirect()->route('courses.status', $course);
-        }
-    }
-    ```
-6. Modificar modelo **Course**:
-    ```php
-    ≡
-    class Course extends Model
-    {
-        ≡
-        protected $guarded = ['id', 'status'];
-
-        protected $withCount = ['students', 'reviews'];
-
-        const BORRADOR = 1;
-        const REVISION = 2;
-        const PUBLICADO = 3;
-
-        public function getRatingAttribute(){
-            if($this->reviews_count){
-                return round($this->reviews->avg('rating'), 1);
-            }else{
-                return 5;
-            }
-        }
-
-        public function getRouteKeyName(){
-            return "slug";
-        }
-
-        // Query scope Category
-        public function scopeCategory($query, $category_id){
-            if($category_id){
-                return $query->where('category_id', $category_id);
-            }
-        }
-
-        // Query scope Level
-        public function scopeLevel($query, $level_id){
-            if($level_id){
-                return $query->where('level_id', $level_id);
-            }
-        }
-        ≡
-    }
-    ```
-7. Guardar imagenes de portada del proyecto en:
-    + public\images\home\img_portada.jpg
-    + public\images\cursos\img_cursos.jpg
+1. Guardar imagenes de portada del proyecto en:
+    + public\assets\images\home\img_portada.jpg
     + [Optimizador de imagen](https://tinypng.com)
-8. Ubicar 4 imagenes (640 x 426) relacionadas con los cursos de Sefar y guardarlas en **public\images\home** con los nombres:
-    + imagen_1.png
-    + imagen_2.png
-    + imagen_3.png
-    + imagen_4.png
-9. Rediseñar la vista **resources\views\welcome.blade.php**:
+2. Ubicar 4 imagenes (640 x 426) relacionadas con tu proyecto y guardarlas en **public\assets\images\home** con los nombres:
+    + imagen_1.jpg
+    + imagen_2.jpg
+    + imagen_3.jpg
+    + imagen_4.jpg
+3. Rediseñar la vista **resources\views\welcome.blade.php**:
     ```php
     <x-app-layout>
-        <section class="bg-cover" style="background-image: url({{ asset('images/home/img_portada.jpg') }})">
+        <section class="bg-cover" style="background-image: url({{ asset('assets/images/home/img_portada.jpg') }})">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
                 <div class="w-full md:w-3/4 lg:w-1/2">
-                    <h1 class="ctrSefar font-bold text-4xl">Domina la ciencia de los estudios genealógicos con Sefar Universal</h1>
-                    <p class="ctvSefar text-lg mt-2 mb-4">En Sefar Universal encontrarás cursos, manuales y artículos que te ayudarán a convertirte en un profesional de la genealogía</p>
-                    <!-- component extraido de https://tailwindcomponents.com/component/search-bar -->
-                    @livewire('search')
+                    <h1 class="text-white font-bold text-4xl">Crea un sistema de roles y permisos con Larvel Permission</h1>
+                    <p class="text-white text-lg mt-2 mb-4">Soluciones++, en donde un clic menos (-) importa!!!</p>
                 </div>
             </div>
         </section>
@@ -475,137 +358,62 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
                 <article>
                     <figure>
-                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/home/imagen_1.png') }}" alt="">
+                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_1.jpg') }}" alt="">
                     </figure>
                     <header class="mt-2">
-                        <h1 class="text-center text-xl text-gray-700">Cursos y proyectos</h1>
+                        <h1 class="text-center text-xl text-gray-700">Contenido 1</h1>
                     </header>
                     <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium</p>
                 </article>
                 <article>
                     <figure>
-                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/home/imagen_2.png') }}" alt="">
+                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_2.jpg') }}" alt="">
                     </figure>
                     <header class="mt-2">
-                        <h1 class="text-center text-xl text-gray-700">Biblioteca digital</h1>
+                        <h1 class="text-center text-xl text-gray-700">Contenido 2</h1>
                     </header>
                     <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium</p>
                 </article>
                 <article>
                     <figure>
-                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/home/imagen_3.png') }}" alt="">
+                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_3.jpg') }}" alt="">
                     </figure>
                     <header class="mt-2">
-                        <h1 class="text-center text-xl text-gray-700">Blog</h1>
+                        <h1 class="text-center text-xl text-gray-700">Contenido 3</h1>
                     </header>
                     <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium</p>
                 </article>
                 <article>
                     <figure>
-                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/home/imagen_4.png') }}" alt="">
+                        <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_4.jpg') }}" alt="">
                     </figure>
                     <header class="mt-2">
-                        <h1 class="text-center text-xl text-gray-700">Desarrollo genealógico</h1>
+                        <h1 class="text-center text-xl text-gray-700">Contenido 4</h1>
                     </header>
                     <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium</p>
                 </article>
             </div>
         </section>
-        <section class="mt-24 cfvSefar py-12">
-            <h1 class="text-center text-white text-3xl">¿No sabes qué curso llevar?</h1>
-            <p class="text-center text-white">Dirígete al catálogo de cursos y filtralos por categoría o nivel</p>
+        <section class="mt-24 bg-gray-600 py-12">
+            <h1 class="text-center text-white text-3xl">¿No sabes cómo implementer un sistema de roles y permisos?</h1>
+            <p class="text-center text-white">En Soluciones++ te explicamos como</p>
             <div class="flex justify-center mt-4">
                 <!-- https://v1.tailwindcss.com/components/buttons -->
-                <a href="{{ route('courses.index') }}" class="cfrSefar text-white font-bold py-2 px-4 rounded">
+                <a href="#" class="bg-blue-800 hover:bg-blue-100 text-white hover:text-black font-bold py-2 px-4 rounded">
                     Catálogo de cursos
                 </a>
             </div>
         </section>
         <section class="my-24">
-            <h1 class="text-center text-3xl text-gray-600">ÚLTIMOS CURSOS</h1>
-            <p class="text-center text-gray-500 text-sm mb-6">Trabajamos duro para seguir subiendo cursos</p>
+            <h1 class="text-center text-3xl text-gray-600">ROLES Y PERMISOS</h1>
+            <p class="text-center text-gray-500 text-sm mb-6">Trabajamos duro para seguir encontrando soluciones</p>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-                @foreach ($courses as $course)
-                    <x-course-card :course="$course"/>
-                @endforeach
+                {{-- CONTENIDO DE LA PÁGINA --}}
             </div>
         </section>
     </x-app-layout>
     ```
-10. Crear la vista **resources\views\courses\index.blade.php**:
-    ```php
-    <x-app-layout>
-        <section class="bg-cover" style="background-image: url({{ asset('images/cursos/img_cursos.jpg') }})">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
-                <div class="w-full md:w-3/4 lg:w-1/2">
-                    <h1 class="ctvSefar font-bold text-4xl">Los mejores cursos de genealogía ¡A LOS MEJORES PRECIOS! y en español.</h1>
-                    <p class="ctrSefar text-lg mt-2 mb-4">Si estás buscando potenciar tus conocimientos de genealogía, has llegado al lugar adecuado. Encuentra cursos y proyectos que te ayudarán en ese proceso</p>
-                    <!-- component extraido de https://tailwindcomponents.com/component/search-bar -->
-                    @livewire('search')
-                </div>
-            </div>
-        </section>
-        @livewire('courses-index')
-    </x-app-layout>
-    ```
-11. Crear archivo de estilos **public\css\sefar.css**:
-    ```css
-    /* Color de fondo rojo Sefar */
-    .cfrSefar{
-        background-color:rgb(121,22,15) !important;
-    }
-
-    .cfrSefar:hover{
-        background-color:rgb(204, 98, 90) !important;
-        color:rgb(0, 0, 0) !important;
-    }
-
-    /* Color de fondo amarillo Sefar */
-    .cfaSefar{
-        background-color:rgb(247,176,52) !important;
-    }
-
-    /* Color de fondo verde Sefar */
-    .cfvSefar{
-        background-color:rgb(22,43,27) !important;
-    }
-
-    /* Color de fondo blanco */
-    .cfBlanco{
-        background-color:white !important;
-    }
-
-    /* Color de fondo gris Sefar */
-    .cfgSefar{
-        background-color:rgb(63,61,61) !important;
-    }
-
-    /* Color de texto rojo Sefar */
-    .ctrSefar{
-        color:rgb(121,22,15) !important;
-    }
-
-    /* Color de texto amarillo Sefar */
-    .ctaSefar{
-        color:rgb(247,176,52) !important;
-    }
-
-    /* Color de texto verde Sefar */
-    .ctvSefar{
-        color:rgb(22,43,27) !important;
-    }
-
-    /* Color de texto gris Sefar */
-    .ctgSefar{
-        color:rgb(63,61,61) !important;
-    }
-
-    /* Color de texto blanco */
-    .ctBlanco{
-        color:white !important;
-    }
-    ```
-12. Importar los estilos propios y de **fontawesome-free** en **resources\views\layouts\app.blade.php**:
+4. Importar los estilos propios y de **fontawesome-free** en **resources\views\layouts\app.blade.php**:
     ```php
     <!DOCTYPE html>
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -620,339 +428,7 @@
         ≡­
     </html>
     ```
-13. Crear componente livewire **Search**:
-    + $ php artisan make:livewire Search
-14. Diseñar vista del componente **Search** en **resources\views\livewire\search.blade.php**:
-    ```php
-    <form class="pt-2 relative mx-auto text-gray-600" autocomplete="off">
-        <input wire:model="search" class="w-full border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-        type="search" name="search" placeholder="Search">
-        <!-- extraido de https://v1.tailwindcss.com/components/buttons -->
-        <button type="submit" class="cfrSefar text-white font-bold py-2 px-4 rounded absolute right-0 top-0 mt-2">
-            Buscar
-        </button>
-        <ul class="absolute z-50 left-0 w-full bg-white mt-1 rounded-lg overflow-hidden">
-            @if ($search)
-                @forelse ($this->results as $result)
-                    <li class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                        <a href="{{ route('courses.show', $result) }}">{{ $result->title }}</a>
-                    </li>
-                @empty
-                    <li class="leading-10 px-5 text-sm cursor-pointer hover:bg-gray-300">
-                        No hay ninguna coincidencia :(
-                    </li>
-                @endforelse
-            @endif
-        </ul>
-    </form>
-    ```
-15. Programar el controlador del componente **Search** en **app\Http\Livewire\Search.php**:
-    ```php
-    <?php
-
-    namespace App\Http\Livewire;
-
-    use App\Models\Course;
-    use Livewire\Component;
-
-    class Search extends Component
-    {
-        public $search;
-
-        public function render()
-        {
-            return view('livewire.search');
-        }
-
-        // Esta función es una propiedad computada: get[Results]Property
-        // Se le invoca desde la vista como $this->results
-        public function getResultsProperty(){
-            return Course::where('title', 'LIKE', '%' . $this->search . '%')
-                    ->where('status',3)
-                    ->take(8)
-                    ->get();
-        }
-    }
-    ```
-16. Crear componente de Blade **resources\views\components\course-card.blade.php** para los cursos:
-    ```php
-    @props(['course'])
-
-    <article class="card flex flex-col">
-        <img class="h-36 w-full object-cover" src="{{ Storage::url($course->image->url) }}" alt="">
-        <div class="card-body flex-1 flex flex-col">
-            <h1 class="card-title">{{ Str::limit($course->title, 40) }}</h1>
-            <p class="text-gray-500 text-sm mb-2 mt-auto">Prof. {{ $course->teacher->name }}</p>
-            <div class="flex">
-                <ul class="flex text-sm">
-                    <li class="mr-1">
-                        <i class="fas fa-star text-{{ $course->rating >= 1 ? 'yellow' : 'gray' }}-400"></i>
-                    </li>
-                    <li class="mr-1">
-                        <i class="fas fa-star text-{{ $course->rating >= 2 ? 'yellow' : 'gray' }}-400"></i>
-                    </li>
-                    <li class="mr-1">
-                        <i class="fas fa-star text-{{ $course->rating >= 3 ? 'yellow' : 'gray' }}-400"></i>
-                    </li>
-                    <li class="mr-1">
-                        <i class="fas fa-star text-{{ $course->rating >= 4 ? 'yellow' : 'gray' }}-400"></i>
-                    </li>
-                    <li class="mr-1">
-                        <i class="fas fa-star text-{{ $course->rating == 5 ? 'yellow' : 'gray' }}-400"></i>
-                    </li>
-                </ul>
-                <p class="text-sm text-gray-500 ml-auto">
-                    <i class="fas fa-users"></i>
-                    ({{ $course->students_count }})
-                </p>
-            </div>
-            @if ($course->price->value == 0)
-                <p class="my-2 text-green-700 font-bold">GRATIS</p>
-            @else
-                <p class="my-2 text-gray-500 font-bold">US$ {{ $course->price->value }}</p>
-            @endif
-            <a href="{{ route('courses.show', $course) }}" class="btn btn-primary btn-block">
-                Mas información
-            </a>
-        </div>
-    </article>
-    ```
-17. Crear componente de livewire para mostrar reseñas:
-    + $ php artisan make:livewire CoursesReviews
-18. Crear vista **resources\views\courses\show.blade.php**:
-    ```php
-    <x-app-layout>
-        <section class="cfvSefar py-12 mb-12">
-            <div class="container grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <figure>
-                    <img class="h-60 w-full object-cover" src="{{ Storage::url($course->image->url )}}" alt="">
-                </figure>
-                <div class="text-white">
-                    <h1 class="text-4xl">{{ $course->title }}</h1>
-                    <h2 class="text-xl mb-3">{{ $course->subtitle }}</h2>
-                    <p class="mb-2"><i class="fas fa-chart-line"></i> Nivel: {{ $course->level->name }}</p>
-                    <p class="mb-2"><i class="fas fa-globe"></i> Categoría: {{ $course->category->name }}</p>
-                    <p class="mb-2"><i class="fas fa-users"></i> Matriculados: {{ $course->students_count }}</p>
-                    <p><i class="far fa-star"></i> Calificación: {{ $course->rating }}</p>
-                </div>
-            </div>
-        </section>
-
-        <div class="container grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="order-2 lg:col-span-2 lg:order-1">
-                <section class="card mb-12">
-                    <div class="card-body">
-                        <h1 class="font-bold text-2xl mb-2">Lo que aprenderás</h1>
-                        <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-                            @foreach ($course->goals as $goal)
-                                <li class="text-gray-700 text-base"><i class="fas fa-check text-gray-600 mr-2"></i> {{ $goal->name }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </section>
-                <section class="mb-12">
-                    <h1 class="font-bold text-3xl mb-2">Temario</h1>
-                    @foreach ($course->sections as $section)
-                        <article class="mb-4 shadow" 
-                        @if ($loop->first)
-                        x-data="{ open: true }"
-                        @else
-                        x-data="{ open: false }"    
-                        @endif>
-                            <header class="border border-gray-200 px-4 py-2 cursor-pointer bg-gray-200" x-on:click="open = !open">
-                                <h1 class="font-bold text-lg text-gray-600">{{ $section->name }}</h1>
-                            </header>
-                            <div class="bg-white py-2 px-4" x-show="open">
-                                <ul class="grid grid-cols-1 gap-2">
-                                    @foreach ($section->lessons as $lesson)
-                                        <li class="text-gray-700 text-base"><i class="fas fa-play-circle mr-2 text-gray-600"></i> {{ $lesson->name }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </article>
-                    @endforeach
-                </section>
-                <section>
-                    <h1 class="font-bold text-3xl text-gray-800">Requisitos</h1>
-                    <ul class="list-disc list-inside">
-                        @foreach ($course->requirements as $requirement)
-                            <li class="text-gray-700">{{ $requirement->name }}</li>
-                        @endforeach
-                    </ul>
-                </section>
-                <section>
-                    <h1 class="font-bold text-3xl text-gray-800">Descripción</h1>
-                    <div class="text-gray-700 text-base">
-                        {!! $course->description !!}
-                    </div>
-                </section>
-                @livewire('courses-reviews', ['course' => $course])
-            </div>
-            <div class="order-1 lg:order-2">
-                <section class="card mb-4">
-                    <div class="card-body">
-                        <div class="flex items-center">
-                            <img class="h-12 w-12 object-cover rounded-full shadow-lg" src="{{ $course->teacher->profile_photo_url }}" alt="{{ $course->teacher->name }}">
-                            <div class="ml-4">
-                                <h1 class="font-bold text-gray-500 text-lg">Prof. {{ $course->teacher->name }}</h1>
-                                <a class="text-blue-400 text-sm font-bold" href="">{{ '@' . Str::slug($course->teacher->name, '') }}</a>
-                            </div>
-                        </div>
-                        @can('enrolled', $course)
-                            <a class="btn btn-danger btn-block mt-4" href="{{ route('courses.status', $course) }}">Continuar con curso</a>
-                        @else
-                            @if ($course->price->value == 0)
-                                <p class="text-2xl font-bold text-gray-500 mt-3 mb-2">GRATIS</p>
-                                <form action="{{ route('courses.enrolled', $course) }}" method="POST">
-                                    @csrf
-                                    <button class="btn btn-danger btn-block" type="submit">Llevar este curso</button>
-                                </form>
-                            @else
-                                <p class="text-2xl font-bold text-gray-500 mt-3 mb-2">US$ {{ $course->price->value }}</p>
-                                <a href="#" class="btn btn-danger btn-block">Comprar este curso</a>
-                            @endif
-                        @endcan
-                    </div>
-                </section>
-                <aside class="hidden lg:block">
-                    @foreach ($similares as $similar)
-                        <article class="flex mb-6">
-                            <img class="h-32 w-40 object-cover" src="{{ Storage::url($similar->image->url) }}" alt="">
-                            <div class="ml-3">
-                                <h1>
-                                    <a class="font-bold text-gray-500 mb-3" href="{{ route('courses.show', $similar) }}">{{ Str::limit($similar->title, 40) }}</a>
-                                </h1>
-                                <div class="flex items-center mb-2">
-                                    <img class="h-8 w-8 object-cover rounded-full shadow-lg" src="{{ $similar->teacher->profile_photo_url }}" alt="">
-                                    <p class="text-gray-700 text-sm ml-2">{{ $similar->teacher->name  }}</p>
-                                </div>
-                                <p class="text-sm"><i class="fas fa-star mr-2 text-yellow-400"></i>{{ $similar->rating }}</p>
-                            </div>
-                        </article>
-                    @endforeach
-                </aside>
-            </div>
-        </div>
-    </x-app-layout>
-    ```
-19. Modificar la plantilla **resources\views\navigation-menu.blade.php**:
-    ```php
-    @php
-        $nav_links = [
-            [
-                'name' => 'Home',
-                'route' => route('home'),
-                'active' => request()->routeIs('home')
-            ],
-            [
-                'name' => 'Cursos',
-                'route' => route('courses.index'),
-                'active' => request()->routeIs('courses.*')
-            ],
-        ];
-    @endphp
-    ≡
-    ```
-20. Crear componente de livewire **CoursesIndex**:
-    + $ php artisan make:livewire CoursesIndex
-21. Modificar componente livewire **resources\views\livewire\courses-index.blade.php**:
-    ```php
-    <div>
-        <div class="bg-gray-200 mb-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex">
-                <button class="focus:outline-none bg-white shadow h-12 px-4 rounded-lg text-gray-700 mr-4" wire:click="resetFilters">
-                    <i class="fas fa-archway text-xs mr-2"></i>
-                    Todos los cursos
-                </button>
-                
-                <!-- Dropdown Categoria -->
-                <div class="relative mr-4" x-data="{ open: false }">
-                    <button class="px-4 text-gray-700 block h-12 rounded-lg overflow-hidden focus:outline-none bg-white shadow" x-on:click="open = true">
-                        <i class="fas fa-tags text-sm mr-2"></i>
-                        Categoria
-                        <i class="fas fa-angle-down text-sm ml-2"></i>
-                    </button>
-                    <div class="absolute right-0 w-40 mt-2 py-2 bg-white border rounded shadow-xl" x-show="open" x-on:click.away="open = false">
-                        @foreach ($categories as $category)
-                        <a class="cursor-pointer transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-blue-500 hover:text-white" wire:click="$set('category_id',{{ $category->id }})" x-on:click="open = false">{{ $category->name }}</a>
-                        @endforeach
-                    </div> 
-                </div>
-                
-                <!-- Dropdown Niveles -->
-                <div class="relative" x-data="{ open: false }">
-                    <button class="px-4 text-gray-700 block h-12 rounded-lg overflow-hidden focus:outline-none bg-white shadow" x-on:click="open = true">
-                        <i class="fas fa-layer-group text-sm mr-2"></i>
-                        Niveles
-                        <i class="fas fa-angle-down text-sm ml-2"></i>
-                    </button>
-                    <div class="absolute right-0 w-40 mt-2 py-2 bg-white border rounded shadow-xl" x-show="open" x-on:click.away="open = false">
-                        @foreach ($levels as $level)
-                        <a class="cursor-pointer transition-colors duration-200 block px-4 py-2 text-normal text-gray-900 rounded hover:bg-blue-500 hover:text-white" wire:click="$set('level_id',{{ $level->id }})" x-on:click="open = false">{{ $level->name }}</a>
-                        @endforeach
-                    </div> 
-                </div>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            @foreach ($courses as $course)
-                <x-course-card :course="$course"/>
-            @endforeach
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-8">
-            {{ $courses->links() }}
-        </div>
-    </div>
-    ```
-22. Modificar el controlador **app\Http\Livewire\CoursesIndex.php**:
-    ```php
-    <?php
-
-    namespace App\Http\Livewire;
-
-    use App\Models\Category;
-    use App\Models\Course;
-    use App\Models\Level;
-    use Livewire\Component;
-    use Livewire\WithPagination;
-
-    class CoursesIndex extends Component
-    {
-        use WithPagination;
-        
-        public $category_id;
-        public $level_id;
-
-        public function render()
-        {
-            $categories = Category::all();
-            $levels = Level::all();
-            $courses = Course::where('status', 3)
-                ->category($this->category_id)
-                ->level($this->level_id)
-                ->latest('id')
-                ->paginate(8);
-            return view('livewire.courses-index', compact('courses', 'categories', 'levels'));
-        }
-
-        public function resetFilters(){
-            $this->reset(['category_id','level_id']);
-        }
-    }
-    ```
-23. Deshabilitar la clase container de tailwind en **tailwind.config.js**:
-    ```js
-    module.exports = {
-        ≡
-        corePlugins: {
-            // ...
-        container: false,
-        },
-
-        plugins: [require('@tailwindcss/ui')],
-    };
-    ```      
-24. Crear archivo de **estilos resources\css\commom.css**:
+5. Crear archivo de **estilos resources\css\commom.css**:
     ```css
     .container{
         @apply max-w-7xl mx-auto px-4;
@@ -998,7 +474,7 @@
     }
     ```
     + [Documentación Tailwind Container](https://tailwindcss.com/docs/container)
-25. Crear archivo de **resources\css\buttons.css**
+6. Crear archivo de **resources\css\buttons.css**
     ```css
     .btn {
         @apply font-bold py-2 px-4 rounded;
@@ -1025,13 +501,13 @@
     }
     ```
     + [Tailwind Buttons Component](https://v1.tailwindcss.com/components/buttons)
-27. Importar **resources\css\commom.css** en **resources\css\app.css**:
+7. Importar **resources\css\commom.css** en **resources\css\app.css**:
     ```php
     ≡
     @import 'commom.css';
     @import 'buttons.css';
     ```
-28. Compilar los nuevos estilos:
+8. Compilar los nuevos estilos:
     + $ npm run watch
     + En caso de error:
         + $ npm uninstall cross-env (Luego borrar el directorio node_modules)
@@ -1047,31 +523,12 @@
         + $ npm install cross-env
         + $ npm install
         + $ npm run dev
-29. En la plantilla **resources\views\navigation-menu.blade.php**:
-    Cambiars:
-    ```php
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-    ```
-    Por:
-    ```php
-    class="container"
-    ```
-30. Crear políticas de acceso a llevar curso o continuar curso:
-    + $ php artisan make:policy CoursePolicy
-31. Crear método **enrolled** a la política **app\Policies\CoursePolicy.php**:
-    ```php
-    public function enrolled(User $user, Course $course){
-        return $course->students->contains($user->id);
-    }
-    ```
-    + Importar la definición del modelo **Course**:
-    ```php
-    use App\Models\Course;
-    ```
-32. Crear commit:
+9. Crear commit:
     + $ git add .
     + $ git commit -m "Diseño del Frontend de la aplicación"
     + $ git push -u origin main
+
+
 
 ## Control del avance del curso
 1. Crear componente livewire para el status de cursos:
