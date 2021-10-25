@@ -1,0 +1,1 @@
+<img src="{{ asset('assets/images/logo-completo.png') }}" alt="Logo Sefar Universal" width="120">
