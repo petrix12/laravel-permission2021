@@ -108,7 +108,7 @@ DB_DATABASE=laravel_permission
     */</span>
     <span class="hljs-variable">$user</span> = User::create([
         <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Pedro Jesús Bazó Canelón'</span>,
-        <span class="hljs-string">'email'</span> =&gt; <span class="hljs-string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="294b48534607594c4d5b46694e44484045074a4644">[email&#160;protected]</a>'</span>,
+        <span class="hljs-string">'email'</span> =&gt; <span class="hljs-string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2644475c4908564342544966414b474f4a0845494b">[email&#160;protected]</a>'</span>,
         <span class="hljs-string">'password'</span> =&gt; bcrypt(<span class="hljs-string">'12345678'</span>)
     ]);
     <span class="hljs-variable">$user</span>-&gt;assignRole(<span class="hljs-string">'Admin'</span>);
@@ -1360,100 +1360,152 @@ Route::resource(<span class="hljs-string">'users'</span>, UserController::class)
 <li class="has-line-data" data-line-start="1277" data-line-end="1281">Reemplazar el favicon de la aplicación por el de tu organización en <strong>public\favicon.ico</strong> y agregar el siguiente código dentro de la etiqueta heat de la plantilla <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1279" data-line-end="1281" class="language-php">&lt;link rel=<span class="hljs-string">"icon"</span> href=<span class="hljs-string">"favicon.ico"</span> type=<span class="hljs-string">"image/x-icon"</span>&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="1281" data-line-end="1284">Crear vista <strong>resources\views\documentacion.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1283" data-line-end="1284" class="language-php"></code></pre>
-</li>
-<li class="has-line-data" data-line-start="1284" data-line-end="1288">Agregar la ruta <strong>documentos</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="1286" data-line-end="1288" class="language-php">Route::view(<span class="hljs-string">'documentos'</span>, <span class="hljs-string">'documentacion'</span>)-&gt;name(<span class="hljs-string">'documentacion'</span>);
+<li class="has-line-data" data-line-start="1281" data-line-end="1282">Colocar una imagen para la portada de la vista <strong>documentacion</strong> en formato png en <strong>public\assets\images\documentacion\documentos.png</strong>.</li>
+<li class="has-line-data" data-line-start="1282" data-line-end="1321">Crear vista <strong>resources\views\documentacion.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1284" data-line-end="1321" class="language-php">&lt;x-app-layout&gt;
+    &lt;section class="bg-cover" style="background-image: url({{ asset('assets/images/documentacion/documentos.png') }})"&gt;
+        &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36"&gt;
+            &lt;div class="w-full md:w-3/4 lg:w-1/2"&gt;
+                &lt;h1 class="text-white font-bold text-4xl"&gt;Paso a paso para la construcción del proyecto&lt;/h1&gt;
+                &lt;p class="text-white text-lg mt-2 mb-4"&gt;
+                    &lt;strong class="text-gray-300"&gt;Soluciones++&lt;/strong&gt;, en donde un clic menos (-) importa!!!&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="mt-10"&gt;
+        &lt;h1 class="text-gray-600 text-center text-3xl mb-6"&gt;PASO A PASO&lt;/h1&gt;
+        &lt;p class="text-gray-600 text-center text-xl mb-6"&gt;
+            Aplicación base para desarrollar cualquier aplicación que requiera de un sistema
+            completo de roles y permisos.
+        &lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="my-10"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"&gt;
+                &lt;iframe
+                    title="Inline Frame Example"
+                    width="100%"
+                    height="800"
+                    src="{{ asset('paso-paso.html') }}"&gt;
+                &lt;/iframe&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    {{-- &lt;section class="my-24"&gt;
+        &lt;h1 class="text-center text-3xl text-gray-600"&gt;En Soluciones++&lt;/h1&gt;
+        &lt;p class="text-center text-gray-500 text-sm mb-6"&gt;
+            Trabajamos duro para seguir encontrando soluciones a tus aplicaciones web y de escritorio
+        &lt;/p&gt;
+    &lt;/section&gt; --}}
+&lt;/x-app-layout&gt;
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="1288" data-line-end="1289">ssss</li>
+<li class="has-line-data" data-line-start="1321" data-line-end="1325">Agregar la ruta <strong>documentos</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="1323" data-line-end="1325" class="language-php">Route::view(<span class="hljs-string">'documentos'</span>, <span class="hljs-string">'documentacion'</span>)-&gt;name(<span class="hljs-string">'documentacion'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1325" data-line-end="1339">Agregar el menú para ver la documentación en <strong>resources\views\navigation-menu.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1327" data-line-end="1339" class="language-php">@php
+    <span class="hljs-variable">$nav_links</span> = [
+        ≡
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Documentacion'</span>,
+            <span class="hljs-string">'route'</span> =&gt; route(<span class="hljs-string">'documentacion'</span>),
+            <span class="hljs-string">'active'</span> =&gt; request()-&gt;routeIs(<span class="hljs-string">'documentacion'</span>)
+        ]
+    ];
+@endphp
+≡
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1339" data-line-end="1344">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="1340" data-line-end="1341">$ git add .</li>
+<li class="has-line-data" data-line-start="1341" data-line-end="1342">$ git commit -m “Ajustes finales”</li>
+<li class="has-line-data" data-line-start="1342" data-line-end="1344">$ git push -u origin main</li>
+</ul>
+</li>
 </ol>
-<pre><code>≡
-```php
-```
-</code></pre>
-<h2 class="code-line" data-line-start=1297 data-line-end=1298><a id="Deploy_del_proyecto_en_Heroku_1297"></a>Deploy del proyecto en Heroku</h2>
+<h2 class="code-line" data-line-start=1344 data-line-end=1345><a id="Deploy_del_proyecto_en_Heroku_1344"></a>Deploy del proyecto en Heroku</h2>
 <ol>
-<li class="has-line-data" data-line-start="1298" data-line-end="1302">Crear en la raíz del proyecto el archivo <strong>Procfile</strong> (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:<pre><code class="has-line-data" data-line-start="1300" data-line-end="1302">web: vendor/bin/heroku-php-apache2 public/
+<li class="has-line-data" data-line-start="1345" data-line-end="1349">Crear en la raíz del proyecto el archivo <strong>Procfile</strong> (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:<pre><code class="has-line-data" data-line-start="1347" data-line-end="1349">web: vendor/bin/heroku-php-apache2 public/
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="1302" data-line-end="1303">Ingresar a <a href="https://dashboard.heroku.com/apps">Heroku</a> e ir a <strong>Dashboard</strong>.</li>
-<li class="has-line-data" data-line-start="1303" data-line-end="1305">Crear un nuevo proyecto en <strong>New &gt; Create new app</strong>
+<li class="has-line-data" data-line-start="1349" data-line-end="1350">Ingresar a <a href="https://dashboard.heroku.com/apps">Heroku</a> e ir a <strong>Dashboard</strong>.</li>
+<li class="has-line-data" data-line-start="1350" data-line-end="1352">Crear un nuevo proyecto en <strong>New &gt; Create new app</strong>
 <ul>
-<li class="has-line-data" data-line-start="1304" data-line-end="1305">Nombre: <strong>laravelvue-2021</strong></li>
+<li class="has-line-data" data-line-start="1351" data-line-end="1352">Nombre: <strong>laravel-permission-2021</strong></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1305" data-line-end="1306">Ir a Deploy y dar clic en GitHub.</li>
-<li class="has-line-data" data-line-start="1306" data-line-end="1307">Clic en el botón Connect to GitHub e ingresar las credenciales.</li>
-<li class="has-line-data" data-line-start="1307" data-line-end="1308">Seleccionar el repositorio <strong>laravel_vue_2021</strong> y presionar el botón <strong>Connect</strong>.</li>
-<li class="has-line-data" data-line-start="1308" data-line-end="1309">Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón <strong>Enable Automatic Deploys</strong>.</li>
-<li class="has-line-data" data-line-start="1309" data-line-end="1310">Presionar el botón Deploy Branch.</li>
-<li class="has-line-data" data-line-start="1310" data-line-end="1311">Descargar e instalar <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
-<li class="has-line-data" data-line-start="1311" data-line-end="1313">En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
+<li class="has-line-data" data-line-start="1352" data-line-end="1353">Ir a Deploy y dar clic en GitHub.</li>
+<li class="has-line-data" data-line-start="1353" data-line-end="1354">Clic en el botón Connect to GitHub e ingresar las credenciales.</li>
+<li class="has-line-data" data-line-start="1354" data-line-end="1355">Seleccionar el repositorio <strong>laravel-permission2021</strong> y presionar el botón <strong>Connect</strong>.</li>
+<li class="has-line-data" data-line-start="1355" data-line-end="1356">Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón <strong>Enable Automatic Deploys</strong>.</li>
+<li class="has-line-data" data-line-start="1356" data-line-end="1357">Presionar el botón Deploy Branch.</li>
+<li class="has-line-data" data-line-start="1357" data-line-end="1358">Descargar e instalar <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
+<li class="has-line-data" data-line-start="1358" data-line-end="1360">En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
 <ul>
-<li class="has-line-data" data-line-start="1312" data-line-end="1313">$ heroku login</li>
+<li class="has-line-data" data-line-start="1359" data-line-end="1360">$ heroku login</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1313" data-line-end="1317">Víncular con la aplicación de Heroku <strong>laravelvue-2021</strong>:
+<li class="has-line-data" data-line-start="1360" data-line-end="1364">Víncular con la aplicación de Heroku <strong>laravel-permission-2021</strong>:
 <ul>
-<li class="has-line-data" data-line-start="1314" data-line-end="1316">$ git remote add heroku <a href="https://git.heroku.com/laravelvue-2021.git">git.heroku.com/laravelvue-2021.git</a>
+<li class="has-line-data" data-line-start="1361" data-line-end="1363">$ git remote add heroku <a href="https://git.heroku.com/laravel-permission-2021.git">git.heroku.com/laravel-permission-2021.git</a>
 <ul>
-<li class="has-line-data" data-line-start="1315" data-line-end="1316">(git remote set-url Origin <a href="https://git.heroku.com/laravelvue-2021.git">git.heroku.com/laravelvue-2021.git</a>)</li>
+<li class="has-line-data" data-line-start="1362" data-line-end="1363">(git remote set-url Origin <a href="https://git.heroku.com/laravel-permission-2021.git">git.heroku.com/laravel-permission-2021.git</a>)</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1316" data-line-end="1317">$ heroku git:remote -a laravelvue-2021</li>
+<li class="has-line-data" data-line-start="1363" data-line-end="1364">$ heroku git:remote -a laravel-permission-2021</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1317" data-line-end="1323">Registrar variables de entorno de la aplicación desde la terminal:
+<li class="has-line-data" data-line-start="1364" data-line-end="1370">Registrar variables de entorno de la aplicación desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="1318" data-line-end="1319">$ heroku config:add APP_NAME=Laravel-Vue</li>
-<li class="has-line-data" data-line-start="1319" data-line-end="1320">$ heroku config:add APP_ENV=production</li>
-<li class="has-line-data" data-line-start="1320" data-line-end="1321">$ heroku config:add APP_KEY=base64:4vCNmy9+8/VoX1+btrJhzQmUoQH9rQRhhj3FJFKxvXs=</li>
-<li class="has-line-data" data-line-start="1321" data-line-end="1322">$ heroku config:add APP_DEBUG=false</li>
-<li class="has-line-data" data-line-start="1322" data-line-end="1323">$ heroku config:add APP_URL=https://laravelvue-2021.herokuapp.com</li>
+<li class="has-line-data" data-line-start="1365" data-line-end="1366">$ heroku config:add APP_NAME=“Sistema de Roles y Permisos”</li>
+<li class="has-line-data" data-line-start="1366" data-line-end="1367">$ heroku config:add APP_ENV=production</li>
+<li class="has-line-data" data-line-start="1367" data-line-end="1368">$ heroku config:add APP_KEY=base64:JeN4tGolfHwFl2gMIDXbWcfdmkLypUx0dlFAQl3XC8Y=</li>
+<li class="has-line-data" data-line-start="1368" data-line-end="1369">$ heroku config:add APP_DEBUG=false</li>
+<li class="has-line-data" data-line-start="1369" data-line-end="1370">$ heroku config:add APP_URL=https://laravel-permission-2021.herokuapp.com</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1323" data-line-end="1334">Crear base de datos Postgre SQL desde la terminal:
+<li class="has-line-data" data-line-start="1370" data-line-end="1381">Crear base de datos Postgre SQL desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="1324" data-line-end="1325">$ heroku addons:create heroku-postgresql:hobby-dev</li>
-<li class="has-line-data" data-line-start="1325" data-line-end="1326">$ heroku pg:credentials:url</li>
-<li class="has-line-data" data-line-start="1326" data-line-end="1327"><strong>Nota</strong>: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:</li>
+<li class="has-line-data" data-line-start="1371" data-line-end="1372">$ heroku addons:create heroku-postgresql:hobby-dev</li>
+<li class="has-line-data" data-line-start="1372" data-line-end="1373">$ heroku pg:credentials:url</li>
+<li class="has-line-data" data-line-start="1373" data-line-end="1374"><strong>Nota</strong>: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:</li>
 </ul>
-<pre><code class="has-line-data" data-line-start="1328" data-line-end="1334">Connection information for default credential.
+<pre><code class="has-line-data" data-line-start="1375" data-line-end="1381">Connection information for default credential.
 Connection info string:
 &quot;dbname=*** host=*** port=*** user=*** password=*** sslmode=require&quot;
 Connection URL:
-postgres://mmtmzssdyxkfyt:9<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c4f4f4a4e4a4f194b4c481e4c4a184c1d4d1e1d4b1f454b451f484e4a194b1844191e4b4b1a4f45494419484d4d481f191d451d4e4d454b4f1e1d4c441844483c">[email&#160;protected]</a>ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
+postgres://mmtmzssdyxkfyt:9<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cefdfdf8fcf8fdabf9fefaacfef8aafeafffacaff9adf7f9f7adfafcf8abf9aaf6abacf9f9a8fdf7fbf6abfafffffaadabaff7affcfff7f9fdacaffef6aaf6fa8e">[email&#160;protected]</a>ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
 </code></pre>
 </li>
-<li class="has-line-data" data-line-start="1334" data-line-end="1341">Registrar variables de entorno de la base de datos desde la terminal:
+<li class="has-line-data" data-line-start="1381" data-line-end="1388">Registrar variables de entorno de la base de datos desde la terminal:
 <ul>
-<li class="has-line-data" data-line-start="1335" data-line-end="1336">$ heroku config:add DB_CONNECTION=pgsql</li>
-<li class="has-line-data" data-line-start="1336" data-line-end="1337">$ heroku config:add DB_HOST=<a href="http://ec2-18-235-4-83.compute-1.amazonaws.com">ec2-18-235-4-83.compute-1.amazonaws.com</a></li>
-<li class="has-line-data" data-line-start="1337" data-line-end="1338">$ heroku config:add DB_PORT=5432</li>
-<li class="has-line-data" data-line-start="1338" data-line-end="1339">$ heroku config:add DB_DATABASE=db6unq9m90dvkv</li>
-<li class="has-line-data" data-line-start="1339" data-line-end="1340">$ heroku config:add DB_USERNAME=vcsyvufmsdpbhn</li>
-<li class="has-line-data" data-line-start="1340" data-line-end="1341">$ heroku config:add DB_PASSWORD=******</li>
+<li class="has-line-data" data-line-start="1382" data-line-end="1383">$ heroku config:add DB_CONNECTION=pgsql</li>
+<li class="has-line-data" data-line-start="1383" data-line-end="1384">$ heroku config:add DB_HOST=<a href="http://ec2-18-235-4-83.compute-1.amazonaws.com">ec2-18-235-4-83.compute-1.amazonaws.com</a></li>
+<li class="has-line-data" data-line-start="1384" data-line-end="1385">$ heroku config:add DB_PORT=5432</li>
+<li class="has-line-data" data-line-start="1385" data-line-end="1386">$ heroku config:add DB_DATABASE=db6unq9m90dvkv</li>
+<li class="has-line-data" data-line-start="1386" data-line-end="1387">$ heroku config:add DB_USERNAME=vcsyvufmsdpbhn</li>
+<li class="has-line-data" data-line-start="1387" data-line-end="1388">$ heroku config:add DB_PASSWORD=******</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1341" data-line-end="1346">Ejecutar migraciones:
+<li class="has-line-data" data-line-start="1388" data-line-end="1393">Ejecutar migraciones:
 <ul>
-<li class="has-line-data" data-line-start="1342" data-line-end="1343">$ heroku run bash</li>
-<li class="has-line-data" data-line-start="1343" data-line-end="1345">~ $ php artisan migrate --seed
+<li class="has-line-data" data-line-start="1389" data-line-end="1390">$ heroku run bash</li>
+<li class="has-line-data" data-line-start="1390" data-line-end="1392">~ $ php artisan migrate --seed
 <ul>
-<li class="has-line-data" data-line-start="1344" data-line-end="1345">Do you really wish to run this command? (yes/no) [no]: <strong>yes</strong></li>
+<li class="has-line-data" data-line-start="1391" data-line-end="1392">Do you really wish to run this command? (yes/no) [no]: <strong>yes</strong></li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1345" data-line-end="1346">~ $ exit</li>
+<li class="has-line-data" data-line-start="1392" data-line-end="1393">~ $ exit</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1346" data-line-end="1348">Salir de Heroku:
+<li class="has-line-data" data-line-start="1393" data-line-end="1395">Salir de Heroku:
 <ul>
-<li class="has-line-data" data-line-start="1347" data-line-end="1348">$ heroku logout</li>
+<li class="has-line-data" data-line-start="1394" data-line-end="1395">$ heroku logout</li>
 </ul>
 </li>
-<li class="has-line-data" data-line-start="1348" data-line-end="1350">Desconectar con repositorio Heroku:
+<li class="has-line-data" data-line-start="1395" data-line-end="1397">Desconectar con repositorio Heroku:
 <ul>
-<li class="has-line-data" data-line-start="1349" data-line-end="1350">$ git remote rm heroku</li>
+<li class="has-line-data" data-line-start="1396" data-line-end="1397">$ git remote rm heroku</li>
 </ul>
 </li>
 </ol>
