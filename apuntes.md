@@ -95,33 +95,15 @@
         $rolRol2 = Role::create(['name' => 'Rol2']);
 
         Permission::create(['name' => 'Admin'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Ver dashboard'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Listar role'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Crear role'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Editar role'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Eliminar role'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Leer usuarios'])->syncRoles($rolAdmin);
+        Permission::create(['name' => 'Editar usuarios'])->syncRoles($rolAdmin);
         Permission::create(['name' => 'Rol1'])->syncRoles($rolAdmin, $rolRol1);
         Permission::create(['name' => 'Rol2'])->syncRoles($rolAdmin, $rolRol2);
-
-        Permission::create(['name' => 'crud.users.index'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.users.create'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.users.edit'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.users.destroy'])->syncRoles($rolAdmin);
-        
-        Permission::create(['name' => 'crud.roles.index'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.roles.create'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.roles.edit'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.roles.destroy'])->syncRoles($rolAdmin);
-        
-        Permission::create(['name' => 'crud.permissions.index'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.permissions.create'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.permissions.edit'])->syncRoles($rolAdmin);
-        Permission::create(['name' => 'crud.permissions.destroy'])->syncRoles($rolAdmin);
-
-        Permission::create(['name' => 'crud.rol1.index'])->syncRoles($rolAdmin, $rolRol1);
-        Permission::create(['name' => 'crud.rol1.create'])->syncRoles($rolAdmin, $rolRol1);
-        Permission::create(['name' => 'crud.rol1.edit'])->syncRoles($rolAdmin, $rolRol1);
-        Permission::create(['name' => 'crud.rol1.destroy'])->syncRoles($rolAdmin);
-
-        Permission::create(['name' => 'crud.rol2.index'])->syncRoles($rolAdmin, $rolRol2);
-        Permission::create(['name' => 'crud.rol2.create'])->syncRoles($rolAdmin, $rolRol2);
-        Permission::create(['name' => 'crud.rol2.edit'])->syncRoles($rolAdmin, $rolRol2);
-        Permission::create(['name' => 'crud.rol2.destroy'])->syncRoles($rolAdmin);
     }
     ```
     + Importar la definición de los modelos **Permissions** y **Role**:
@@ -157,7 +139,7 @@
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Admin\HomeController;
 
-    Route::get('',[HomeController::class, 'index']);
+    Route::get('', [HomeController::class, 'index'])->middleware('can:Admin')->name('home');
     ``` 
 3. Registrar el nuevo archivo de rutas en el provider **app\Providers\RouteServiceProvider.php** y establecer la ruta de inicio a la raíz:
     ```php
@@ -173,6 +155,7 @@
             $this->routes(function () {
                 ≡
                 Route::middleware('web', 'auth')
+                    ->name('admin.')
                     ->prefix('admin')
                     ->namespace($this->namespace)
                     ->group(base_path('routes/admin.php'));
@@ -245,22 +228,26 @@
 4. Modificar plantilla **resources\views\navigation-menu.blade.php**:
     ```php
     @php
-    $nav_links = [
-        [
-            'name' => 'Principal',
-            'route' => route('home'),
-            'active' => request()->routeIs('home')
-        ]
-    ];
+        $nav_links = [
+            [
+                'name' => 'Home',
+                'route' => route('home'),
+                'active' => request()->routeIs('home')
+            ],
+        ];
     @endphp
 
     <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow">
         <!-- Primary Navigation Menu -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <!-- Logo -->
-                    ≡
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="{{ route('home') }}">
+                            <x-jet-application-mark class="block h-9 w-auto" />
+                        </a>
+                    </div>
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -274,14 +261,129 @@
 
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
                     <!-- Teams Dropdown -->
-                    ≡
+                    @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                        <div class="ml-3 relative">
+                            <x-jet-dropdown align="right" width="60">
+                                <x-slot name="trigger">
+                                    <span class="inline-flex rounded-md">
+                                        <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
+                                            {{ Auth::user()->currentTeam->name }}
+
+                                            <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="w-60">
+                                        <!-- Team Management -->
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            {{ __('Manage Team') }}
+                                        </div>
+
+                                        <!-- Team Settings -->
+                                        <x-jet-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                            {{ __('Team Settings') }}
+                                        </x-jet-dropdown-link>
+
+                                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                            <x-jet-dropdown-link href="{{ route('teams.create') }}">
+                                                {{ __('Create New Team') }}
+                                            </x-jet-dropdown-link>
+                                        @endcan
+
+                                        <div class="border-t border-gray-100"></div>
+
+                                        <!-- Team Switcher -->
+                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                            {{ __('Switch Teams') }}
+                                        </div>
+
+                                        @foreach (Auth::user()->allTeams() as $team)
+                                            <x-jet-switchable-team :team="$team" />
+                                        @endforeach
+                                    </div>
+                                </x-slot>
+                            </x-jet-dropdown>
+                        </div>
+                    @endif
 
                     <!-- Settings Dropdown -->
-                    ≡
+                    <div class="ml-3 relative">
+                        @auth
+                            <x-jet-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                        <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                            <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        </button>
+                                    @else
+                                        <span class="inline-flex rounded-md">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition">
+                                                {{ Auth::user()->name }}
+
+                                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    @endif
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <!-- Account Management -->
+                                    <div class="block px-4 py-2 text-xs text-gray-400">
+                                        {{ __('Manage Account') }}
+                                    </div>
+
+                                    <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                                        {{ __('Profile') }}
+                                    </x-jet-dropdown-link>
+
+                                    @can('Admin')
+                                        <x-jet-dropdown-link href="{{ route('admin.home') }}">
+                                            Administrador
+                                        </x-jet-dropdown-link>
+                                    @endcan
+
+                                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                        <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
+                                            {{ __('API Tokens') }}
+                                        </x-jet-dropdown-link>
+                                    @endif
+
+                                    <div class="border-t border-gray-100"></div>
+
+                                    <!-- Authentication -->
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+
+                                        <x-jet-dropdown-link href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                            {{ __('Log Out') }}
+                                        </x-jet-dropdown-link>
+                                    </form>
+                                </x-slot>
+                            </x-jet-dropdown>
+                        @else
+                            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+                        @endauth
+                    </div>
                 </div>
 
                 <!-- Hamburger -->
-                ≡
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -296,7 +398,92 @@
             </div>
 
             <!-- Responsive Settings Options -->
-            ≡
+            @auth
+                <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="flex items-center px-4">
+                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                            <div class="flex-shrink-0 mr-3">
+                                <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                            </div>
+                        @endif
+
+                        <div>
+                            <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 space-y-1">
+                        <!-- Account Management -->
+                        <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                            {{ __('Profile') }}
+                        </x-jet-responsive-nav-link>
+                
+                        @can('Admin')
+                            <x-jet-responsive-nav-link href="{{ route('admin.home') }}" :active="request()->routeIs('admin.home')">
+                                Administrador
+                            </x-jet-responsive-nav-link>
+                        @endcan  
+
+                        @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                            <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
+                                {{ __('API Tokens') }}
+                            </x-jet-responsive-nav-link>
+                        @endif
+
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-jet-responsive-nav-link href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-jet-responsive-nav-link>
+                        </form>
+
+                        <!-- Team Management -->
+                        @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                            <div class="border-t border-gray-200"></div>
+
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Manage Team') }}
+                            </div>
+
+                            <!-- Team Settings -->
+                            <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
+                                {{ __('Team Settings') }}
+                            </x-jet-responsive-nav-link>
+
+                            @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
+                                    {{ __('Create New Team') }}
+                                </x-jet-responsive-nav-link>
+                            @endcan
+
+                            <div class="border-t border-gray-200"></div>
+
+                            <!-- Team Switcher -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Switch Teams') }}
+                            </div>
+
+                            @foreach (Auth::user()->allTeams() as $team)
+                                <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            @else
+                <div class="py-1 border-t border-gray-200">
+                    <x-jet-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                        Login
+                    </x-jet-responsive-nav-link>
+                    <x-jet-responsive-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">
+                        Register
+                    </x-jet-responsive-nav-link>
+                </div>
+            @endauth
         </div>
     </nav>
     ```
@@ -349,7 +536,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
                 <div class="w-full md:w-3/4 lg:w-1/2">
                     <h1 class="text-white font-bold text-4xl">Crea un sistema de roles y permisos con Larvel Permission</h1>
-                    <p class="text-white text-lg mt-2 mb-4">Soluciones++, en donde un clic menos (-) importa!!!</p>
+                    <strong class="text-gray-300">Soluciones++</strong>, en donde un clic menos (-) importa!!!</p>
                 </div>
             </div>
         </section>
@@ -405,10 +592,24 @@
             </div>
         </section>
         <section class="my-24">
-            <h1 class="text-center text-3xl text-gray-600">ROLES Y PERMISOS</h1>
-            <p class="text-center text-gray-500 text-sm mb-6">Trabajamos duro para seguir encontrando soluciones</p>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
+            <h1 class="text-center text-3xl text-gray-600">En Soluciones++</h1>
+            <p class="text-center text-gray-500 text-sm mb-6">
+                Trabajamos duro para seguir encontrando soluciones a tus aplicaciones web y de escritorio
+            </p>
+            <div class="container">
                 {{-- CONTENIDO DE LA PÁGINA --}}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 py-4">
+                    
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At voluptate, veritatis quidem non deleniti quam sint cum sequi alias minima, ad dolorem earum enim blanditiis inventore nobis et, atque temporibus!</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto officia recusandae pariatur expedita, corrupti reprehenderit nihil, maiores perferendis debitis rem cumque? Rem consequatur voluptates dolores et accusamus quasi laborum reprehenderit?</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut nam odio ducimus nihil aperiam totam, eveniet architecto neque ipsam blanditiis, nulla dolorem laborum iusto est cumque, eius qui quam voluptas!</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus officiis corporis magni doloremque expedita, dignissimos omnis eius velit unde. Rerum dolorem, exercitationem animi earum odit in nulla repudiandae necessitatibus cumque!</p>
+                </div>
+                <hr>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <h2 class="text-gray-600 text-center text-xl mb-6">CONTENIDO DE LA PÁGINA</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At voluptate, veritatis quidem non deleniti quam sint cum sequi alias minima, ad dolorem earum enim blanditiis inventore nobis et, atque temporibus!</p>
+                </div>
             </div>
         </section>
     </x-app-layout>
@@ -528,363 +729,12 @@
     + $ git commit -m "Diseño del Frontend de la aplicación"
     + $ git push -u origin main
 
-
-
-## Control del avance del curso
-1. Crear componente livewire para el status de cursos:
-    + $ php artisan make:livewire CourseStatus
-2. Redefinir la ruta **courses.status** en **routes\web.php**:
-    ```php
-    Route::get('course-status/{course}', CourseStatus::class)->name('courses.status')->middleware('auth');
-    ```
-    + Importar la definción del controlador del componente **CourseStatus**
-    ```php
-    use App\Http\Livewire\CourseStatus;
-    ```
-3. Diseñar vista **resources\views\livewire\course-status.blade.php**:
-    ```php
-    <div class="mt-8">
-        <div class="container grid grid-cols-3 gap-8">
-            <div class="col-span-2">
-                <div class="embed-responsive">
-                    {!! $current->iframe !!}
-                </div>
-                <h1 class="text-3xl text-gray-600 font-bold mt-4">
-                {{ $current->name }} 
-                </h1>
-                @if ($current->description)
-                    <div class="text-gray-600">
-                        {{ $current->description->name }}
-                    </div>
-                @endif
-
-                <div class="flex items-center mt-4 cursor-pointer">
-                    <i class="fas fa-toggle-off text-2xl text-gray-600"></i>
-                    <p class="text-sm ml-2">Marcar esta unidad como culminada</p>
-                </div>
-
-                <div class="card mt-2">
-                    <div class="card-body flex text-gray-500 font-bold">
-                        @if ($this->previous)
-                            <a wire:click="changeLesson({{ $this->previous }})" class="cursor-pointer">Tema anterior</a>
-                        @endif
-                        @if ($this->next)
-                            <a wire:click="changeLesson({{ $this->next }})" class="ml-auto cursor-pointer">Siguiente tema</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h1 class="text-2xl leading-8 text-center mb-4">{{ $course->title }}</h1>
-                    <div class="flex items-center">
-                        <figure>
-                            <img class="h-12 w-12 object-cover rounded-full mr-4" src="{{ $course->teacher->profile_photo_url }}" alt="">
-                        </figure>
-                        <div>
-                            <p>{{ $course->teacher->name }}</p>
-                            <a class="text-blue-500 text-sm" href="">{{ '@' . Str::slug($course->teacher->name, '') }}</a>
-                        </div>
-                    </div>
-
-                    <p class="text-gray-600 text-sm mt-2">20% completado</p>
-                    <div class="relative pt-1">
-                        <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-                            <div style="width:30%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
-                        </div>
-                    </div>
-
-                    <ul>
-                        @foreach ($course->sections as $section)
-                            <li class="text-gray-600 mb-4">
-                                <a class="font-bold text-base inline-block mb-2">{{ $section->name }}</a>
-                                <ul>
-                                    @foreach ($section->lessons as $lesson)
-                                        <li class="flex">
-                                            <div>
-                                                @if ($lesson->completed)
-                                                    @if ($current->id == $lesson->id)
-                                                        <span class="inline-block w-4 h-4 border-2 border-yellow-300 rounded-full mr-2 mt-1"></span>
-                                                    @else
-                                                        <span class="inline-block w-4 h-4 bg-yellow-300 rounded-full mr-2 mt-1"></span>
-                                                    @endif
-                                                @else
-                                                    @if ($current->id == $lesson->id)
-                                                        <span class="inline-block w-4 h-4 border-2 border-gray-500 rounded-full mr-2 mt-1"></span>
-                                                    @else
-                                                        <span class="inline-block w-4 h-4 bg-gray-500 rounded-full mr-2 mt-1"></span>
-                                                    @endif
-                                                @endif
-                                            </div>
-                                            <a class="cursor-pointer" wire:click="changeLesson({{ $lesson }})" >{{ $lesson->name }}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    ```
-    + La barra de progreso se tomó de:
-        + https://www.creative-tim.com/learning-lab/tailwind-starter-kit/documentation/css/progressbars
-4. Programar controlador del componente **CourseStatus** **app\Http\Livewire\CourseStatus.php**:
-    ```php
-    <?php
-
-    namespace App\Http\Livewire;
-
-    use App\Models\Course;
-    use App\Models\Lesson;
-    use Livewire\Component;
-    use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-    class CourseStatus extends Component
-    {
-        use AuthorizesRequests;
-        public $course, $current;
-
-        // atrapa el slug del curso en la url (el método debe llamarse mount)
-        public function mount(Course $course){
-            $this->course = $course;
-            foreach($course->lessons as $lesson){
-                if(!$lesson->completed){
-                    $this->current = $lesson;
-                    break;
-                }
-            }
-
-            // En caso de que todas las lecciones esten completadas
-            if(!$this->current){
-                $this->current = $course->lessons->last();
-            }
-
-            // Verifica si el usuario tiene autorización para ingresar al curso
-            $this->authorize('enrolled', $course);
-        }
-
-        public function render()
-        {
-            return view('livewire.course-status');
-        }
-
-        // MÉTODOS
-
-        public function changeLesson(Lesson $lesson){
-            $this->current = $lesson;
-        }
-
-        public function completed(){
-            if($this->current->completed){
-                // Eliminar registro
-                $this->current->users()->detach(auth()->user()->id);
-            }else{
-                // Agregar registro
-                $this->current->users()->attach(auth()->user()->id);
-            }
-            $this->current = Lesson::find($this->current->id);
-            $this->course = Course::find($this->course->id);
-        }
-
-        // PROPIEDADES COMPUTADAS
-
-        // Propiedad computada para index
-        public function getIndexProperty(){
-            return $this->course->lessons->pluck('id')->search($this->current->id);
-        }
-
-        // Propiedad computada para previous
-        public function getPreviousProperty(){
-            if($this->index == 0){
-                return null;
-            }else{
-                return $this->course->lessons[$this->index - 1];
-            }
-        }
-
-        // Propiedad computada para next
-        public function getNextProperty(){
-            if($this->index == $this->course->lessons->count() - 1){
-                return null;
-            }else{
-                return $this->course->lessons[$this->index + 1];
-            }
-        }
-        
-        // Propiedad computada para advance
-        public function getAdvanceProperty(){
-            $i = 0;
-            foreach ($this->course->lessons as $lesson) {
-                if($lesson->completed){
-                    $i++;
-                }
-            }
-            $advance = ($i * 100)/($this->course->lessons->count());
-            return round($advance, 2);
-        }
-
-        public function download(){
-            return response()->download(storage_path('app/public/' . $this->current->resource->url));
-        }
-    }
-    ```
-5. Agregar atributo para comprobar si una lección esta completada en el controlador **app\Models\Lesson.php**:
-    ```php
-    ≡
-    class Lesson extends Model
-    {
-        ≡
-        protected $guarded = ['id'];
-
-        // Esta función es un atributo: get[Completed]Attribute
-        // Comprueba si una lección esta completada
-        public function getCompletedAttribute(){
-            // Para traernos el registro del usuario autentificado
-            return $this->users->contains(auth()->user()->id);
-        }
-        ≡
-    }
-    ```
-6. Crear método **published** en **app\Policies\CoursePolicy.php** para proteger rutas:
-    ```php
-    public function published(?User $user, Course $course){
-        if($course->status == 3){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    ```
-7. Crear commit:
-    + $ git add .
-    + $ git commit -m "Control del avance del curso"
-    + $ git push -u origin main
-
 ## Implementación de roles y permisos
 + https://hackerthemes.com/bootstrap-cheatsheet
 + https://github.com/jeroennoten/Laravel-AdminLTE/wiki
-1. Crear controlador para administrar las rutas relacionadas con los cursos de los instructores:
-    + $ php artisan make:controller Instructor\CourseController -r
-2. Crear componentes para cursos de instructores:
-    + $ php artisan make:livewire Instructor/CoursesIndex
-3. Crear archivo de rutas **routes\instructor.php**:
-    ```php
-    <?php
-
-    use App\Http\Controllers\Instructor\CourseController;
-    use Illuminate\Support\Facades\Route;
-
-    Route::redirect('', 'instructor/courses');
-
-    Route::resource('courses', CourseController::class)->names('courses');
-    ```
-4. Registrar el nuevo archivo de rutas **instructor** y modificar **admin** en el método **boot** del provider **app\Providers\RouteServiceProvider.php**:
-    ```php
-    public function boot()
-    {
-        ≡
-        $this->routes(function () {
-            ≡
-            Route::middleware('web', 'auth')
-                ->name('admin.')
-                ->prefix('admin')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/admin.php'));
-
-            Route::middleware('web', 'auth')
-                ->name('instructor.')
-                ->prefix('instructor')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/instructor.php'));
-        });
-    }
-    ```
-5. Modificar plantilla **resources\views\navigation-menu.blade.php**:
-    ```php
-    ≡
-    <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow">
-        <!-- Primary Navigation Menu -->
-        <div class="container">
-            <div class="flex justify-between h-16">
-                ≡
-                <div class="hidden sm:flex sm:items-center sm:ml-6">
-                    ≡
-                    <!-- Settings Dropdown -->
-                    <div class="ml-3 relative">
-                        @auth
-                            <x-jet-dropdown align="right" width="48">
-                                ≡
-                                <x-slot name="content">
-                                    <!-- Account Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Account') }}
-                                    </div>
-
-                                    <x-jet-dropdown-link href="{{ route('profile.show') }}">
-                                        {{ __('Profile') }}
-                                    </x-jet-dropdown-link>
-
-                                    @can('Leer cursos')
-                                        <x-jet-dropdown-link href="{{ route('instructor.courses.index') }}">
-                                            Instructor
-                                        </x-jet-dropdown-link>
-                                    @endcan
-
-                                    @can('Ver dashboard')
-                                        <x-jet-dropdown-link href="{{ route('admin.home') }}">
-                                            Administrador
-                                        </x-jet-dropdown-link>
-                                    @endcan
-                                    ≡
-                                </x-slot>
-                            </x-jet-dropdown>
-                        @else
-                            ≡
-                        @endauth
-                    </div>
-                </div>
-                ≡
-            </div>
-        </div>
-
-        <!-- Responsive Navigation Menu -->
-        <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-            ≡
-            <!-- Responsive Settings Options -->
-            @auth
-                <div class="pt-4 pb-1 border-t border-gray-200">
-                    ≡
-                    <div class="mt-3 space-y-1">
-                        <!-- Account Management -->
-                        <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                            {{ __('Profile') }}
-                        </x-jet-responsive-nav-link>
-
-                        @can('Leer cursos')
-                            <x-jet-responsive-nav-link href="{{ route('instructor.courses.index') }}" :active="request()->routeIs('instructor.courses.index')">
-                                Instructor
-                            </x-jet-responsive-nav-link>
-                        @endcan
-                
-                        @can('Ver dashboard')
-                            <x-jet-responsive-nav-link href="{{ route('admin.home') }}" :active="request()->routeIs('admin.home')">
-                                Administrador
-                            </x-jet-responsive-nav-link>
-                        @endcan    
-                        ≡
-                    </div>
-                </div>
-            @else
-                ≡
-            @endauth
-        </div>
-    </nav>
-    ```
-6. Crear controlador para administrar roles:
+1. Crear controlador para administrar roles:
     + $ php artisan make:controller Admin/RoleController -r
-7. Definir los métodos del controlador **app\Http\Controllers\Admin\RoleController.php**:
+2. Definir los métodos del controlador **app\Http\Controllers\Admin\RoleController.php**:
     ```php
     ≡
     class RoleController extends Controller
@@ -963,17 +813,17 @@
     use Spatie\Permission\Models\Permission;
     use Spatie\Permission\Models\Role;
     ```
-8. Publicar vista de AdminLTE:
+3. Publicar vista de AdminLTE:
     + $ php artisan adminlte:install --only=main_views
     + **Nota**: En **resources\views\vendor\adminlte\page.blade.php** es de donde se extienden las plantillas.
-9. Instalar Laravel Collective para hacer formularios:
+4. Instalar Laravel Collective para hacer formularios:
     + $ composer require laravelcollective/html
     + [Documentación Laravel Collective](https://laravelcollective.com/docs/6.x/html)
-10. Crear vistas del CRUD Role **resources\views\admin\roles\index.blade.php**:
+5. Crear vistas del CRUD Role **resources\views\admin\roles\index.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Roles | Sefar Univeral')
+    @section('title', 'Roles | Solucioens++')
 
     @section('content_header')
         <h1>Lista de roles</h1>
@@ -1029,18 +879,16 @@
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-11. Crear vistas del CRUD Role **resources\views\admin\roles\create.blade.php**:
+6. Crear vistas del CRUD Role **resources\views\admin\roles\create.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Crear rol | Sefar Universal')
+    @section('title', 'Crear rol | Soluciones++')
 
     @section('content_header')
         <h1>Crear nuevo rol</h1>
@@ -1058,40 +906,43 @@
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-12. Crear vistas del CRUD Role **resources\views\admin\roles\show.blade.php**:
+7. Crear vistas del CRUD Role **resources\views\admin\roles\show.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Sefar Universal')
+    @section('title', 'Editar rol | Soluciones++')
 
     @section('content_header')
-        <h1>Sefar Universal</h1>
+        <h1>Mostrar rol</h1>
     @stop
 
     @section('content')
-        <p>Welcome to this beautiful admin panel.</p>
+        <div class="card">
+            <div class="card-body">
+                {!! Form::model($role, ['route' => ['admin.roles.update', $role], 'method' => 'put']) !!}
+                    @include('admin.roles.partials.form')
+                    {!! Form::submit('Actualizar Rol', ['class' => 'btn btn-primary mt-2']) !!}
+                {!! Form::close() !!}
+            </div>
+        </div>
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-13. Crear vistas del CRUD Role **resources\views\admin\roles\edit.blade.php**:
+8. Crear vistas del CRUD Role **resources\views\admin\roles\edit.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Editar rol | Sefar Universal')
+    @section('title', 'Editar rol | Soluciones++')
 
     @section('content_header')
         <h1>Editar rol</h1>
@@ -1109,14 +960,12 @@
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-14. Crear formulario para el rol como **resources\views\admin\roles\partials\form.blade.php**:
+9. Crear formulario para el rol como **resources\views\admin\roles\partials\form.blade.php**:
     ```php
     <div class="form-group">
         {!! Form::label('name', 'Nombre: ') !!}
@@ -1144,7 +993,7 @@
         </div>
     @endforeach
     ```
-15. Modificar el archivo de rutas **routes\admin.php**:
+10. Modificar el archivo de rutas **routes\admin.php**:
     ```php
     <?php
 
@@ -1153,22 +1002,22 @@
     use App\Http\Controllers\Admin\RoleController;
     use App\Http\Controllers\Admin\UserController;
 
-    Route::get('', [HomeController::class, 'index'])->middleware('can:Ver dashboard')->name('home');
+    Route::get('', [HomeController::class, 'index'])->middleware('can:Admin')->name('home');
 
     Route::resource('roles', RoleController::class)->names('roles');
 
     Route::resource('users', UserController::class)->only(['index', 'edit', 'update'])->names('users');
     ```
-16. Modificar el archivo de configuración **config\adminlte.php**:
+11. Modificar el archivo de configuración **config\adminlte.php**:
     ```php
     <?php
 
     return [
         ≡
-        'logo' => '<b>Sefar</b> Universal',
-        'logo_img' => 'images/logo.png',
+        'logo' => '<b>Soluciones++</b>',
+        'logo_img' => 'assets/images/logo.png',
         ≡
-        'logo_img_alt' => 'Logo Sefar',
+        'logo_img_alt' => 'Logo Soluciones++',
 
         ≡
         'dashboard_url' => '/',
@@ -1205,35 +1054,14 @@
                 'can'       => 'Leer usuarios',
                 'active'    => ['admin/users*'],
             ],
-            ['header' => 'OPCIONES DE CURSO'],
-            [
-                'text' => 'Categoría',
-                /* 'route'  => 'admin.categories.index', */
-                'icon' => 'fas fa-fw fa-cogs',
-            ],
-            [
-                'text' => 'Niveles',
-                /* 'route'  => 'admin.levels.index', */
-                'icon' => 'fas fa-fw fa-chart-line',
-            ],
-            [
-                'text' => 'Precios',
-                /* 'route'  => 'admin.prices.index', */
-                'icon' => 'fab fa-fw fa-cc-visa',
-            ],
-            [
-                'text' => 'Pendientes de aprobación',
-                /* 'route'  => 'admin.courses.index', */
-                'icon' => 'fas fa-fw fa-user',
-            ],
         ],
         ≡
         'livewire' => true,
     ];
     ```
-17. Crear controlador **User** para CRUD de usuarios:
+12. Crear controlador **User** para CRUD de usuarios:
     + $ php artisan make:controller Admin\UserController -r
-18. Programar el controlador **app\Http\Controllers\Admin\UserController.php**:
+13. Programar el controlador **app\Http\Controllers\Admin\UserController.php**:
     ```php
     <?php
 
@@ -1282,11 +1110,11 @@
         }
     }
     ```
-19. Crear vistas del CRUD User **resources\views\admin\users\index.blade.php**:
+14. Crear vistas del CRUD User **resources\views\admin\users\index.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'usuarios | Sefar Universal')
+    @section('title', 'usuarios | Soluciones++')
 
     @section('content_header')
         <h1>Lista de usuarios</h1>
@@ -1297,18 +1125,16 @@
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-20. Crear vistas del CRUD User **resources\views\admin\users\edit.blade.php**:
+15. Crear vistas del CRUD User **resources\views\admin\users\edit.blade.php**:
     ```php
     @extends('adminlte::page')
 
-    @section('title', 'Editar usuario | Sefar Universal')
+    @section('title', 'Editar usuario | Soluciones++')
 
     @section('content_header')
         <h1>Editar usuario</h1>
@@ -1336,16 +1162,14 @@
     @stop
 
     @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
-        <script> console.log('Hi!'); </script>
     @stop
     ```
-21. Crear componente de livewire para administrar usuarios:
+16. Crear componente de livewire para administrar usuarios:
     + $ php artisan make:livewire Admin/UsersIndex
-22. Programar controlador del componente **app\Http\Livewire\Admin\UsersIndex.php**:
+17. Programar controlador del componente **app\Http\Livewire\Admin\UsersIndex.php**:
     ```php
     <?php
 
@@ -1376,7 +1200,7 @@
         }
     }
     ```
-23. Diseñar vista del componente **resources\views\livewire\admin\users-index.blade.php**:
+18. Diseñar vista del componente **resources\views\livewire\admin\users-index.blade.php**:
     ```php
     <div>
         <div class="card">
@@ -1419,7 +1243,7 @@
         </div>
     </div>
     ```
-24. Crear el método **__construct** en el controlador **app\Http\Controllers\Admin\RoleController.php** para proteger las rutas **roles**:
+19. Crear el método **__construct** en el controlador **app\Http\Controllers\Admin\RoleController.php** para proteger las rutas **roles**:
     ```php
     ≡
     class RoleController extends Controller
@@ -1433,7 +1257,7 @@
         ≡
     }
     ```
-25. Crear el método **__construct** en el controlador **app\Http\Controllers\Admin\UserController.php** para proteger las rutas **users**:
+20. Crear el método **__construct** en el controlador **app\Http\Controllers\Admin\UserController.php** para proteger las rutas **users**:
     ```php
     ≡
     class UserController extends Controller
@@ -1445,36 +1269,7 @@
         ≡
     }
     ```
-26. Modificar el controlador del componente **app\Http\Livewire\Instructor\CoursesIndex.php**:
-    ```php
-    <?php
-
-    namespace App\Http\Livewire\Instructor;
-
-    use App\Models\Course;
-    use Livewire\Component;
-    use Livewire\WithPagination;
-
-    class CoursesIndex extends Component
-    {
-        use WithPagination;
-
-        public $search;
-
-        public function render()
-        {
-            $courses = Course::where('title', 'LIKE', '%' . $this->search . '%')
-                                ->where('user_id', auth()->user()->id)
-                                ->paginate(8);
-            return view('livewire.instructor.courses-index', compact('courses'));
-        }
-
-        public function limpiar_page(){
-            $this->reset('page');
-        }
-    }
-    ```
-27. Crear commit:
+21. Crear commit:
     + $ git add .
     + $ git commit -m "Implementación de roles y permisos"
     + $ git push -u origin main
