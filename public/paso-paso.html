@@ -1,0 +1,1460 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Subir archivos a la red con Laravel y almacenar sus datos en MySQL.md</title><style>@charset "UTF-8";@import 'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha2/katex.min.css';code{color:#c7254e;background-color:#f9f2f4;border-radius:4px}code,kbd{padding:2px 4px}kbd{color:#fff;background-color:#333;border-radius:3px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.25)}kbd kbd{padding:0;font-size:100%;box-shadow:none}pre{display:block;margin:0 0 10px;word-break:break-all;word-wrap:break-word;color:#333;background-color:#f5f5f5;border:1px solid #ccc;border-radius:4px}pre code{padding:0;font-size:inherit;color:inherit;white-space:pre-wrap;background-color:transparent;border-radius:0}.pre-scrollable{max-height:340px;overflow-y:scroll}table{background-color:transparent}th{text-align:left}.table{width:100%;max-width:100%;margin-bottom:20px}.table>thead>tr>th{padding:8px;line-height:1.4285714;border-top:1px solid #ddd}.table>thead>tr>td,.table>tbody>tr>th,.table>tbody>tr>td,.table>tfoot>tr>th,.table>tfoot>tr>td{padding:8px;line-height:1.4285714;vertical-align:top;border-top:1px solid #ddd}.table>thead>tr>th{vertical-align:bottom;border-bottom:2px solid #ddd}.table>caption+thead>tr:first-child>th,.table>caption+thead>tr:first-child>td,.table>colgroup+thead>tr:first-child>th,.table>colgroup+thead>tr:first-child>td,.table>thead:first-child>tr:first-child>th,.table>thead:first-child>tr:first-child>td{border-top:0}.table>tbody+tbody{border-top:2px solid #ddd}.table .table{background-color:#fff}.table-condensed>thead>tr>th,.table-condensed>thead>tr>td,.table-condensed>tbody>tr>th,.table-condensed>tbody>tr>td,.table-condensed>tfoot>tr>th,.table-condensed>tfoot>tr>td{padding:5px}.table-bordered,.table-bordered>thead>tr>th,.table-bordered>thead>tr>td,.table-bordered>tbody>tr>th,.table-bordered>tbody>tr>td,.table-bordered>tfoot>tr>th,.table-bordered>tfoot>tr>td{border:1px solid #ddd}.table-bordered>thead>tr>th,.table-bordered>thead>tr>td{border-bottom-width:2px}.table-striped>tbody>tr:nth-child(odd)>td,.table-striped>tbody>tr:nth-child(odd)>th{background-color:#f9f9f9}.table-hover>tbody>tr:hover>td,.table-hover>tbody>tr:hover>th{background-color:#f5f5f5}table col[class*="col-"]{position:static;float:none;display:table-column}table td[class*="col-"],table th[class*="col-"]{position:static;float:none;display:table-cell}.table>thead>tr>td.active,.table>thead>tr>th.active,.table>thead>tr.active>td,.table>thead>tr.active>th,.table>tbody>tr>td.active,.table>tbody>tr>th.active,.table>tbody>tr.active>td,.table>tbody>tr.active>th,.table>tfoot>tr>td.active,.table>tfoot>tr>th.active,.table>tfoot>tr.active>td,.table>tfoot>tr.active>th{background-color:#f5f5f5}.table-hover>tbody>tr>td.active:hover,.table-hover>tbody>tr>th.active:hover,.table-hover>tbody>tr.active:hover>td,.table-hover>tbody>tr:hover>.active,.table-hover>tbody>tr.active:hover>th{background-color:#e8e8e8}.table>thead>tr>td.success,.table>thead>tr>th.success,.table>thead>tr.success>td,.table>thead>tr.success>th,.table>tbody>tr>td.success,.table>tbody>tr>th.success,.table>tbody>tr.success>td,.table>tbody>tr.success>th,.table>tfoot>tr>td.success,.table>tfoot>tr>th.success,.table>tfoot>tr.success>td,.table>tfoot>tr.success>th{background-color:#dff0d8}.table-hover>tbody>tr>td.success:hover,.table-hover>tbody>tr>th.success:hover,.table-hover>tbody>tr.success:hover>td,.table-hover>tbody>tr:hover>.success,.table-hover>tbody>tr.success:hover>th{background-color:#d0e9c6}.table>thead>tr>td.info,.table>thead>tr>th.info,.table>thead>tr.info>td,.table>thead>tr.info>th,.table>tbody>tr>td.info,.table>tbody>tr>th.info,.table>tbody>tr.info>td,.table>tbody>tr.info>th,.table>tfoot>tr>td.info,.table>tfoot>tr>th.info,.table>tfoot>tr.info>td,.table>tfoot>tr.info>th{background-color:#d9edf7}.table-hover>tbody>tr>td.info:hover,.table-hover>tbody>tr>th.info:hover,.table-hover>tbody>tr.info:hover>td,.table-hover>tbody>tr:hover>.info,.table-hover>tbody>tr.info:hover>th{background-color:#c4e3f3}.table>thead>tr>td.warning,.table>thead>tr>th.warning,.table>thead>tr.warning>td,.table>thead>tr.warning>th,.table>tbody>tr>td.warning,.table>tbody>tr>th.warning,.table>tbody>tr.warning>td,.table>tbody>tr.warning>th,.table>tfoot>tr>td.warning,.table>tfoot>tr>th.warning,.table>tfoot>tr.warning>td,.table>tfoot>tr.warning>th{background-color:#fcf8e3}.table-hover>tbody>tr>td.warning:hover,.table-hover>tbody>tr>th.warning:hover,.table-hover>tbody>tr.warning:hover>td,.table-hover>tbody>tr:hover>.warning,.table-hover>tbody>tr.warning:hover>th{background-color:#faf2cc}.table>thead>tr>td.danger,.table>thead>tr>th.danger,.table>thead>tr.danger>td,.table>thead>tr.danger>th,.table>tbody>tr>td.danger,.table>tbody>tr>th.danger,.table>tbody>tr.danger>td,.table>tbody>tr.danger>th,.table>tfoot>tr>td.danger,.table>tfoot>tr>th.danger,.table>tfoot>tr.danger>td,.table>tfoot>tr.danger>th{background-color:#f2dede}.table-hover>tbody>tr>td.danger:hover,.table-hover>tbody>tr>th.danger:hover,.table-hover>tbody>tr.danger:hover>td,.table-hover>tbody>tr:hover>.danger,.table-hover>tbody>tr.danger:hover>th{background-color:#ebcccc}fieldset{border:0;min-width:0}legend{display:block;width:100%;margin-bottom:20px;font-size:21px;line-height:inherit;color:#333;border-bottom:1px solid #e5e5e5}label{display:inline-block;max-width:100%;margin-bottom:5px;font-weight:700}input[type="radio"],input[type="checkbox"]{margin:4px 0 0;margin-top:1px \9;line-height:normal}input[type="file"]{display:block}input[type="range"]{display:block;width:100%}select[multiple],select[size]{height:auto}input[type="file"]:focus,input[type="radio"]:focus,input[type="checkbox"]:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}output{padding-top:7px}output,.form-control{display:block;font-size:14px;line-height:1.4285714;color:#555}.form-control{width:100%;height:34px;padding:6px 12px;background-color:#fff;background-image:none;border:1px solid #ccc;border-radius:4px;box-shadow:inset 0 1px 1px rgba(0,0,0,.075);transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}.form-control:focus{border-color:#66afe9;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}.form-control::-moz-placeholder{color:#777;opacity:1}.form-control:-ms-input-placeholder{color:#777}.form-control::-webkit-input-placeholder{color:#777}.form-control[disabled],.form-control[readonly],fieldset[disabled] .form-control{cursor:not-allowed;background-color:#eee;opacity:1}textarea.form-control{height:auto}input[type="date"],input[type="time"],input[type="datetime-local"],input[type="month"]{line-height:34px;line-height:1.4285714 \0}input[type="date"].input-sm,.form-horizontal .form-group-sm input.form-control[type="date"],.input-group-sm>input.form-control[type="date"],.input-group-sm>input.input-group-addon[type="date"],.input-group-sm>.input-group-btn>input.btn[type="date"],input[type="time"].input-sm,.form-horizontal .form-group-sm input.form-control[type="time"],.input-group-sm>input.form-control[type="time"],.input-group-sm>input.input-group-addon[type="time"],.input-group-sm>.input-group-btn>input.btn[type="time"],input[type="datetime-local"].input-sm,.form-horizontal .form-group-sm input.form-control[type="datetime-local"],.input-group-sm>input.form-control[type="datetime-local"],.input-group-sm>input.input-group-addon[type="datetime-local"],.input-group-sm>.input-group-btn>input.btn[type="datetime-local"],input[type="month"].input-sm,.form-horizontal .form-group-sm input.form-control[type="month"],.input-group-sm>input.form-control[type="month"],.input-group-sm>input.input-group-addon[type="month"],.input-group-sm>.input-group-btn>input.btn[type="month"]{line-height:30px}input[type="date"].input-lg,.form-horizontal .form-group-lg input.form-control[type="date"],.input-group-lg>input.form-control[type="date"],.input-group-lg>input.input-group-addon[type="date"],.input-group-lg>.input-group-btn>input.btn[type="date"],input[type="time"].input-lg,.form-horizontal .form-group-lg input.form-control[type="time"],.input-group-lg>input.form-control[type="time"],.input-group-lg>input.input-group-addon[type="time"],.input-group-lg>.input-group-btn>input.btn[type="time"],input[type="datetime-local"].input-lg,.form-horizontal .form-group-lg input.form-control[type="datetime-local"],.input-group-lg>input.form-control[type="datetime-local"],.input-group-lg>input.input-group-addon[type="datetime-local"],.input-group-lg>.input-group-btn>input.btn[type="datetime-local"],input[type="month"].input-lg,.form-horizontal .form-group-lg input.form-control[type="month"],.input-group-lg>input.form-control[type="month"],.input-group-lg>input.input-group-addon[type="month"],.input-group-lg>.input-group-btn>input.btn[type="month"]{line-height:46px}.form-group{margin-bottom:15px}.radio,.checkbox{position:relative;display:block;min-height:20px;margin-top:10px;margin-bottom:10px}.radio label,.checkbox label{padding-left:20px;margin-bottom:0;font-weight:400;cursor:pointer}.radio input[type="radio"],.radio-inline input[type="radio"],.checkbox input[type="checkbox"],.checkbox-inline input[type="checkbox"]{position:absolute;margin-left:-20px;margin-top:4px \9}.radio+.radio,.checkbox+.checkbox{margin-top:-5px}.radio-inline,.checkbox-inline{display:inline-block;padding-left:20px;margin-bottom:0;vertical-align:middle;font-weight:400;cursor:pointer}.radio-inline+.radio-inline,.checkbox-inline+.checkbox-inline{margin-top:0;margin-left:10px}input[type="radio"][disabled],input[type="radio"].disabled,fieldset[disabled] input[type="radio"],input[type="checkbox"][disabled],input[type="checkbox"].disabled,fieldset[disabled] input[type="checkbox"],.radio-inline.disabled,fieldset[disabled] .radio-inline,.checkbox-inline.disabled,fieldset[disabled] .checkbox-inline,.radio.disabled label,fieldset[disabled] .radio label,.checkbox.disabled label,fieldset[disabled] .checkbox label{cursor:not-allowed}.form-control-static{padding-top:7px;padding-bottom:7px;margin-bottom:0}.form-control-static.input-lg,.form-horizontal .form-group-lg .form-control-static.form-control,.input-group-lg>.form-control-static.form-control,.input-group-lg>.form-control-static.input-group-addon,.input-group-lg>.input-group-btn>.form-control-static.btn,.form-control-static.input-sm,.form-horizontal .form-group-sm .form-control-static.form-control,.input-group-sm>.form-control-static.form-control,.input-group-sm>.form-control-static.input-group-addon,.input-group-sm>.input-group-btn>.form-control-static.btn{padding-left:0;padding-right:0}.input-sm,.form-horizontal .form-group-sm .form-control,.input-group-sm>.form-control{height:30px;padding:5px 10px;font-size:12px;line-height:1.5;border-radius:3px}.input-group-sm>.input-group-addon{height:30px;line-height:1.5}.input-group-sm>.input-group-btn>.btn{height:30px;padding:5px 10px;font-size:12px;line-height:1.5;border-radius:3px}select.input-sm,.form-horizontal .form-group-sm select.form-control,.input-group-sm>select.form-control,.input-group-sm>select.input-group-addon,.input-group-sm>.input-group-btn>select.btn{height:30px;line-height:30px}textarea.input-sm,.form-horizontal .form-group-sm textarea.form-control,.input-group-sm>textarea.form-control,.input-group-sm>textarea.input-group-addon,.input-group-sm>.input-group-btn>textarea.btn,select[multiple].input-sm,.form-horizontal .form-group-sm select.form-control[multiple],.input-group-sm>select.form-control[multiple],.input-group-sm>select.input-group-addon[multiple],.input-group-sm>.input-group-btn>select.btn[multiple]{height:auto}.input-lg,.form-horizontal .form-group-lg .form-control,.input-group-lg>.form-control{height:46px;padding:10px 16px;font-size:18px;line-height:1.33;border-radius:6px}.input-group-lg>.input-group-addon{height:46px;line-height:1.33}.input-group-lg>.input-group-btn>.btn{height:46px;padding:10px 16px;font-size:18px;line-height:1.33;border-radius:6px}select.input-lg,.form-horizontal .form-group-lg select.form-control,.input-group-lg>select.form-control,.input-group-lg>select.input-group-addon,.input-group-lg>.input-group-btn>select.btn{height:46px;line-height:46px}textarea.input-lg,.form-horizontal .form-group-lg textarea.form-control,.input-group-lg>textarea.form-control,.input-group-lg>textarea.input-group-addon,.input-group-lg>.input-group-btn>textarea.btn,select[multiple].input-lg,.form-horizontal .form-group-lg select.form-control[multiple],.input-group-lg>select.form-control[multiple],.input-group-lg>select.input-group-addon[multiple],.input-group-lg>.input-group-btn>select.btn[multiple]{height:auto}.has-feedback{position:relative}.has-feedback .form-control{padding-right:42.5px}.form-control-feedback{position:absolute;top:25px;right:0;z-index:2;display:block;width:34px;height:34px;line-height:34px;text-align:center}.input-lg+.form-control-feedback,.form-horizontal .form-group-lg .form-control+.form-control-feedback,.input-group-lg>.form-control+.form-control-feedback,.input-group-lg>.input-group-addon+.form-control-feedback,.input-group-lg>.input-group-btn>.btn+.form-control-feedback{width:46px;height:46px;line-height:46px}.input-sm+.form-control-feedback,.form-horizontal .form-group-sm .form-control+.form-control-feedback,.input-group-sm>.form-control+.form-control-feedback,.input-group-sm>.input-group-addon+.form-control-feedback,.input-group-sm>.input-group-btn>.btn+.form-control-feedback{width:30px;height:30px;line-height:30px}.has-success .help-block,.has-success .control-label,.has-success .radio,.has-success .checkbox,.has-success .radio-inline,.has-success .checkbox-inline{color:#3c763d}.has-success .form-control{border-color:#3c763d;box-shadow:inset 0 1px 1px rgba(0,0,0,.075)}.has-success .form-control:focus{border-color:#2b542c;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #67b168}.has-success .input-group-addon{color:#3c763d;border-color:#3c763d;background-color:#dff0d8}.has-success .form-control-feedback{color:#3c763d}.has-warning .help-block,.has-warning .control-label,.has-warning .radio,.has-warning .checkbox,.has-warning .radio-inline,.has-warning .checkbox-inline{color:#8a6d3b}.has-warning .form-control{border-color:#8a6d3b;box-shadow:inset 0 1px 1px rgba(0,0,0,.075)}.has-warning .form-control:focus{border-color:#66512c;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c0a16b}.has-warning .input-group-addon{color:#8a6d3b;border-color:#8a6d3b;background-color:#fcf8e3}.has-warning .form-control-feedback{color:#8a6d3b}.has-error .help-block,.has-error .control-label,.has-error .radio,.has-error .checkbox,.has-error .radio-inline,.has-error .checkbox-inline{color:#a94442}.has-error .form-control{border-color:#a94442;box-shadow:inset 0 1px 1px rgba(0,0,0,.075)}.has-error .form-control:focus{border-color:#843534;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483}.has-error .input-group-addon{color:#a94442;border-color:#a94442;background-color:#f2dede}.has-error .form-control-feedback{color:#a94442}.has-feedback label.sr-only~.form-control-feedback{top:0}.help-block{display:block;margin-top:5px;margin-bottom:10px;color:#737373}.form-horizontal .radio,.form-horizontal .checkbox,.form-horizontal .radio-inline,.form-horizontal .checkbox-inline{margin-top:0;margin-bottom:0;padding-top:7px}.form-horizontal .radio,.form-horizontal .checkbox{min-height:27px}.form-horizontal .form-group{margin-left:-15px;margin-right:-15px}.form-horizontal .form-group:before{content:" ";display:table}.form-horizontal .form-group:after{content:" ";display:table;clear:both}.form-horizontal .has-feedback .form-control-feedback{top:0;right:15px}.btn{display:inline-block;vertical-align:middle;cursor:pointer;background-image:none;border:1px solid transparent;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.btn:focus,.btn:active:focus,.btn.active:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}.btn:hover,.btn:focus{color:#333;text-decoration:none}.btn:active,.btn.active{outline:0;background-image:none;box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}.btn.disabled,.btn[disabled],fieldset[disabled] .btn{cursor:not-allowed;pointer-events:none;opacity:.65;filter:alpha(opacity=65);box-shadow:none}.btn-default{color:#333;background-color:#fff;border-color:#ccc}.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open>.btn-default.dropdown-toggle{color:#333;background-color:#e6e6e6;border-color:#adadad}.btn-default:active,.btn-default.active,.open>.btn-default.dropdown-toggle{background-image:none}.btn-default.disabled,.btn-default.disabled:hover,.btn-default.disabled:focus,.btn-default.disabled:active,.btn-default.disabled.active,.btn-default[disabled],.btn-default[disabled]:hover,.btn-default[disabled]:focus,.btn-default[disabled]:active,.btn-default[disabled].active,fieldset[disabled] .btn-default,fieldset[disabled] .btn-default:hover,fieldset[disabled] .btn-default:focus,fieldset[disabled] .btn-default:active,fieldset[disabled] .btn-default.active{background-color:#fff;border-color:#ccc}.btn-default .badge{color:#fff;background-color:#333}.btn-primary{color:#fff;background-color:#428bca;border-color:#357ebd}.btn-primary:hover,.btn-primary:focus,.btn-primary:active,.btn-primary.active,.open>.btn-primary.dropdown-toggle{color:#fff;background-color:#3071a9;border-color:#285e8e}.btn-primary:active,.btn-primary.active,.open>.btn-primary.dropdown-toggle{background-image:none}.btn-primary.disabled,.btn-primary.disabled:hover,.btn-primary.disabled:focus,.btn-primary.disabled:active,.btn-primary.disabled.active,.btn-primary[disabled],.btn-primary[disabled]:hover,.btn-primary[disabled]:focus,.btn-primary[disabled]:active,.btn-primary[disabled].active,fieldset[disabled] .btn-primary,fieldset[disabled] .btn-primary:hover,fieldset[disabled] .btn-primary:focus,fieldset[disabled] .btn-primary:active,fieldset[disabled] .btn-primary.active{background-color:#428bca;border-color:#357ebd}.btn-primary .badge{color:#428bca;background-color:#fff}.btn-success{color:#fff;background-color:#5cb85c;border-color:#4cae4c}.btn-success:hover,.btn-success:focus,.btn-success:active,.btn-success.active,.open>.btn-success.dropdown-toggle{color:#fff;background-color:#449d44;border-color:#398439}.btn-success:active,.btn-success.active,.open>.btn-success.dropdown-toggle{background-image:none}.btn-success.disabled,.btn-success.disabled:hover,.btn-success.disabled:focus,.btn-success.disabled:active,.btn-success.disabled.active,.btn-success[disabled],.btn-success[disabled]:hover,.btn-success[disabled]:focus,.btn-success[disabled]:active,.btn-success[disabled].active,fieldset[disabled] .btn-success,fieldset[disabled] .btn-success:hover,fieldset[disabled] .btn-success:focus,fieldset[disabled] .btn-success:active,fieldset[disabled] .btn-success.active{background-color:#5cb85c;border-color:#4cae4c}.btn-success .badge{color:#5cb85c;background-color:#fff}.btn-info{color:#fff;background-color:#5bc0de;border-color:#46b8da}.btn-info:hover,.btn-info:focus,.btn-info:active,.btn-info.active,.open>.btn-info.dropdown-toggle{color:#fff;background-color:#31b0d5;border-color:#269abc}.btn-info:active,.btn-info.active,.open>.btn-info.dropdown-toggle{background-image:none}.btn-info.disabled,.btn-info.disabled:hover,.btn-info.disabled:focus,.btn-info.disabled:active,.btn-info.disabled.active,.btn-info[disabled],.btn-info[disabled]:hover,.btn-info[disabled]:focus,.btn-info[disabled]:active,.btn-info[disabled].active,fieldset[disabled] .btn-info,fieldset[disabled] .btn-info:hover,fieldset[disabled] .btn-info:focus,fieldset[disabled] .btn-info:active,fieldset[disabled] .btn-info.active{background-color:#5bc0de;border-color:#46b8da}.btn-info .badge{color:#5bc0de;background-color:#fff}.btn-warning{color:#fff;background-color:#f0ad4e;border-color:#eea236}.btn-warning:hover,.btn-warning:focus,.btn-warning:active,.btn-warning.active,.open>.btn-warning.dropdown-toggle{color:#fff;background-color:#ec971f;border-color:#d58512}.btn-warning:active,.btn-warning.active,.open>.btn-warning.dropdown-toggle{background-image:none}.btn-warning.disabled,.btn-warning.disabled:hover,.btn-warning.disabled:focus,.btn-warning.disabled:active,.btn-warning.disabled.active,.btn-warning[disabled],.btn-warning[disabled]:hover,.btn-warning[disabled]:focus,.btn-warning[disabled]:active,.btn-warning[disabled].active,fieldset[disabled] .btn-warning,fieldset[disabled] .btn-warning:hover,fieldset[disabled] .btn-warning:focus,fieldset[disabled] .btn-warning:active,fieldset[disabled] .btn-warning.active{background-color:#f0ad4e;border-color:#eea236}.btn-warning .badge{color:#f0ad4e;background-color:#fff}.btn-danger{color:#fff;background-color:#d9534f;border-color:#d43f3a}.btn-danger:hover,.btn-danger:focus,.btn-danger:active,.btn-danger.active,.open>.btn-danger.dropdown-toggle{color:#fff;background-color:#c9302c;border-color:#ac2925}.btn-danger:active,.btn-danger.active,.open>.btn-danger.dropdown-toggle{background-image:none}.btn-danger.disabled,.btn-danger.disabled:hover,.btn-danger.disabled:focus,.btn-danger.disabled:active,.btn-danger.disabled.active,.btn-danger[disabled],.btn-danger[disabled]:hover,.btn-danger[disabled]:focus,.btn-danger[disabled]:active,.btn-danger[disabled].active,fieldset[disabled] .btn-danger,fieldset[disabled] .btn-danger:hover,fieldset[disabled] .btn-danger:focus,fieldset[disabled] .btn-danger:active,fieldset[disabled] .btn-danger.active{background-color:#d9534f;border-color:#d43f3a}.btn-danger .badge{color:#d9534f;background-color:#fff}.btn-link{color:#428bca;font-weight:400;cursor:pointer;border-radius:0}.btn-link,.btn-link:active,.btn-link[disabled],fieldset[disabled] .btn-link{background-color:transparent;box-shadow:none}.btn-link,.btn-link:hover,.btn-link:focus,.btn-link:active{border-color:transparent}.btn-link:hover,.btn-link:focus{color:#2a6496;text-decoration:underline;background-color:transparent}.btn-link[disabled]:hover,.btn-link[disabled]:focus,fieldset[disabled] .btn-link:hover,fieldset[disabled] .btn-link:focus{color:#777;text-decoration:none}.btn-lg{padding:10px 16px;font-size:18px;line-height:1.33;border-radius:6px}.btn-sm{padding:5px 10px}.btn-sm,.btn-xs{font-size:12px;line-height:1.5;border-radius:3px}.btn-xs{padding:1px 5px}.btn-block{display:block;width:100%}.btn-block+.btn-block{margin-top:5px}input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"].btn-block{width:100%}.fade{opacity:0;transition:opacity .15s linear}.fade.in{opacity:1}.collapse{display:none}.collapse.in{display:block}tr.collapse.in{display:table-row}tbody.collapse.in{display:table-row-group}.collapsing{position:relative;height:0;overflow:hidden;transition:height .35s ease}.input-group{position:relative;display:table;border-collapse:separate}.input-group[class*="col-"]{float:none;padding-left:0;padding-right:0}.input-group .form-control{position:relative;z-index:2;float:left;width:100%;margin-bottom:0}.input-group-addon,.input-group-btn,.input-group .form-control{display:table-cell}.input-group-addon:not(:first-child):not(:last-child),.input-group-btn:not(:first-child):not(:last-child),.input-group .form-control:not(:first-child):not(:last-child){border-radius:0}.input-group-addon{white-space:nowrap}.input-group-addon,.input-group-btn{width:1%;vertical-align:middle}.input-group-addon{padding:6px 12px;font-size:14px;font-weight:400;line-height:1;color:#555;text-align:center;background-color:#eee;border:1px solid #ccc;border-radius:4px}.input-group-addon.input-sm,.form-horizontal .form-group-sm .input-group-addon.form-control,.input-group-sm>.input-group-addon,.input-group-sm>.input-group-btn>.input-group-addon.btn{padding:5px 10px;font-size:12px;border-radius:3px}.input-group-addon.input-lg,.form-horizontal .form-group-lg .input-group-addon.form-control,.input-group-lg>.input-group-addon,.input-group-lg>.input-group-btn>.input-group-addon.btn{padding:10px 16px;font-size:18px;border-radius:6px}.input-group-addon input[type="radio"],.input-group-addon input[type="checkbox"]{margin-top:0}.input-group .form-control:first-child,.input-group-addon:first-child,.input-group-btn:first-child>.btn,.input-group-btn:first-child>.btn-group>.btn,.input-group-btn:first-child>.dropdown-toggle,.input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle),.input-group-btn:last-child>.btn-group:not(:last-child)>.btn{border-bottom-right-radius:0;border-top-right-radius:0}.input-group-addon:first-child{border-right:0}.input-group .form-control:last-child,.input-group-addon:last-child,.input-group-btn:last-child>.btn,.input-group-btn:last-child>.btn-group>.btn,.input-group-btn:last-child>.dropdown-toggle,.input-group-btn:first-child>.btn:not(:first-child),.input-group-btn:first-child>.btn-group:not(:first-child)>.btn{border-bottom-left-radius:0;border-top-left-radius:0}.input-group-addon:last-child{border-left:0}.input-group-btn{font-size:0;white-space:nowrap}.input-group-btn,.input-group-btn>.btn{position:relative}.input-group-btn>.btn+.btn{margin-left:-1px}.input-group-btn>.btn:hover,.input-group-btn>.btn:focus,.input-group-btn>.btn:active{z-index:2}.input-group-btn:first-child>.btn,.input-group-btn:first-child>.btn-group{margin-right:-1px}.input-group-btn:last-child>.btn,.input-group-btn:last-child>.btn-group{margin-left:-1px}.pagination{display:inline-block;padding-left:0;margin:20px 0;border-radius:4px}.pagination>li{display:inline}.pagination>li>a,.pagination>li>span{position:relative;float:left;padding:6px 12px;line-height:1.4285714;text-decoration:none;color:#428bca;background-color:#fff;border:1px solid #ddd;margin-left:-1px}.pagination>li:first-child>a,.pagination>li:first-child>span{margin-left:0;border-bottom-left-radius:4px;border-top-left-radius:4px}.pagination>li:last-child>a,.pagination>li:last-child>span{border-bottom-right-radius:4px;border-top-right-radius:4px}.pagination>li>a:hover,.pagination>li>a:focus,.pagination>li>span:hover,.pagination>li>span:focus{color:#2a6496;background-color:#eee;border-color:#ddd}.pagination>.active>a,.pagination>.active>a:hover,.pagination>.active>a:focus,.pagination>.active>span,.pagination>.active>span:hover,.pagination>.active>span:focus{z-index:2;color:#fff;background-color:#428bca;border-color:#428bca;cursor:default}.pagination>.disabled>span,.pagination>.disabled>span:hover,.pagination>.disabled>span:focus,.pagination>.disabled>a,.pagination>.disabled>a:hover,.pagination>.disabled>a:focus{color:#777;background-color:#fff;border-color:#ddd;cursor:not-allowed}.pagination-lg>li>a,.pagination-lg>li>span{padding:10px 16px;font-size:18px}.pagination-lg>li:first-child>a,.pagination-lg>li:first-child>span{border-bottom-left-radius:6px;border-top-left-radius:6px}.pagination-lg>li:last-child>a,.pagination-lg>li:last-child>span{border-bottom-right-radius:6px;border-top-right-radius:6px}.pagination-sm>li>a,.pagination-sm>li>span{padding:5px 10px;font-size:12px}.pagination-sm>li:first-child>a,.pagination-sm>li:first-child>span{border-bottom-left-radius:3px;border-top-left-radius:3px}.pagination-sm>li:last-child>a,.pagination-sm>li:last-child>span{border-bottom-right-radius:3px;border-top-right-radius:3px}.close{float:right;font-size:21px;font-weight:700;line-height:1;color:#000;text-shadow:0 1px 0 #fff;opacity:.2;filter:alpha(opacity=20)}.close:hover,.close:focus{color:#000;text-decoration:none;cursor:pointer;opacity:.5;filter:alpha(opacity=50)}button.close{padding:0;cursor:pointer;background:0 0;border:0;-webkit-appearance:none}.modal-open,.modal{overflow:hidden}.modal{display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;-webkit-overflow-scrolling:touch;outline:0}.modal.fade .modal-dialog{transform:translate3d(0,-25%,0);transition:transform .3s ease-out}.modal.in .modal-dialog{transform:translate3d(0,0,0)}.modal-open .modal{overflow-x:hidden;overflow-y:auto}.modal-dialog{position:relative;width:auto;margin:10px}.modal-content{position:relative;background-color:#fff;border:1px solid #999;border:1px solid rgba(0,0,0,.2);border-radius:6px;box-shadow:0 3px 9px rgba(0,0,0,.5);background-clip:padding-box;outline:0}.modal-backdrop{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1040;background-color:#000}.modal-backdrop.fade{opacity:0;filter:alpha(opacity=0)}.modal-backdrop.in{opacity:.5;filter:alpha(opacity=50)}.modal-header{padding:15px;border-bottom:1px solid #e5e5e5;min-height:16.4285714px}.modal-header .close{margin-top:-2px}.modal-title{margin:0;line-height:1.4285714}.modal-body{position:relative;padding:15px}.modal-footer{padding:15px;text-align:right;border-top:1px solid #e5e5e5}.modal-footer:before,.modal-footer:after{content:" ";display:table}.modal-footer:after{clear:both}.modal-footer .btn+.btn{margin-left:5px;margin-bottom:0}.modal-footer .btn-group .btn+.btn{margin-left:-1px}.modal-footer .btn-block+.btn-block{margin-left:0}.modal-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.clearfix:before,.clearfix:after{content:" ";display:table}.clearfix:after{clear:both}.center-block{display:block;margin-left:auto;margin-right:auto}.pull-right{float:right!important}.pull-left{float:left!important}.hide{display:none!important}.show{display:block!important}.invisible{visibility:hidden}.text-hide{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0}.hidden{display:none!important;visibility:hidden!important}.affix{position:fixed;transform:translate3d(0,0,0)}.hljs{display:block;overflow-x:auto;padding:.5em;background:#002b36;color:#839496;-webkit-text-size-adjust:none}.hljs-comment,.hljs-template_comment,.diff .hljs-header,.hljs-doctype,.hljs-pi,.lisp .hljs-string,.hljs-javadoc{color:#586e75}.hljs-keyword,.hljs-winutils,.method,.hljs-addition,.css .hljs-tag,.hljs-request,.hljs-status,.nginx .hljs-title{color:#859900}.hljs-number,.hljs-command,.hljs-string,.hljs-tag .hljs-value,.hljs-rules .hljs-value,.hljs-phpdoc,.hljs-dartdoc,.tex .hljs-formula,.hljs-regexp,.hljs-hexcolor,.hljs-link_url{color:#2aa198}.hljs-title,.hljs-localvars,.hljs-chunk,.hljs-decorator,.hljs-built_in,.hljs-identifier,.vhdl .hljs-literal,.hljs-id,.css .hljs-function{color:#268bd2}.hljs-attribute,.hljs-variable,.lisp .hljs-body,.smalltalk .hljs-number,.hljs-constant,.hljs-class .hljs-title,.hljs-parent,.hljs-type,.hljs-link_reference{color:#b58900}.hljs-preprocessor,.hljs-preprocessor .hljs-keyword,.hljs-pragma,.hljs-shebang,.hljs-symbol,.hljs-symbol .hljs-string,.diff .hljs-change,.hljs-special,.hljs-attr_selector,.hljs-subst,.hljs-cdata,.css .hljs-pseudo,.hljs-header{color:#cb4b16}.hljs-deletion,.hljs-important{color:#dc322f}.hljs-link_label{color:#6c71c4}.tex .hljs-formula{background:#073642}*,*:before,*:after{box-sizing:border-box}html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background:0 0}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}dfn{font-style:italic}h1{margin:.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}images{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{box-sizing:content-box;height:0}pre{overflow:auto}code,kbd{font-size:1em}code,kbd,pre,samp{font-family:monospace,monospace}samp{font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0;margin-right:5px}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:700}table{border-collapse:collapse;border-spacing:0}.debug{background-color:#ffc0cb!important}.ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ir{background-color:transparent;border:0;overflow:hidden}.ir::before{content:'';display:block;height:150%;width:0}html{font-size:.875em;background:#fff;color:#373D49}html,body{font-family:Georgia,Cambria,serif;height:100%}body{font-size:1rem;font-weight:400;line-height:2rem}ul,ol{margin-bottom:.83999rem;padding-top:.16001rem}li{font-feature-settings:'kern' 1,'onum' 1,'liga' 1;margin-left:1rem}li>ul,li>ol{margin-bottom:0}p{padding-top:.66001rem;font-feature-settings:'kern' 1,'onum' 1,'liga' 1;margin-top:0}p,pre{margin-bottom:1.33999rem}pre{font-size:1rem;padding:.66001rem 9.5px 9.5px;line-height:2rem;background:linear-gradient(to bottom,#fff 0,#fff .75rem,#f5f7fa .75rem,#f5f7fa 2.75rem,#fff 2.75rem,#fff 4rem);background-size:100% 4rem;border-color:#D3DAEA}blockquote{margin:0}blockquote p{font-size:1rem;margin-bottom:.33999rem;font-style:italic;padding:.66001rem 1rem 1rem;border-left:3px solid #A0AABF}th,td{padding:12px}h1,h2,h3,h4,h5,h6{font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-feature-settings:'dlig' 1,'liga' 1,'lnum' 1,'kern' 1;font-style:normal;font-weight:600;margin-top:0}h1{line-height:3rem;font-size:2.0571429rem;margin-bottom:.21999rem;padding-top:.78001rem}h2{font-size:1.953125rem;margin-bottom:.1835837rem;padding-top:.8164163rem}h2,h3{line-height:3rem}h3{font-size:1.6457143rem;margin-bottom:.07599rem;padding-top:.92401rem}h4{font-size:1.5625rem;margin-bottom:.546865rem;padding-top:.453135rem}h5{font-size:1.25rem;margin-bottom:-.56251rem;padding-top:.56251rem}h6{font-size:1rem;margin-bottom:-.65001rem;padding-top:.65001rem}a{cursor:pointer;color:#35D7BB;text-decoration:none}a:hover,a:focus{border-bottom-color:#35D7BB;color:#dff9f4}img{height:auto;max-width:100%}dt{font-style:italic;font-weight:600}.g{display:block}.g:after{clear:both;content:'';display:table}.g-b{float:left;margin:0;width:100%}.g{margin-left:-16px;margin-right:-16px}.g-b{padding-left:16px;padding-right:16px}.g-b--center{display:block;float:none;margin:0 auto}.g-b--right{float:right}.g-b--1of1{width:100%}.g-b--1of2,.g-b--2of4,.g-b--3of6,.g-b--4of8,.g-b--5of10,.g-b--6of12{width:50%}.g-b--1of3,.g-b--2of6,.g-b--4of12{width:33.333%}.g-b--2of3,.g-b--4of6,.g-b--8of12{width:66.666%}.g-b--1of4,.g-b--2of8,.g-b--3of12{width:25%}.g-b--3of4,.g-b--6of8,.g-b--9of12{width:75%}.g-b--1of5,.g-b--2of10{width:20%}.g-b--2of5,.g-b--4of10{width:40%}.g-b--3of5,.g-b--6of10{width:60%}.g-b--4of5,.g-b--8of10{width:80%}.g-b--1of6,.g-b--2of12{width:16.666%}.g-b--5of6,.g-b--10of12{width:83.333%}.g-b--1of8{width:12.5%}.g-b--3of8{width:37.5%}.g-b--5of8{width:62.5%}.g-b--7of8{width:87.5%}.g-b--1of10{width:10%}.g-b--3of10{width:30%}.g-b--7of10{width:70%}.g-b--9of10{width:90%}.g-b--1of12{width:8.333%}.g-b--5of12{width:41.666%}.g-b--7of12{width:58.333%}.g-b--11of12{width:91.666%}.g-b--push--1of1{margin-left:100%}.g-b--push--1of2,.g-b--push--2of4,.g-b--push--3of6,.g-b--push--4of8,.g-b--push--5of10,.g-b--push--6of12{margin-left:50%}.g-b--push--1of3,.g-b--push--2of6,.g-b--push--4of12{margin-left:33.333%}.g-b--push--2of3,.g-b--push--4of6,.g-b--push--8of12{margin-left:66.666%}.g-b--push--1of4,.g-b--push--2of8,.g-b--push--3of12{margin-left:25%}.g-b--push--3of4,.g-b--push--6of8,.g-b--push--9of12{margin-left:75%}.g-b--push--1of5,.g-b--push--2of10{margin-left:20%}.g-b--push--2of5,.g-b--push--4of10{margin-left:40%}.g-b--push--3of5,.g-b--push--6of10{margin-left:60%}.g-b--push--4of5,.g-b--push--8of10{margin-left:80%}.g-b--push--1of6,.g-b--push--2of12{margin-left:16.666%}.g-b--push--5of6,.g-b--push--10of12{margin-left:83.333%}.g-b--push--1of8{margin-left:12.5%}.g-b--push--3of8{margin-left:37.5%}.g-b--push--5of8{margin-left:62.5%}.g-b--push--7of8{margin-left:87.5%}.g-b--push--1of10{margin-left:10%}.g-b--push--3of10{margin-left:30%}.g-b--push--7of10{margin-left:70%}.g-b--push--9of10{margin-left:90%}.g-b--push--1of12{margin-left:8.333%}.g-b--push--5of12{margin-left:41.666%}.g-b--push--7of12{margin-left:58.333%}.g-b--push--11of12{margin-left:91.666%}.g-b--pull--1of1{margin-right:100%}.g-b--pull--1of2,.g-b--pull--2of4,.g-b--pull--3of6,.g-b--pull--4of8,.g-b--pull--5of10,.g-b--pull--6of12{margin-right:50%}.g-b--pull--1of3,.g-b--pull--2of6,.g-b--pull--4of12{margin-right:33.333%}.g-b--pull--2of3,.g-b--pull--4of6,.g-b--pull--8of12{margin-right:66.666%}.g-b--pull--1of4,.g-b--pull--2of8,.g-b--pull--3of12{margin-right:25%}.g-b--pull--3of4,.g-b--pull--6of8,.g-b--pull--9of12{margin-right:75%}.g-b--pull--1of5,.g-b--pull--2of10{margin-right:20%}.g-b--pull--2of5,.g-b--pull--4of10{margin-right:40%}.g-b--pull--3of5,.g-b--pull--6of10{margin-right:60%}.g-b--pull--4of5,.g-b--pull--8of10{margin-right:80%}.g-b--pull--1of6,.g-b--pull--2of12{margin-right:16.666%}.g-b--pull--5of6,.g-b--pull--10of12{margin-right:83.333%}.g-b--pull--1of8{margin-right:12.5%}.g-b--pull--3of8{margin-right:37.5%}.g-b--pull--5of8{margin-right:62.5%}.g-b--pull--7of8{margin-right:87.5%}.g-b--pull--1of10{margin-right:10%}.g-b--pull--3of10{margin-right:30%}.g-b--pull--7of10{margin-right:70%}.g-b--pull--9of10{margin-right:90%}.g-b--pull--1of12{margin-right:8.333%}.g-b--pull--5of12{margin-right:41.666%}.g-b--pull--7of12{margin-right:58.333%}.g-b--pull--11of12{margin-right:91.666%}.splashscreen{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#373D49;z-index:22}.splashscreen-dillinger{width:260px;height:auto;display:block;margin:0 auto;padding-bottom:3rem}.splashscreen p{font-size:1.25rem;padding-top:.56251rem;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;text-align:center;max-width:500px;margin:0 auto;color:#FFF}.sp-center{position:relative;transform:translateY(-50%);top:50%}.open-menu>.wrapper{overflow-x:hidden}.page{margin:0 auto;position:relative;top:0;left:0;width:100%;height:100%;z-index:2;transition:all .25s ease-in-out;background-color:#fff;padding-top:51px;will-change:left}.open-menu .page{left:270px}.title{line-height:1rem;font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem;font-weight:500;color:#A0AABF;letter-spacing:1px;text-transform:uppercase;padding-left:16px;padding-right:16px;margin-top:1rem}.split-preview .title{padding-left:0}.title-document{line-height:1rem;font-size:1.25rem;margin-bottom:.89999rem;padding-top:.10001rem;font-weight:400;font-family:"Ubuntu Mono",Monaco;color:#373D49;padding-left:16px;padding-right:16px;width:80%;min-width:300px;outline:0;border:none}.icon{display:block;margin:0 auto;width:36px;height:36px;border-radius:3px;text-align:center}.icon svg{display:inline-block;margin-left:auto;margin-right:auto}.icon-preview{background-color:#373D49;line-height:40px}.icon-preview svg{width:19px;height:12px}.icon-settings{background-color:#373D49;line-height:44px}.icon-settings svg{width:18px;height:18px}.icon-link{width:16px;height:16px;line-height:1;margin-right:24px;text-align:right}.navbar{background-color:#373D49;height:51px;width:100%;position:fixed;top:0;left:0;z-index:6;transition:all .25s ease-in-out;will-change:left}.navbar:after{content:"";display:table;clear:both}.open-menu .navbar{left:270px}.navbar-brand{float:left;margin:0 0 0 24px;padding:0;line-height:42px}.navbar-brand svg{width:85px;height:11px}.nav-left{float:left}.nav-right{float:right}.nav-sidebar{width:100%}.menu{list-style:none;margin:0;padding:0}.menu a{border:0;color:#A0AABF;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;outline:none;text-transform:uppercase}.menu a:hover{color:#35D7BB}.menu .menu-item{border:0;display:none;float:left;margin:0;position:relative}.menu .menu-item>a{display:block;font-size:12px;height:51px;letter-spacing:1px;line-height:51px;padding:0 24px}.menu .menu-item--settings,.menu .menu-item--preview,.menu .menu-item--save-to.in-sidebar,.menu .menu-item--import-from.in-sidebar,.menu .menu-item--link-unlink.in-sidebar,.menu .menu-item--documents.in-sidebar{display:block}.menu .menu-item--documents{padding-bottom:1rem}.menu .menu-item.open>a{background-color:#1D212A}.menu .menu-item-icon>a{height:auto;padding:0}.menu .menu-item-icon:hover>a{background-color:transparent}.menu .menu-link.open i{background-color:#1D212A}.menu .menu-link.open g{fill:#35D7BB}.menu .menu-link-preview,.menu .menu-link-settings{margin-top:8px;width:51px}.menu-sidebar{width:100%}.menu-sidebar .menu-item{float:none;margin-bottom:1px;width:100%}.menu-sidebar .menu-item.open>a{background-color:#373D49}.menu-sidebar .open .caret{transform:rotate(180deg)}.menu-sidebar>.menu-item:hover .dropdown a,.menu-sidebar>.menu-item:hover .settings a{background-color:transparent}.menu-sidebar .menu-link{background-color:#373D49;font-weight:600}.menu-sidebar .menu-link:after{content:"";display:table;clear:both}.menu-sidebar .menu-link>span{float:left}.menu-sidebar .menu-link>.caret{float:right;text-align:right;top:22px}.menu-sidebar .dropdown,.menu-sidebar .settings{background-color:transparent;position:static;width:100%}.dropdown{position:absolute;right:0;top:51px;width:188px}.dropdown,.settings{display:none;background-color:#1D212A}.dropdown{padding:0}.dropdown,.settings,.sidebar-list{list-style:none;margin:0}.sidebar-list{padding:0}.dropdown li{margin:32px 0;padding:0 0 0 32px}.dropdown li,.settings li{line-height:1}.sidebar-list li{line-height:1;margin:32px 0;padding:0 0 0 32px}.dropdown a{color:#D0D6E2}.dropdown a,.settings a,.sidebar-list a{display:block;text-transform:none}.sidebar-list a{color:#D0D6E2}.dropdown a:after,.settings a:after,.sidebar-list a:after{content:"";display:table;clear:both}.dropdown .icon,.settings .icon,.sidebar-list .icon{float:right}.open .dropdown,.open .settings,.open .sidebar-list{display:block}.open .dropdown.collapse,.open .collapse.settings,.open .sidebar-list.collapse{display:none}.open .dropdown.collapse.in,.open .collapse.in.settings,.open .sidebar-list.collapse.in{display:block}.dropdown .unlinked .icon,.settings .unlinked .icon,.sidebar-list .unlinked .icon{opacity:.3}.dropdown.documents li,.documents.settings li,.sidebar-list.documents li{background-image:url("../img/icons/file.svg");background-position:240px center;background-repeat:no-repeat;background-size:14px 16px;padding:3px 32px}.dropdown.documents li.octocat,.documents.settings li.octocat,.sidebar-list.documents li.octocat{background-image:url("../img/icons/octocat.svg");background-position:234px center;background-size:24px 24px}.dropdown.documents li:last-child,.documents.settings li:last-child,.sidebar-list.documents li:last-child{margin-bottom:1rem}.dropdown.documents li.active a,.documents.settings li.active a,.sidebar-list.documents li.active a{color:#35D7BB}.settings{position:fixed;top:67px;right:16px;border-radius:3px;width:288px;background-color:#373D49;padding:16px;z-index:7}.show-settings .settings{display:block}.settings .has-checkbox{float:left}.settings form{display:-ms-flexbox;display:flex;-ms-flex-direction:row;flex-direction:row;-ms-flex-pack:justify;justify-content:space-between}.settings input{width:20%}.settings a{font-size:1.25rem;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased;line-height:28px;color:#D0D6E2}.settings a:after{content:"";display:table;clear:both}.settings a:hover{color:#35D7BB}.settings li{border-bottom:1px solid #4F535B;margin:0;padding:16px 0}.settings li:last-child{border-bottom:none}.brand{border:none;display:block}.brand:hover g{fill:#35D7BB}.toggle{display:block;float:left;height:16px;padding:25px 16px 26px;width:40px}.toggle span:after,.toggle span:before{content:'';left:0;position:absolute;top:-6px}.toggle span:after{top:6px}.toggle span{display:block;position:relative}.toggle span,.toggle span:after,.toggle span:before{-webkit-backface-visibility:hidden;backface-visibility:hidden;background-color:#D3DAEA;height:2px;transition:all .3s;width:20px}.open-menu .toggle span{background-color:transparent}.open-menu .toggle span:before{transform:rotate(45deg) translate(3px,3px)}.open-menu .toggle span:after{transform:rotate(-45deg) translate(5px,-6px)}.caret{display:inline-block;width:0;height:0;margin-left:6px;vertical-align:middle;position:relative;top:-1px;border-top:4px solid;border-right:4px solid transparent;border-left:4px solid transparent}.sidebar{overflow:auto;height:100%;padding-right:15px;padding-bottom:15px;width:285px}.sidebar-wrapper{-webkit-overflow-scrolling:touch;background-color:#2B2F36;left:0;height:100%;overflow-y:hidden;position:fixed;top:0;width:285px;z-index:1}.sidebar-branding{width:160px;padding:0;margin:16px auto}.header{border-bottom:1px solid #E8E8E8;position:relative}.words,.characters{line-height:1rem;font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem;font-weight:500;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;z-index:5;position:absolute;right:16px;top:0}.words span,.characters span{color:#A0AABF}.words .counter,.characters .counter{color:#000}.words+.characters{top:22px}.mr10{margin-right:10px}.btn{text-align:center;display:inline-block;width:100%;text-transform:uppercase;font-weight:600;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;text-shadow:0 1px 0 #1b8b77;padding:16px 24px;background-color:#35D7BB;border-radius:3px;margin:0 auto 16px;line-height:1;color:#fff;transition:all .15s linear;-webkit-font-smoothing:antialiased}.btn--new,.btn--save{display:block;width:238px}.btn--new:hover,.btn--new:focus,.btn--save:hover,.btn--save:focus{color:#fff;border-bottom-color:transparent;box-shadow:0 1px 3px #24b59c;text-shadow:0 1px 0 #24b59c}.btn--save{background-color:#4A5261;text-shadow:0 1px 1px #1e2127}.btn--save:hover,.btn--save:focus{color:#fff;border-bottom-color:transparent;box-shadow:0 1px 5px #08090a;text-shadow:none}.btn--delete{display:block;width:238px;background-color:transparent;font-size:12px;text-shadow:none}.btn--delete:hover,.btn--delete:focus{color:#fff;border-bottom-color:transparent;text-shadow:0 1px 0 #08090a;opacity:.8}.btn--delete-modal,.btn--ok,.btn--close{border-top:0;background-color:#4A5261;text-shadow:0 1px 0 #08090a;margin:0}.btn--delete-modal:hover,.btn--delete-modal:focus,.btn--ok:hover,.btn--ok:focus,.btn--close:hover,.btn--close:focus{color:#fff;background-color:#292d36;text-shadow:none}.btn--delete-modal{display:inline;width:auto}.overlay{position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(55,61,73,.8);transition:all .25s ease-in-out;transition-timing-function:ease-out;will-change:left,opacity,visibility;z-index:5;opacity:0;visibility:hidden}.show-settings .overlay{visibility:visible;opacity:1}.switch{float:right;line-height:1}.switch input{display:none}.switch small{display:inline-block;cursor:pointer;padding:0 24px 0 0;transition:all ease .2s;background-color:#2B2F36;border-color:#2B2F36}.switch small,.switch small:before{border-radius:30px;box-shadow:inset 0 0 2px 0 #14171F}.switch small:before{display:block;content:'';width:28px;height:28px;background:#fff}.switch.checked small{padding-right:0;padding-left:24px;background-color:#35D7BB;box-shadow:none}.modal--dillinger.about .modal-dialog{font-size:1.25rem;max-width:500px}.modal--dillinger.scope .modal-dialog{max-width:300px;margin:5rem auto}.modal--dillinger .modal-dialog{max-width:600px;width:auto;margin:5rem auto}.modal--dillinger .modal-content{background:#373D49;border-radius:3px;box-shadow:0 2px 5px 0 #2C3B59;color:#fff;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;padding:2rem}.modal--dillinger ul{list-style-type:disc;margin:1rem 0;padding:0 0 0 1rem}.modal--dillinger li{padding:0;margin:0}.modal--dillinger .modal-header{border:0;padding:0}.modal--dillinger .modal-body{padding:0}.modal--dillinger .modal-footer{border:0;padding:0}.modal--dillinger .close{color:#fff;opacity:1}.modal-backdrop{background-color:#373D49}.pagination--dillinger{padding:0!important;margin:1.5rem 0!important;display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;-ms-flex-direction:row;flex-direction:row;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:stretch;align-content:stretch}.pagination--dillinger li{display:-ms-flexbox;display:flex;-ms-flex-positive:1;flex-grow:1;text-align:center}.pagination--dillinger li:first-child>a,.pagination--dillinger li.disabled>a,.pagination--dillinger li.disabled>a:hover,.pagination--dillinger li.disabled>a:focus,.pagination--dillinger li>a{background-color:transparent;border-color:#4F535B;border-right-color:transparent}.pagination--dillinger li.active>a,.pagination--dillinger li.active>a:hover,.pagination--dillinger li.active>a:focus{border-color:#4A5261;background-color:#4A5261;color:#fff}.pagination--dillinger li>a{float:none;color:#fff;width:100%;display:block;text-align:center;margin:0;border-right-color:transparent;padding:6px}.pagination--dillinger li>a:hover,.pagination--dillinger li>a:focus{border-color:#35D7BB;background-color:#35D7BB;color:#fff}.pagination--dillinger li:last-child a{border-color:#4F535B}.pagination--dillinger li:first-child a{border-right-color:transparent}.diNotify{position:absolute;z-index:9999;left:0;right:0;top:0;margin:0 auto;max-width:400px;text-align:center;transition:top .5s ease-in-out,opacity .5s ease-in-out;visibility:hidden}.diNotify-body{-webkit-font-smoothing:antialiased;background-color:#35D7BB;background:#666E7F;border-radius:3px;color:#fff;font-family:"Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;overflow:hidden;padding:1rem 2rem .5rem;display:-ms-flexbox;display:flex;-ms-flex-align:baseline;align-items:baseline;-ms-flex-pack:center;justify-content:center}.diNotify-icon{display:block;width:16px;height:16px;line-height:16px;position:relative;top:3px}.diNotify-message{padding-left:1rem}.zen-wrapper{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:10;background-color:#FFF;opacity:0;transition:opacity .25s ease-in-out}.zen-wrapper.on{opacity:1}.enter-zen-mode{background-image:url("../img/icons/enter-zen.svg");right:.5rem;top:.313rem;display:none}.enter-zen-mode,.close-zen-mode{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;background-repeat:no-repeat;width:32px;height:32px;display:block;position:absolute}.close-zen-mode{background-image:url("../img/icons/exit-zen.svg");right:1rem;top:1rem}.zen-page{position:relative;top:0;bottom:0;z-index:11;height:100%;width:100%}#zen{font-size:1.25rem;width:300px;height:80%;margin:0 auto;position:relative;top:10%}#zen:before,#zen:after{content:"";position:absolute;height:10%;width:100%;z-index:12;pointer-events:none}#preview .table{width:auto}.ui-resizable{position:relative}.ui-resizable-handle{position:absolute;font-size:.1px;z-index:99999;display:block}.ui-resizable-e{background-color:#666;border-right:8px solid #e8e8e8;border-left:1px solid #222;width:10px;z-index:88!important;position:relative}.ui-resizable-e:after{content:"-";display:block;position:absolute;top:calc(50% - 16px);left:0;height:25px;width:2px;background-color:rgba(0,0,0,.4);margin:3px}#editor{cursor:ew-resize;position:relative;z-index:auto}.profile-pic{float:left;width:250px}#_default_ a::before{color:#A0AABF}#_default_ img{display:none}#_default_ #_default_{display:block;float:left;max-width:38%;word-wrap:break-word}#_default_ .default-ad{display:none}#_default_ ._default_{display:block}#_default_ a{color:#35d7bb;text-decoration:none}#_default_ a:hover{color:#8ae8d8}#_default_ .default-image{display:none}#_default_ .default-title:after{content:" — "}#_default_ .default-title,#_default_ .default-text,#_default_ .default-description{display:inline}#_default_ .default-title{position:relative;font-weight:600;display:none}#_default_ a:before{position:relative;top:0;padding:5px;color:#a0aabf;content:"Ad";text-transform:uppercase;font-size:8px;font-family:Verdana,sans-serif}#_default_{display:block;float:left;max-width:38%;word-wrap:break-word}#_default_ ._default_{display:block;font-size:.75rem;height:51px;letter-spacing:1px;line-height:1rem;padding:18px 24px}body{max-width:1024px;margin:0 auto;overflow:auto;padding:2%}.split{overflow:scroll;padding:0!important;-webkit-overflow-scrolling:touch}.split-editor{padding-left:0;padding-right:0;position:relative;z-index:3}.show-preview .split-editor{display:none}.split-preview{background-color:#fff;display:none;top:0;position:relative;z-index:4}.show-preview .split-preview{display:block}#editor{font-size:1rem;font-family:"Ubuntu Mono",Monaco;font-weight:400;line-height:2rem;width:100%;height:100%}#editor .ace_gutter{-webkit-font-smoothing:antialiased}.editor-header{width:50%;float:left;border-bottom:1px solid #E8E8E8;position:relative}.editor-header--first{border-right:1px solid #E8E8E8}.editor-header .title{display:inline-block}.preview-html{padding:15px}.preview-html a{color:#A0AABF;text-decoration:underline}.preview-src{white-space:normal}.preview-mode-toggle-src{background-image:url("../img/icons/code.svg")}.preview-mode-toggle-src,.preview-mode-toggle-html{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;background-repeat:no-repeat;width:32px;height:32px;display:block;position:absolute;right:.5rem;top:.5rem;display:none}.preview-mode-toggle-html{background-image:url("../img/icons/eye.svg")}.sr-only{visibility:hidden;text-overflow:110%;overflow:hidden;top:-100px;position:absolute}.mnone{margin:0!important}@media screen and (min-width:27.5em){html{font-size:.875em}body{font-size:1rem}ul,ol{margin-bottom:.83999rem;padding-top:.16001rem}p{padding-top:.66001rem}p,pre{margin-bottom:1.33999rem}pre,blockquote p{font-size:1rem;padding-top:.66001rem}blockquote p{margin-bottom:.33999rem}h1{font-size:2.0571429rem;margin-bottom:.21999rem;padding-top:.78001rem}h2{font-size:1.953125rem;margin-bottom:.1835837rem;padding-top:.8164163rem}h3{font-size:1.6457143rem;margin-bottom:.07599rem;padding-top:.92401rem}h4{font-size:1.5625rem;margin-bottom:.546865rem;padding-top:.453135rem}h5{font-size:1.25rem;margin-bottom:-.56251rem;padding-top:.56251rem}h6{font-size:1rem;margin-bottom:-.65001rem;padding-top:.65001rem}.g{margin-left:-16px;margin-right:-16px}.g-b{padding-left:16px;padding-right:16px}.g-b--m1of1{width:100%}.g-b--m1of2,.g-b--m2of4,.g-b--m3of6,.g-b--m4of8,.g-b--m5of10,.g-b--m6of12{width:50%}.g-b--m1of3,.g-b--m2of6,.g-b--m4of12{width:33.333%}.g-b--m2of3,.g-b--m4of6,.g-b--m8of12{width:66.666%}.g-b--m1of4,.g-b--m2of8,.g-b--m3of12{width:25%}.g-b--m3of4,.g-b--m6of8,.g-b--m9of12{width:75%}.g-b--m1of5,.g-b--m2of10{width:20%}.g-b--m2of5,.g-b--m4of10{width:40%}.g-b--m3of5,.g-b--m6of10{width:60%}.g-b--m4of5,.g-b--m8of10{width:80%}.g-b--m1of6,.g-b--m2of12{width:16.666%}.g-b--m5of6,.g-b--m10of12{width:83.333%}.g-b--m1of8{width:12.5%}.g-b--m3of8{width:37.5%}.g-b--m5of8{width:62.5%}.g-b--m7of8{width:87.5%}.g-b--m1of10{width:10%}.g-b--m3of10{width:30%}.g-b--m7of10{width:70%}.g-b--m9of10{width:90%}.g-b--m1of12{width:8.333%}.g-b--m5of12{width:41.666%}.g-b--m7of12{width:58.333%}.g-b--m11of12{width:91.666%}.g-b--push--m1of1{margin-left:100%}.g-b--push--m1of2,.g-b--push--m2of4,.g-b--push--m3of6,.g-b--push--m4of8,.g-b--push--m5of10,.g-b--push--m6of12{margin-left:50%}.g-b--push--m1of3,.g-b--push--m2of6,.g-b--push--m4of12{margin-left:33.333%}.g-b--push--m2of3,.g-b--push--m4of6,.g-b--push--m8of12{margin-left:66.666%}.g-b--push--m1of4,.g-b--push--m2of8,.g-b--push--m3of12{margin-left:25%}.g-b--push--m3of4,.g-b--push--m6of8,.g-b--push--m9of12{margin-left:75%}.g-b--push--m1of5,.g-b--push--m2of10{margin-left:20%}.g-b--push--m2of5,.g-b--push--m4of10{margin-left:40%}.g-b--push--m3of5,.g-b--push--m6of10{margin-left:60%}.g-b--push--m4of5,.g-b--push--m8of10{margin-left:80%}.g-b--push--m1of6,.g-b--push--m2of12{margin-left:16.666%}.g-b--push--m5of6,.g-b--push--m10of12{margin-left:83.333%}.g-b--push--m1of8{margin-left:12.5%}.g-b--push--m3of8{margin-left:37.5%}.g-b--push--m5of8{margin-left:62.5%}.g-b--push--m7of8{margin-left:87.5%}.g-b--push--m1of10{margin-left:10%}.g-b--push--m3of10{margin-left:30%}.g-b--push--m7of10{margin-left:70%}.g-b--push--m9of10{margin-left:90%}.g-b--push--m1of12{margin-left:8.333%}.g-b--push--m5of12{margin-left:41.666%}.g-b--push--m7of12{margin-left:58.333%}.g-b--push--m11of12{margin-left:91.666%}.g-b--pull--m1of1{margin-right:100%}.g-b--pull--m1of2,.g-b--pull--m2of4,.g-b--pull--m3of6,.g-b--pull--m4of8,.g-b--pull--m5of10,.g-b--pull--m6of12{margin-right:50%}.g-b--pull--m1of3,.g-b--pull--m2of6,.g-b--pull--m4of12{margin-right:33.333%}.g-b--pull--m2of3,.g-b--pull--m4of6,.g-b--pull--m8of12{margin-right:66.666%}.g-b--pull--m1of4,.g-b--pull--m2of8,.g-b--pull--m3of12{margin-right:25%}.g-b--pull--m3of4,.g-b--pull--m6of8,.g-b--pull--m9of12{margin-right:75%}.g-b--pull--m1of5,.g-b--pull--m2of10{margin-right:20%}.g-b--pull--m2of5,.g-b--pull--m4of10{margin-right:40%}.g-b--pull--m3of5,.g-b--pull--m6of10{margin-right:60%}.g-b--pull--m4of5,.g-b--pull--m8of10{margin-right:80%}.g-b--pull--m1of6,.g-b--pull--m2of12{margin-right:16.666%}.g-b--pull--m5of6,.g-b--pull--m10of12{margin-right:83.333%}.g-b--pull--m1of8{margin-right:12.5%}.g-b--pull--m3of8{margin-right:37.5%}.g-b--pull--m5of8{margin-right:62.5%}.g-b--pull--m7of8{margin-right:87.5%}.g-b--pull--m1of10{margin-right:10%}.g-b--pull--m3of10{margin-right:30%}.g-b--pull--m7of10{margin-right:70%}.g-b--pull--m9of10{margin-right:90%}.g-b--pull--m1of12{margin-right:8.333%}.g-b--pull--m5of12{margin-right:41.666%}.g-b--pull--m7of12{margin-right:58.333%}.g-b--pull--m11of12{margin-right:91.666%}.splashscreen p{font-size:1.25rem;margin-bottom:1.43749rem;padding-top:.56251rem}.title{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.title-document{margin-bottom:.89999rem;padding-top:.10001rem}.title-document,.settings a{font-size:1.25rem}.words,.characters{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.modal--dillinger.about .modal-dialog,#zen{font-size:1.25rem}#zen{width:400px}#editor{font-size:1rem}}@media screen and (min-width:46.25em){html{font-size:.875em}body{font-size:1rem}ul,ol{margin-bottom:.83999rem;padding-top:.16001rem}p{padding-top:.66001rem}p,pre{margin-bottom:1.33999rem}pre,blockquote p{font-size:1rem;padding-top:.66001rem}blockquote p{margin-bottom:.33999rem}h1{font-size:2.0571429rem;margin-bottom:.21999rem;padding-top:.78001rem}h2{font-size:1.953125rem;margin-bottom:.1835837rem;padding-top:.8164163rem}h3{font-size:1.6457143rem;margin-bottom:.07599rem;padding-top:.92401rem}h4{font-size:1.5625rem;margin-bottom:.546865rem;padding-top:.453135rem}h5{font-size:1.25rem;margin-bottom:-.56251rem;padding-top:.56251rem}h6{font-size:1rem;margin-bottom:-.65001rem;padding-top:.65001rem}.g{margin-left:-16px;margin-right:-16px}.g-b{padding-left:16px;padding-right:16px}.g-b--t1of1{width:100%}.g-b--t1of2,.g-b--t2of4,.g-b--t3of6,.g-b--t4of8,.g-b--t5of10,.g-b--t6of12{width:50%}.g-b--t1of3,.g-b--t2of6,.g-b--t4of12{width:33.333%}.g-b--t2of3,.g-b--t4of6,.g-b--t8of12{width:66.666%}.g-b--t1of4,.g-b--t2of8,.g-b--t3of12{width:25%}.g-b--t3of4,.g-b--t6of8,.g-b--t9of12{width:75%}.g-b--t1of5,.g-b--t2of10{width:20%}.g-b--t2of5,.g-b--t4of10{width:40%}.g-b--t3of5,.g-b--t6of10{width:60%}.g-b--t4of5,.g-b--t8of10{width:80%}.g-b--t1of6,.g-b--t2of12{width:16.666%}.g-b--t5of6,.g-b--t10of12{width:83.333%}.g-b--t1of8{width:12.5%}.g-b--t3of8{width:37.5%}.g-b--t5of8{width:62.5%}.g-b--t7of8{width:87.5%}.g-b--t1of10{width:10%}.g-b--t3of10{width:30%}.g-b--t7of10{width:70%}.g-b--t9of10{width:90%}.g-b--t1of12{width:8.333%}.g-b--t5of12{width:41.666%}.g-b--t7of12{width:58.333%}.g-b--t11of12{width:91.666%}.g-b--push--t1of1{margin-left:100%}.g-b--push--t1of2,.g-b--push--t2of4,.g-b--push--t3of6,.g-b--push--t4of8,.g-b--push--t5of10,.g-b--push--t6of12{margin-left:50%}.g-b--push--t1of3,.g-b--push--t2of6,.g-b--push--t4of12{margin-left:33.333%}.g-b--push--t2of3,.g-b--push--t4of6,.g-b--push--t8of12{margin-left:66.666%}.g-b--push--t1of4,.g-b--push--t2of8,.g-b--push--t3of12{margin-left:25%}.g-b--push--t3of4,.g-b--push--t6of8,.g-b--push--t9of12{margin-left:75%}.g-b--push--t1of5,.g-b--push--t2of10{margin-left:20%}.g-b--push--t2of5,.g-b--push--t4of10{margin-left:40%}.g-b--push--t3of5,.g-b--push--t6of10{margin-left:60%}.g-b--push--t4of5,.g-b--push--t8of10{margin-left:80%}.g-b--push--t1of6,.g-b--push--t2of12{margin-left:16.666%}.g-b--push--t5of6,.g-b--push--t10of12{margin-left:83.333%}.g-b--push--t1of8{margin-left:12.5%}.g-b--push--t3of8{margin-left:37.5%}.g-b--push--t5of8{margin-left:62.5%}.g-b--push--t7of8{margin-left:87.5%}.g-b--push--t1of10{margin-left:10%}.g-b--push--t3of10{margin-left:30%}.g-b--push--t7of10{margin-left:70%}.g-b--push--t9of10{margin-left:90%}.g-b--push--t1of12{margin-left:8.333%}.g-b--push--t5of12{margin-left:41.666%}.g-b--push--t7of12{margin-left:58.333%}.g-b--push--t11of12{margin-left:91.666%}.g-b--pull--t1of1{margin-right:100%}.g-b--pull--t1of2,.g-b--pull--t2of4,.g-b--pull--t3of6,.g-b--pull--t4of8,.g-b--pull--t5of10,.g-b--pull--t6of12{margin-right:50%}.g-b--pull--t1of3,.g-b--pull--t2of6,.g-b--pull--t4of12{margin-right:33.333%}.g-b--pull--t2of3,.g-b--pull--t4of6,.g-b--pull--t8of12{margin-right:66.666%}.g-b--pull--t1of4,.g-b--pull--t2of8,.g-b--pull--t3of12{margin-right:25%}.g-b--pull--t3of4,.g-b--pull--t6of8,.g-b--pull--t9of12{margin-right:75%}.g-b--pull--t1of5,.g-b--pull--t2of10{margin-right:20%}.g-b--pull--t2of5,.g-b--pull--t4of10{margin-right:40%}.g-b--pull--t3of5,.g-b--pull--t6of10{margin-right:60%}.g-b--pull--t4of5,.g-b--pull--t8of10{margin-right:80%}.g-b--pull--t1of6,.g-b--pull--t2of12{margin-right:16.666%}.g-b--pull--t5of6,.g-b--pull--t10of12{margin-right:83.333%}.g-b--pull--t1of8{margin-right:12.5%}.g-b--pull--t3of8{margin-right:37.5%}.g-b--pull--t5of8{margin-right:62.5%}.g-b--pull--t7of8{margin-right:87.5%}.g-b--pull--t1of10{margin-right:10%}.g-b--pull--t3of10{margin-right:30%}.g-b--pull--t7of10{margin-right:70%}.g-b--pull--t9of10{margin-right:90%}.g-b--pull--t1of12{margin-right:8.333%}.g-b--pull--t5of12{margin-right:41.666%}.g-b--pull--t7of12{margin-right:58.333%}.g-b--pull--t11of12{margin-right:91.666%}.splashscreen-dillinger{width:500px}.splashscreen p{font-size:1.25rem;margin-bottom:1.43749rem;padding-top:.56251rem}.title{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.title-document{font-size:1.25rem;margin-bottom:.89999rem;padding-top:.10001rem}.menu .menu-item--save-to,.menu .menu-item--import-from{display:block}.menu .menu-item--preview,.menu .menu-item--save-to.in-sidebar,.menu .menu-item--import-from.in-sidebar{display:none}.settings a{font-size:1.25rem}.words,.characters{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.modal--dillinger.about .modal-dialog{font-size:1.25rem}.enter-zen-mode{display:block}.close-zen-mode{right:3rem;top:3rem}#zen{font-size:1.25rem;width:500px}.split-editor{border-right:1px solid #E8E8E8;float:left;padding-right:16px;width:50%}.show-preview .split-editor{display:block}.split-preview{display:block;float:right;position:relative;top:0;width:50%}#editor{font-size:1rem}.preview-mode-toggle-src,.preview-mode-toggle-html{display:block}}@media screen and (min-width:62.5em){html{font-size:.875em}body{font-size:1rem}ul,ol{margin-bottom:.83999rem;padding-top:.16001rem}p{padding-top:.66001rem}p,pre{margin-bottom:1.33999rem}pre,blockquote p{font-size:1rem;padding-top:.66001rem}blockquote p{margin-bottom:.33999rem}h1{font-size:2.0571429rem;margin-bottom:.21999rem;padding-top:.78001rem}h2{font-size:1.953125rem;margin-bottom:.1835837rem;padding-top:.8164163rem}h3{font-size:1.6457143rem;margin-bottom:.07599rem;padding-top:.92401rem}h4{font-size:1.5625rem;margin-bottom:.546865rem;padding-top:.453135rem}h5{font-size:1.25rem;margin-bottom:-.56251rem;padding-top:.56251rem}h6{font-size:1rem;margin-bottom:-.65001rem;padding-top:.65001rem}.g{margin-left:-16px;margin-right:-16px}.g-b{padding-left:16px;padding-right:16px}.g-b--d1of1{width:100%}.g-b--d1of2,.g-b--d2of4,.g-b--d3of6,.g-b--d4of8,.g-b--d5of10,.g-b--d6of12{width:50%}.g-b--d1of3,.g-b--d2of6,.g-b--d4of12{width:33.333%}.g-b--d2of3,.g-b--d4of6,.g-b--d8of12{width:66.666%}.g-b--d1of4,.g-b--d2of8,.g-b--d3of12{width:25%}.g-b--d3of4,.g-b--d6of8,.g-b--d9of12{width:75%}.g-b--d1of5,.g-b--d2of10{width:20%}.g-b--d2of5,.g-b--d4of10{width:40%}.g-b--d3of5,.g-b--d6of10{width:60%}.g-b--d4of5,.g-b--d8of10{width:80%}.g-b--d1of6,.g-b--d2of12{width:16.666%}.g-b--d5of6,.g-b--d10of12{width:83.333%}.g-b--d1of8{width:12.5%}.g-b--d3of8{width:37.5%}.g-b--d5of8{width:62.5%}.g-b--d7of8{width:87.5%}.g-b--d1of10{width:10%}.g-b--d3of10{width:30%}.g-b--d7of10{width:70%}.g-b--d9of10{width:90%}.g-b--d1of12{width:8.333%}.g-b--d5of12{width:41.666%}.g-b--d7of12{width:58.333%}.g-b--d11of12{width:91.666%}.g-b--push--d1of1{margin-left:100%}.g-b--push--d1of2,.g-b--push--d2of4,.g-b--push--d3of6,.g-b--push--d4of8,.g-b--push--d5of10,.g-b--push--d6of12{margin-left:50%}.g-b--push--d1of3,.g-b--push--d2of6,.g-b--push--d4of12{margin-left:33.333%}.g-b--push--d2of3,.g-b--push--d4of6,.g-b--push--d8of12{margin-left:66.666%}.g-b--push--d1of4,.g-b--push--d2of8,.g-b--push--d3of12{margin-left:25%}.g-b--push--d3of4,.g-b--push--d6of8,.g-b--push--d9of12{margin-left:75%}.g-b--push--d1of5,.g-b--push--d2of10{margin-left:20%}.g-b--push--d2of5,.g-b--push--d4of10{margin-left:40%}.g-b--push--d3of5,.g-b--push--d6of10{margin-left:60%}.g-b--push--d4of5,.g-b--push--d8of10{margin-left:80%}.g-b--push--d1of6,.g-b--push--d2of12{margin-left:16.666%}.g-b--push--d5of6,.g-b--push--d10of12{margin-left:83.333%}.g-b--push--d1of8{margin-left:12.5%}.g-b--push--d3of8{margin-left:37.5%}.g-b--push--d5of8{margin-left:62.5%}.g-b--push--d7of8{margin-left:87.5%}.g-b--push--d1of10{margin-left:10%}.g-b--push--d3of10{margin-left:30%}.g-b--push--d7of10{margin-left:70%}.g-b--push--d9of10{margin-left:90%}.g-b--push--d1of12{margin-left:8.333%}.g-b--push--d5of12{margin-left:41.666%}.g-b--push--d7of12{margin-left:58.333%}.g-b--push--d11of12{margin-left:91.666%}.g-b--pull--d1of1{margin-right:100%}.g-b--pull--d1of2,.g-b--pull--d2of4,.g-b--pull--d3of6,.g-b--pull--d4of8,.g-b--pull--d5of10,.g-b--pull--d6of12{margin-right:50%}.g-b--pull--d1of3,.g-b--pull--d2of6,.g-b--pull--d4of12{margin-right:33.333%}.g-b--pull--d2of3,.g-b--pull--d4of6,.g-b--pull--d8of12{margin-right:66.666%}.g-b--pull--d1of4,.g-b--pull--d2of8,.g-b--pull--d3of12{margin-right:25%}.g-b--pull--d3of4,.g-b--pull--d6of8,.g-b--pull--d9of12{margin-right:75%}.g-b--pull--d1of5,.g-b--pull--d2of10{margin-right:20%}.g-b--pull--d2of5,.g-b--pull--d4of10{margin-right:40%}.g-b--pull--d3of5,.g-b--pull--d6of10{margin-right:60%}.g-b--pull--d4of5,.g-b--pull--d8of10{margin-right:80%}.g-b--pull--d1of6,.g-b--pull--d2of12{margin-right:16.666%}.g-b--pull--d5of6,.g-b--pull--d10of12{margin-right:83.333%}.g-b--pull--d1of8{margin-right:12.5%}.g-b--pull--d3of8{margin-right:37.5%}.g-b--pull--d5of8{margin-right:62.5%}.g-b--pull--d7of8{margin-right:87.5%}.g-b--pull--d1of10{margin-right:10%}.g-b--pull--d3of10{margin-right:30%}.g-b--pull--d7of10{margin-right:70%}.g-b--pull--d9of10{margin-right:90%}.g-b--pull--d1of12{margin-right:8.333%}.g-b--pull--d5of12{margin-right:41.666%}.g-b--pull--d7of12{margin-right:58.333%}.g-b--pull--d11of12{margin-right:91.666%}.splashscreen-dillinger{width:700px}.splashscreen p{font-size:1.25rem;margin-bottom:1.43749rem;padding-top:.56251rem}.title{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.title-document{font-size:1.25rem;margin-bottom:.89999rem;padding-top:.10001rem}.menu .menu-item--export-as{display:block}.menu .menu-item--preview{display:none}.settings a{font-size:1.25rem}.words,.characters{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.modal--dillinger.about .modal-dialog,#zen{font-size:1.25rem}#zen{width:700px}#editor{font-size:1rem}}@media screen and (min-width:87.5em){html{font-size:.875em}body{font-size:1rem}ul,ol{margin-bottom:.83999rem;padding-top:.16001rem}p{padding-top:.66001rem}p,pre{margin-bottom:1.33999rem}pre,blockquote p{font-size:1rem;padding-top:.66001rem}blockquote p{margin-bottom:.33999rem}h1{font-size:2.0571429rem;margin-bottom:.21999rem;padding-top:.78001rem}h2{font-size:1.953125rem;margin-bottom:.1835837rem;padding-top:.8164163rem}h3{font-size:1.6457143rem;margin-bottom:.07599rem;padding-top:.92401rem}h4{font-size:1.5625rem;margin-bottom:.546865rem;padding-top:.453135rem}h5{font-size:1.25rem;margin-bottom:-.56251rem;padding-top:.56251rem}h6{font-size:1rem;margin-bottom:-.65001rem;padding-top:.65001rem}.splashscreen-dillinger{width:800px}.splashscreen p{font-size:1.25rem;margin-bottom:1.43749rem;padding-top:.56251rem}.title{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.title-document{margin-bottom:.89999rem;padding-top:.10001rem}.title-document,.settings a{font-size:1.25rem}.words,.characters{font-size:.8rem;margin-bottom:.77999rem;padding-top:.22001rem}.modal--dillinger.about .modal-dialog,#zen{font-size:1.25rem}#editor{font-size:1rem}}@media (min-width:768px){.form-inline .form-group{display:inline-block;margin-bottom:0;vertical-align:middle}.form-inline .form-control{display:inline-block;width:auto;vertical-align:middle}.form-inline .input-group{display:inline-table;vertical-align:middle}.form-inline .input-group .input-group-addon,.form-inline .input-group .input-group-btn,.form-inline .input-group .form-control{width:auto}.form-inline .input-group>.form-control{width:100%}.form-inline .control-label{margin-bottom:0;vertical-align:middle}.form-inline .radio,.form-inline .checkbox{display:inline-block;margin-top:0;margin-bottom:0;vertical-align:middle}.form-inline .radio label,.form-inline .checkbox label{padding-left:0}.form-inline .radio input[type="radio"],.form-inline .checkbox input[type="checkbox"]{position:relative;margin-left:0}.form-inline .has-feedback .form-control-feedback{top:0}.form-horizontal .control-label{text-align:right;margin-bottom:0;padding-top:7px}.form-horizontal .form-group-lg .control-label{padding-top:14.3px}.form-horizontal .form-group-sm .control-label{padding-top:6px}.modal-dialog{width:600px;margin:30px auto}.modal-content{box-shadow:0 5px 15px rgba(0,0,0,.5)}.modal-sm{width:300px}}@media (min-width:992px){.modal-lg{width:900px}}@media screen and (max-width:1200px){#_default_{max-width:30%}#_default_ ._default_{font-size:.825rem;line-height:.875rem;padding:12px 12px 6px 24px;text-align:justify}}@media screen and (max-width:1100px){#_default_{max-width:27%}#_default_ ._default_{font-size:.8rem;line-height:.85rem;padding:12px 6px 6px 24px;text-align:justify}}@media screen and (max-width:1000px){#_default_{max-width:24%}#_default_ ._default_{font-size:.775rem;line-height:.8rem;padding:12px 6px 6px 24px;text-align:justify}}@media screen and (max-width:900px){#_default_{max-width:30%}}@media screen and (max-width:767px){.table-responsive{width:100%;margin-bottom:15px;overflow-y:hidden;overflow-x:auto;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd;-webkit-overflow-scrolling:touch}.table-responsive>.table{margin-bottom:0}.table-responsive>.table>thead>tr>th,.table-responsive>.table>thead>tr>td,.table-responsive>.table>tbody>tr>th,.table-responsive>.table>tbody>tr>td,.table-responsive>.table>tfoot>tr>th,.table-responsive>.table>tfoot>tr>td{white-space:nowrap}.table-responsive>.table-bordered{border:0}.table-responsive>.table-bordered>thead>tr>th:first-child,.table-responsive>.table-bordered>thead>tr>td:first-child,.table-responsive>.table-bordered>tbody>tr>th:first-child,.table-responsive>.table-bordered>tbody>tr>td:first-child,.table-responsive>.table-bordered>tfoot>tr>th:first-child,.table-responsive>.table-bordered>tfoot>tr>td:first-child{border-left:0}.table-responsive>.table-bordered>thead>tr>th:last-child,.table-responsive>.table-bordered>thead>tr>td:last-child,.table-responsive>.table-bordered>tbody>tr>th:last-child,.table-responsive>.table-bordered>tbody>tr>td:last-child,.table-responsive>.table-bordered>tfoot>tr>th:last-child,.table-responsive>.table-bordered>tfoot>tr>td:last-child{border-right:0}.table-responsive>.table-bordered>tbody>tr:last-child>th,.table-responsive>.table-bordered>tbody>tr:last-child>td,.table-responsive>.table-bordered>tfoot>tr:last-child>th,.table-responsive>.table-bordered>tfoot>tr:last-child>td{border-bottom:0}}@media screen and (max-width:720px){#_default_{max-width:60%}#_default_ ._default_{font-size:.75rem;line-height:1rem;padding:12px 24px}}@media screen and (max-width:620px){#_default_{max-width:50%}#_default_ ._default_{font-size:.66rem;letter-spacing:1px;line-height:1rem;padding:10px 24px}}@media screen and (max-width:520px){#_default_ ._default_{font-size:.4rem;line-height:.875rem;padding:6px 12px 6px 24px;text-align:justify}}@media screen and (max-width:460px){#_default_{display:none}}@media screen and (max-width:46.1875em){.editor-header{display:none}.editor-header--first{display:block;width:100%}}</style></head><body id="preview">
+<h1 class="code-line" data-line-start=0 data-line-end=1><a id="Sistema_de_Roles_y_Servicios_0"></a>Sistema de Roles y Servicios</h1>
+<ul>
+<li class="has-line-data" data-line-start="1" data-line-end="3"><a href="https://github.com/petrix12/laravel-permission2021.git">Repositorio GitHub</a></li>
+</ul>
+<h2 class="code-line" data-line-start=3 data-line-end=4><a id="Crear_proyecto_3"></a>Crear proyecto:</h2>
+<ol>
+<li class="has-line-data" data-line-start="4" data-line-end="14">Crear proyecto <strong>laravel-permission</strong>:
+<ul>
+<li class="has-line-data" data-line-start="5" data-line-end="6">$ laravel new laravel-permission --jet</li>
+<li class="has-line-data" data-line-start="6" data-line-end="9">Which Jetstream stack do you prefer?<br>
+[0] livewire<br>
+[1] inertia</li>
+<li class="has-line-data" data-line-start="9" data-line-end="10">Respuesta: <strong>0</strong></li>
+<li class="has-line-data" data-line-start="10" data-line-end="11">Will your application use teams? (yes/no) [no]: <strong>no</strong></li>
+<li class="has-line-data" data-line-start="11" data-line-end="12">Ingresar a la carpeta raíz del nuevo proyecto.</li>
+<li class="has-line-data" data-line-start="12" data-line-end="13">$ npm install</li>
+<li class="has-line-data" data-line-start="13" data-line-end="14">$ npm run dev</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="14" data-line-end="20">Cambiar el valor de las siguientes variables de entorno en .env:<pre><code class="has-line-data" data-line-start="16" data-line-end="20" class="language-env">APP_NAME=&quot;Sistema de Roles y Permisos&quot;
+APP_URL=http://laravel-permission.test
+DB_DATABASE=laravel_permission
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="20" data-line-end="22">Crear base de datos <strong>laravel_permission</strong>.
+<ul>
+<li class="has-line-data" data-line-start="21" data-line-end="22"><strong>Nota</strong>: escoger juego de caracteres: utf8_general_ci</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="22" data-line-end="25">Ejecutar las migraciones:
+<ul>
+<li class="has-line-data" data-line-start="23" data-line-end="25">$ php artisan migrate</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=25 data-line-end=26><a id="Crear_repositorio_en_GitHub_25"></a>Crear repositorio en GitHub:</h2>
+<ol>
+<li class="has-line-data" data-line-start="26" data-line-end="29">Crear proyecto en la página de <a href="https://github.com">GitHub</a> con el nombre: <strong>laravel-permission2021</strong>.
+<ul>
+<li class="has-line-data" data-line-start="27" data-line-end="28"><strong>Description</strong>: Plantilla para un sistema de roles y permisos con Laravel Permission.</li>
+<li class="has-line-data" data-line-start="28" data-line-end="29"><strong>Public</strong>.</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="29" data-line-end="37">En la ubicación raíz del proyecto en la terminal de la máquina local:
+<ul>
+<li class="has-line-data" data-line-start="30" data-line-end="31">$ git init</li>
+<li class="has-line-data" data-line-start="31" data-line-end="32">$ git add .</li>
+<li class="has-line-data" data-line-start="32" data-line-end="33">$ git commit -m “Commit inicial”</li>
+<li class="has-line-data" data-line-start="33" data-line-end="34">$ git branch -M main</li>
+<li class="has-line-data" data-line-start="34" data-line-end="35">$ git remote add origin <a href="https://github.com/petrix12/laravel-permission2021.git">https://github.com/petrix12/laravel-permission2021.git</a></li>
+<li class="has-line-data" data-line-start="35" data-line-end="37">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=37 data-line-end=38><a id="Instalacin_de_Laravel_Permission_37"></a>Instalación de Laravel Permission</h2>
+<ul>
+<li class="has-line-data" data-line-start="38" data-line-end="39"><a href="https://spatie.be/docs/laravel-permission/v3/basic-usage/basic-usage">Laravel Permission</a></li>
+</ul>
+<ol>
+<li class="has-line-data" data-line-start="39" data-line-end="41">Instalar Laravel Permission (sistema de roles y persmisos):
+<ul>
+<li class="has-line-data" data-line-start="40" data-line-end="41">$ composer require spatie/laravel-permission</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="41" data-line-end="43">Publicar las vistas de Laravel Permission:
+<ul>
+<li class="has-line-data" data-line-start="42" data-line-end="43">$ php artisan vendor:publish --provider=“Spatie\Permission\PermissionServiceProvider”</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="43" data-line-end="45">Ejecutar las migraciones:
+<ul>
+<li class="has-line-data" data-line-start="44" data-line-end="45">$ php artisan migrate</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="45" data-line-end="57">Implementar el trait <strong>HasRoles</strong> en el modelo <strong>User</strong>:<pre><code class="has-line-data" data-line-start="47" data-line-end="57" class="language-php">≡
+<span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Traits</span>\<span class="hljs-title">HasRoles</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Authenticatable</span>
+</span>{
+    ≡
+    <span class="hljs-keyword">use</span> <span class="hljs-title">HasRoles</span>;
+    ≡
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="57" data-line-end="62">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="58" data-line-end="59">$ git add .</li>
+<li class="has-line-data" data-line-start="59" data-line-end="60">$ git commit -m “Instalación de Laravel Permission”</li>
+<li class="has-line-data" data-line-start="60" data-line-end="62">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=62 data-line-end=63><a id="Generaracin_de_datos_iniciales_62"></a>Generaración de datos iniciales:</h2>
+<ol>
+<li class="has-line-data" data-line-start="63" data-line-end="66">Creación de seeders:
+<ul>
+<li class="has-line-data" data-line-start="64" data-line-end="65">$ php artisan make:seeder UserSeeder</li>
+<li class="has-line-data" data-line-start="65" data-line-end="66">$ php artisan make:seeder RoleSeeder</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="66" data-line-end="87">Programar método <strong>run</strong> del seeder <strong>UserSeeder</strong>:<pre><code class="has-line-data" data-line-start="68" data-line-end="83" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-comment">/*
+        NOTA: En producción dejar solo los datos del adiministrador inicial (y establecer un password seguro
+        desde la aplicación) y comentar la creación de los 99 usuarios de prueba.
+    */</span>
+    <span class="hljs-variable">$user</span> = User::create([
+        <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Pedro Jesús Bazó Canelón'</span>,
+        <span class="hljs-string">'email'</span> =&gt; <span class="hljs-string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="294b48534607594c4d5b46694e44484045074a4644">[email&#160;protected]</a>'</span>,
+        <span class="hljs-string">'password'</span> =&gt; bcrypt(<span class="hljs-string">'12345678'</span>)
+    ]);
+    <span class="hljs-variable">$user</span>-&gt;assignRole(<span class="hljs-string">'Admin'</span>);
+    User::factory(<span class="hljs-number">99</span>)-&gt;create();
+}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="83" data-line-end="84">Importar la definición del modelo <strong>User</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="85" data-line-end="87" class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">User</span>;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="87" data-line-end="113">Programar método <strong>run</strong> del seeder <strong>RoleSeeder</strong>:<pre><code class="has-line-data" data-line-start="89" data-line-end="108" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-comment">/* Adaptar estas instucciones a los roles y permisos requerido por tu aplicación  */</span>
+    <span class="hljs-variable">$rolAdmin</span> = Role::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Admin'</span>]);
+    <span class="hljs-variable">$rolRol1</span> = Role::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Rol1'</span>]);
+    <span class="hljs-variable">$rolRol2</span> = Role::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Rol2'</span>]);
+
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Admin'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Ver dashboard'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Listar role'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Crear role'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Editar role'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Eliminar role'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Leer usuarios'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Editar usuarios'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Rol1'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>, <span class="hljs-variable">$rolRol1</span>);
+    Permission::create([<span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'Rol2'</span>])-&gt;syncRoles(<span class="hljs-variable">$rolAdmin</span>, <span class="hljs-variable">$rolRol2</span>);
+}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="108" data-line-end="109">Importar la definición de los modelos <strong>Permissions</strong> y <strong>Role</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="110" data-line-end="113" class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Permission</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Role</span>;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="113" data-line-end="121">Programar método <strong>run</strong> del seeder <strong>DatabaseSeeder</strong>:<pre><code class="has-line-data" data-line-start="115" data-line-end="121" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-variable">$this</span>-&gt;call(RoleSeeder::class);
+    <span class="hljs-variable">$this</span>-&gt;call(UserSeeder::class);
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="121" data-line-end="123">Restablecer la base de datos y ejecutar los seeders:
+<ul>
+<li class="has-line-data" data-line-start="122" data-line-end="123">$ php artisan migrate:fresh --seed</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="123" data-line-end="128">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="124" data-line-end="125">$ git add .</li>
+<li class="has-line-data" data-line-start="125" data-line-end="126">$ git commit -m “Generaración de datos iniciales”</li>
+<li class="has-line-data" data-line-start="126" data-line-end="128">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=128 data-line-end=129><a id="Integracin_de_plantilla_AdminLTE_128"></a>Integración de plantilla AdminLTE</h2>
+<ul>
+<li class="has-line-data" data-line-start="129" data-line-end="130"><a href="https://github.com/jeroennoten/Laravel-AdminLTE">Laravel AdminLTE</a></li>
+<li class="has-line-data" data-line-start="130" data-line-end="131"><a href="https://adminlte.io/themes/v3/index.html">Plantilla AdminLTE</a></li>
+</ul>
+<ol>
+<li class="has-line-data" data-line-start="131" data-line-end="134">Instalar AdminLTE:
+<ul>
+<li class="has-line-data" data-line-start="132" data-line-end="133">$ composer require jeroennoten/laravel-adminlte</li>
+<li class="has-line-data" data-line-start="133" data-line-end="134">$ php artisan adminlte:install</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="134" data-line-end="143">Crear archivo de rutas <strong>routes\admin.php</strong> para administrar privilegios de usuarios:<pre><code class="has-line-data" data-line-start="136" data-line-end="143" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Route</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>\<span class="hljs-title">HomeController</span>;
+
+Route::get(<span class="hljs-string">''</span>, [HomeController::class, <span class="hljs-string">'index'</span>])-&gt;middleware(<span class="hljs-string">'can:Admin'</span>)-&gt;name(<span class="hljs-string">'home'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="143" data-line-end="167">Registrar el nuevo archivo de rutas en el provider <strong>app\Providers\RouteServiceProvider.php</strong> y establecer la ruta de inicio a la raíz:<pre><code class="has-line-data" data-line-start="145" data-line-end="167" class="language-php">≡
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RouteServiceProvider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ServiceProvider</span>
+</span>{
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">const</span> HOME = <span class="hljs-string">'/'</span>;
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">boot</span><span class="hljs-params">()</span>
+    </span>{
+        ≡
+        <span class="hljs-variable">$this</span>-&gt;routes(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            ≡
+            Route::middleware(<span class="hljs-string">'web'</span>, <span class="hljs-string">'auth'</span>)
+                -&gt;name(<span class="hljs-string">'admin.'</span>)
+                -&gt;prefix(<span class="hljs-string">'admin'</span>)
+                -&gt;namespace(<span class="hljs-variable">$this</span>-&gt;namespace)
+                -&gt;group(base_path(<span class="hljs-string">'routes/admin.php'</span>));
+        });
+    }
+    ≡
+}
+≡
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="167" data-line-end="169">Crear contralador <strong>HomeController</strong> para administrar rutas de los administradores:
+<ul>
+<li class="has-line-data" data-line-start="168" data-line-end="169">$ php artisan make:controller Admin\HomeController</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="169" data-line-end="175">Definir el método <strong>index</strong> en el controlador <strong>HomeController</strong>:<pre><code class="has-line-data" data-line-start="171" data-line-end="175" class="language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.index'</span>);
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="175" data-line-end="197">Diseñar vista para pruebas <strong>resources\views\admin\index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="177" data-line-end="197" class="language-php">@extends(<span class="hljs-string">'adminlte::page'</span>)
+
+@section(<span class="hljs-string">'title'</span>, <span class="hljs-string">'Sistemas de roles y permisos | Soluciones++'</span>)
+
+@section(<span class="hljs-string">'content_header'</span>)
+    &lt;h1&gt;Sistemas de roles y permisos&lt;/h1&gt;
+@stop
+
+@section(<span class="hljs-string">'content'</span>)
+    &lt;p&gt;Sistemas de roles y permisos&lt;/p&gt;
+@stop
+
+@section(<span class="hljs-string">'css'</span>)
+    {{-- ARCHIVOS CSS REQUERIDOS POR LA APLICACIÓN --}}
+@stop
+
+@section(<span class="hljs-string">'js'</span>)
+    {{-- ARCHIVOS JS REQUERIDOS POR LA APLICACIÓN --}}
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="197" data-line-end="202">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="198" data-line-end="199">$ git add .</li>
+<li class="has-line-data" data-line-start="199" data-line-end="200">$ git commit -m “Integración de plantilla AdminLTE”</li>
+<li class="has-line-data" data-line-start="200" data-line-end="202">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=202 data-line-end=203><a id="Personalizacin_inicial_de_la_aplicacin_202"></a>Personalización inicial de la aplicación:</h2>
+<ul>
+<li class="has-line-data" data-line-start="203" data-line-end="204"><a href="https://jetstream.laravel.com/2.x/introduction.html">Laravel Jetstream</a></li>
+</ul>
+<ol>
+<li class="has-line-data" data-line-start="204" data-line-end="207">Publicar componentes de Jetstream:
+<ul>
+<li class="has-line-data" data-line-start="205" data-line-end="206">$ php artisan vendor:publish --tag=jetstream-views</li>
+<li class="has-line-data" data-line-start="206" data-line-end="207"><strong>Importante</strong>: todos los componentes de Jetstream se almacenarán en <strong>resources\views\vendor\jetstream\components</strong></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="207" data-line-end="213">Asignarle el nombre <strong>home</strong> a la ruta raíz en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="209" data-line-end="213" class="language-php">Route::get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">return</span> view(<span class="hljs-string">'welcome'</span>);
+})-&gt;name(<span class="hljs-string">'home'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="213" data-line-end="227">Modificar plantilla <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="215" data-line-end="227" class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang="{{ str_replace('_', '-', app()-&gt;getLocale()) }}"&gt;
+    &lt;head&gt;
+        ≡
+        &lt;title&gt;{{ config('app.name', 'Sistema de roles y permisos') }}&lt;/title&gt;
+        ≡
+    &lt;/head&gt;
+    &lt;body class="font-sans antialiased"&gt;
+        ≡
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="227" data-line-end="489">Modificar plantilla <strong>resources\views\navigation-menu.blade.php</strong>:<pre><code class="has-line-data" data-line-start="229" data-line-end="489" class="language-php">@php
+    $nav_links = [
+        [
+            'name' =&gt; 'Home',
+            'route' =&gt; route('home'),
+            'active' =&gt; request()-&gt;routeIs('home')
+        ],
+    ];
+@endphp
+
+&lt;nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow"&gt;
+    &lt;!-- Primary Navigation Menu --&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="flex justify-between h-16"&gt;
+            &lt;div class="flex"&gt;
+                &lt;!-- Logo --&gt;
+                &lt;div class="flex-shrink-0 flex items-center"&gt;
+                    &lt;a href="{{ route('home') }}"&gt;
+                        &lt;x-jet-application-mark class="block h-9 w-auto" /&gt;
+                    &lt;/a&gt;
+                &lt;/div&gt;
+
+                &lt;!-- Navigation Links --&gt;
+                &lt;div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"&gt;
+                    @foreach ($nav_links as $nav_link)
+                        &lt;x-jet-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']"&gt;
+                            {{ $nav_link['name'] }}
+                        &lt;/x-jet-nav-link&gt;
+                    @endforeach
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class="hidden sm:flex sm:items-center sm:ml-6"&gt;
+                &lt;!-- Teams Dropdown --&gt;
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                    &lt;div class="ml-3 relative"&gt;
+                        &lt;x-jet-dropdown align="right" width="60"&gt;
+                            &lt;x-slot name="trigger"&gt;
+                                &lt;span class="inline-flex rounded-md"&gt;
+                                    &lt;button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition"&gt;
+                                        {{ Auth::user()-&gt;currentTeam-&gt;name }}
+
+                                        &lt;svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"&gt;
+                                            &lt;path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /&gt;
+                                        &lt;/svg&gt;
+                                    &lt;/button&gt;
+                                &lt;/span&gt;
+                            &lt;/x-slot&gt;
+
+                            &lt;x-slot name="content"&gt;
+                                &lt;div class="w-60"&gt;
+                                    &lt;!-- Team Management --&gt;
+                                    &lt;div class="block px-4 py-2 text-xs text-gray-400"&gt;
+                                        {{ __('Manage Team') }}
+                                    &lt;/div&gt;
+
+                                    &lt;!-- Team Settings --&gt;
+                                    &lt;x-jet-dropdown-link href="{{ route('teams.show', Auth::user()-&gt;currentTeam-&gt;id) }}"&gt;
+                                        {{ __('Team Settings') }}
+                                    &lt;/x-jet-dropdown-link&gt;
+
+                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                        &lt;x-jet-dropdown-link href="{{ route('teams.create') }}"&gt;
+                                            {{ __('Create New Team') }}
+                                        &lt;/x-jet-dropdown-link&gt;
+                                    @endcan
+
+                                    &lt;div class="border-t border-gray-100"&gt;&lt;/div&gt;
+
+                                    &lt;!-- Team Switcher --&gt;
+                                    &lt;div class="block px-4 py-2 text-xs text-gray-400"&gt;
+                                        {{ __('Switch Teams') }}
+                                    &lt;/div&gt;
+
+                                    @foreach (Auth::user()-&gt;allTeams() as $team)
+                                        &lt;x-jet-switchable-team :team="$team" /&gt;
+                                    @endforeach
+                                &lt;/div&gt;
+                            &lt;/x-slot&gt;
+                        &lt;/x-jet-dropdown&gt;
+                    &lt;/div&gt;
+                @endif
+
+                &lt;!-- Settings Dropdown --&gt;
+                &lt;div class="ml-3 relative"&gt;
+                    @auth
+                        &lt;x-jet-dropdown align="right" width="48"&gt;
+                            &lt;x-slot name="trigger"&gt;
+                                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                    &lt;button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition"&gt;
+                                        &lt;img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()-&gt;profile_photo_url }}" alt="{{ Auth::user()-&gt;name }}" /&gt;
+                                    &lt;/button&gt;
+                                @else
+                                    &lt;span class="inline-flex rounded-md"&gt;
+                                        &lt;button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition"&gt;
+                                            {{ Auth::user()-&gt;name }}
+
+                                            &lt;svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"&gt;
+                                                &lt;path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /&gt;
+                                            &lt;/svg&gt;
+                                        &lt;/button&gt;
+                                    &lt;/span&gt;
+                                @endif
+                            &lt;/x-slot&gt;
+
+                            &lt;x-slot name="content"&gt;
+                                &lt;!-- Account Management --&gt;
+                                &lt;div class="block px-4 py-2 text-xs text-gray-400"&gt;
+                                    {{ __('Manage Account') }}
+                                &lt;/div&gt;
+
+                                &lt;x-jet-dropdown-link href="{{ route('profile.show') }}"&gt;
+                                    {{ __('Profile') }}
+                                &lt;/x-jet-dropdown-link&gt;
+
+                                @can('Admin')
+                                    &lt;x-jet-dropdown-link href="{{ route('admin.home') }}"&gt;
+                                        Administrador
+                                    &lt;/x-jet-dropdown-link&gt;
+                                @endcan
+
+                                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                    &lt;x-jet-dropdown-link href="{{ route('api-tokens.index') }}"&gt;
+                                        {{ __('API Tokens') }}
+                                    &lt;/x-jet-dropdown-link&gt;
+                                @endif
+
+                                &lt;div class="border-t border-gray-100"&gt;&lt;/div&gt;
+
+                                &lt;!-- Authentication --&gt;
+                                &lt;form method="POST" action="{{ route('logout') }}"&gt;
+                                    @csrf
+
+                                    &lt;x-jet-dropdown-link href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                    this.closest('form').submit();"&gt;
+                                        {{ __('Log Out') }}
+                                    &lt;/x-jet-dropdown-link&gt;
+                                &lt;/form&gt;
+                            &lt;/x-slot&gt;
+                        &lt;/x-jet-dropdown&gt;
+                    @else
+                        &lt;a href="{{ route('login') }}" class="text-sm text-gray-700 underline"&gt;Log in&lt;/a&gt;
+                        &lt;a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline"&gt;Register&lt;/a&gt;
+                    @endauth
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Hamburger --&gt;
+            &lt;div class="-mr-2 flex items-center sm:hidden"&gt;
+                &lt;button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"&gt;
+                    &lt;svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"&gt;
+                        &lt;path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /&gt;
+                        &lt;path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /&gt;
+                    &lt;/svg&gt;
+                &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Responsive Navigation Menu --&gt;
+    &lt;div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden"&gt;
+        &lt;div class="pt-2 pb-3 space-y-1"&gt;
+            @foreach ($nav_links as $nav_link)
+                &lt;x-jet-responsive-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']"&gt;
+                    {{ $nav_link['name'] }}
+                &lt;/x-jet-responsive-nav-link&gt;
+            @endforeach
+        &lt;/div&gt;
+
+        &lt;!-- Responsive Settings Options --&gt;
+        @auth
+            &lt;div class="pt-4 pb-1 border-t border-gray-200"&gt;
+                &lt;div class="flex items-center px-4"&gt;
+                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                        &lt;div class="flex-shrink-0 mr-3"&gt;
+                            &lt;img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()-&gt;profile_photo_url }}" alt="{{ Auth::user()-&gt;name }}" /&gt;
+                        &lt;/div&gt;
+                    @endif
+
+                    &lt;div&gt;
+                        &lt;div class="font-medium text-base text-gray-800"&gt;{{ Auth::user()-&gt;name }}&lt;/div&gt;
+                        &lt;div class="font-medium text-sm text-gray-500"&gt;{{ Auth::user()-&gt;email }}&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class="mt-3 space-y-1"&gt;
+                    &lt;!-- Account Management --&gt;
+                    &lt;x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()-&gt;routeIs('profile.show')"&gt;
+                        {{ __('Profile') }}
+                    &lt;/x-jet-responsive-nav-link&gt;
+            
+                    @can('Admin')
+                        &lt;x-jet-responsive-nav-link href="{{ route('admin.home') }}" :active="request()-&gt;routeIs('admin.home')"&gt;
+                            Administrador
+                        &lt;/x-jet-responsive-nav-link&gt;
+                    @endcan  
+
+                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                        &lt;x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()-&gt;routeIs('api-tokens.index')"&gt;
+                            {{ __('API Tokens') }}
+                        &lt;/x-jet-responsive-nav-link&gt;
+                    @endif
+
+                    &lt;!-- Authentication --&gt;
+                    &lt;form method="POST" action="{{ route('logout') }}"&gt;
+                        @csrf
+
+                        &lt;x-jet-responsive-nav-link href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                        this.closest('form').submit();"&gt;
+                            {{ __('Log Out') }}
+                        &lt;/x-jet-responsive-nav-link&gt;
+                    &lt;/form&gt;
+
+                    &lt;!-- Team Management --&gt;
+                    @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                        &lt;div class="border-t border-gray-200"&gt;&lt;/div&gt;
+
+                        &lt;div class="block px-4 py-2 text-xs text-gray-400"&gt;
+                            {{ __('Manage Team') }}
+                        &lt;/div&gt;
+
+                        &lt;!-- Team Settings --&gt;
+                        &lt;x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()-&gt;currentTeam-&gt;id) }}" :active="request()-&gt;routeIs('teams.show')"&gt;
+                            {{ __('Team Settings') }}
+                        &lt;/x-jet-responsive-nav-link&gt;
+
+                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                            &lt;x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()-&gt;routeIs('teams.create')"&gt;
+                                {{ __('Create New Team') }}
+                            &lt;/x-jet-responsive-nav-link&gt;
+                        @endcan
+
+                        &lt;div class="border-t border-gray-200"&gt;&lt;/div&gt;
+
+                        &lt;!-- Team Switcher --&gt;
+                        &lt;div class="block px-4 py-2 text-xs text-gray-400"&gt;
+                            {{ __('Switch Teams') }}
+                        &lt;/div&gt;
+
+                        @foreach (Auth::user()-&gt;allTeams() as $team)
+                            &lt;x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" /&gt;
+                        @endforeach
+                    @endif
+                &lt;/div&gt;
+            &lt;/div&gt;
+        @else
+            &lt;div class="py-1 border-t border-gray-200"&gt;
+                &lt;x-jet-responsive-nav-link href="{{ route('login') }}" :active="request()-&gt;routeIs('login')"&gt;
+                    Login
+                &lt;/x-jet-responsive-nav-link&gt;
+                &lt;x-jet-responsive-nav-link href="{{ route('register') }}" :active="request()-&gt;routeIs('register')"&gt;
+                    Register
+                &lt;/x-jet-responsive-nav-link&gt;
+            &lt;/div&gt;
+        @endauth
+    &lt;/div&gt;
+&lt;/nav&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="489" data-line-end="494">Modificar vista <strong>resources\views\welcome.blade.php</strong>:<pre><code class="has-line-data" data-line-start="491" data-line-end="494" class="language-php">&lt;x-app-layout&gt;
+&lt;/x-app-layout&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="494" data-line-end="497">Almacenar el logo corto y el logo completo de la organización respectivamente en:
+<ul>
+<li class="has-line-data" data-line-start="495" data-line-end="496">public\assets\images\logo.png</li>
+<li class="has-line-data" data-line-start="496" data-line-end="497">public\assets\images\logo-completo.png</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="497" data-line-end="501">Modificar componente de Jetstream <strong>resources\views\vendor\jetstream\components\application-logo.blade.php</strong>:<pre><code class="has-line-data" data-line-start="499" data-line-end="501" class="language-php">&lt;img src=<span class="hljs-string">"{{ asset('assets/images/logo-completo.png') }}"</span> alt=<span class="hljs-string">"Logo Sefar Universal"</span> width=<span class="hljs-string">"120"</span>&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="501" data-line-end="505">Modificar componente de Jetstream <strong>resources\views\vendor\jetstream\components\application-mark.blade.php</strong>:<pre><code class="has-line-data" data-line-start="503" data-line-end="505" class="language-php">&lt;img src=<span class="hljs-string">"{{ asset('assets/images/logo.png') }}"</span> alt=<span class="hljs-string">"Logo Sefar Universal"</span> width=<span class="hljs-string">"48"</span>&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="505" data-line-end="511">Modificar componente de Jetstream <strong>resources\views\vendor\jetstream\components\authentication-card-logo.blade.php</strong>:<pre><code class="has-line-data" data-line-start="507" data-line-end="511" class="language-php">&lt;a href=<span class="hljs-string">"/"</span>&gt;
+    &lt;img src=<span class="hljs-string">"{{ asset('assets/images/logo.png') }}"</span> alt=<span class="hljs-string">"Logo Sefar Universal"</span> width=<span class="hljs-string">"100"</span>&gt;
+&lt;/a&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="511" data-line-end="516">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="512" data-line-end="513">$ git add .</li>
+<li class="has-line-data" data-line-start="513" data-line-end="514">$ git commit -m “Personalización inicial de la aplicación”</li>
+<li class="has-line-data" data-line-start="514" data-line-end="516">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=516 data-line-end=517><a id="Diseo_del_Frontend_de_la_aplicacin_516"></a>Diseño del Frontend de la aplicación:</h2>
+<ul>
+<li class="has-line-data" data-line-start="517" data-line-end="518"><a href="https://tailwindcss.com/docs">Documentación de Tailwind</a></li>
+<li class="has-line-data" data-line-start="518" data-line-end="519"><a href="https://tailwindcomponents.com">Componentes de Tailwind</a></li>
+<li class="has-line-data" data-line-start="519" data-line-end="520"><a href="https://v1.tailwindcss.com/components">Más componentes de Tailwind</a></li>
+<li class="has-line-data" data-line-start="520" data-line-end="521"><a href="https://pixabay.com/es">Banco de imagenes Pixabay</a></li>
+<li class="has-line-data" data-line-start="521" data-line-end="522"><a href="https://www.pexels.com/es-es">Banco de imagenes Pixel</a></li>
+<li class="has-line-data" data-line-start="522" data-line-end="523"><a href="https://tinypng.com">Optimizador de imagen</a></li>
+</ul>
+<ol>
+<li class="has-line-data" data-line-start="523" data-line-end="526">Guardar imagenes de portada del proyecto en:
+<ul>
+<li class="has-line-data" data-line-start="524" data-line-end="525">public\assets\images\home\img_portada.jpg</li>
+<li class="has-line-data" data-line-start="525" data-line-end="526"><a href="https://tinypng.com">Optimizador de imagen</a></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="526" data-line-end="531">Ubicar 4 imagenes (640 x 426) relacionadas con tu proyecto y guardarlas en <strong>public\assets\images\home</strong> con los nombres:
+<ul>
+<li class="has-line-data" data-line-start="527" data-line-end="528">imagen_1.jpg</li>
+<li class="has-line-data" data-line-start="528" data-line-end="529">imagen_2.jpg</li>
+<li class="has-line-data" data-line-start="529" data-line-end="530">imagen_3.jpg</li>
+<li class="has-line-data" data-line-start="530" data-line-end="531">imagen_4.jpg</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="531" data-line-end="616">Rediseñar la vista <strong>resources\views\welcome.blade.php</strong>:<pre><code class="has-line-data" data-line-start="533" data-line-end="616" class="language-php">&lt;x-app-layout&gt;
+    &lt;section class="bg-cover" style="background-image: url({{ asset('assets/images/home/img_portada.jpg') }})"&gt;
+        &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36"&gt;
+            &lt;div class="w-full md:w-3/4 lg:w-1/2"&gt;
+                &lt;h1 class="text-white font-bold text-4xl"&gt;Crea un sistema de roles y permisos con Larvel Permission&lt;/h1&gt;
+                &lt;strong class="text-gray-300"&gt;Soluciones++&lt;/strong&gt;, en donde un clic menos (-) importa!!!&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="mt-24"&gt;
+        &lt;h1 class="text-gray-600 text-center text-3xl mb-6"&gt;CONTENIDO&lt;/h1&gt;
+        &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8"&gt;
+            &lt;article&gt;
+                &lt;figure&gt;
+                    &lt;img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_1.jpg') }}" alt=""&gt;
+                &lt;/figure&gt;
+                &lt;header class="mt-2"&gt;
+                    &lt;h1 class="text-center text-xl text-gray-700"&gt;Contenido 1&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p class="text-sm text-gray-500"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;figure&gt;
+                    &lt;img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_2.jpg') }}" alt=""&gt;
+                &lt;/figure&gt;
+                &lt;header class="mt-2"&gt;
+                    &lt;h1 class="text-center text-xl text-gray-700"&gt;Contenido 2&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p class="text-sm text-gray-500"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;figure&gt;
+                    &lt;img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_3.jpg') }}" alt=""&gt;
+                &lt;/figure&gt;
+                &lt;header class="mt-2"&gt;
+                    &lt;h1 class="text-center text-xl text-gray-700"&gt;Contenido 3&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p class="text-sm text-gray-500"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;figure&gt;
+                    &lt;img class="rounded-xl h-36 w-full object-cover" src="{{ asset('assets/images/home/imagen_4.jpg') }}" alt=""&gt;
+                &lt;/figure&gt;
+                &lt;header class="mt-2"&gt;
+                    &lt;h1 class="text-center text-xl text-gray-700"&gt;Contenido 4&lt;/h1&gt;
+                &lt;/header&gt;
+                &lt;p class="text-sm text-gray-500"&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, possimus accusantium&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="mt-24 bg-gray-600 py-12"&gt;
+        &lt;h1 class="text-center text-white text-3xl"&gt;¿No sabes cómo implementer un sistema de roles y permisos?&lt;/h1&gt;
+        &lt;p class="text-center text-white"&gt;En Soluciones++ te explicamos como&lt;/p&gt;
+        &lt;div class="flex justify-center mt-4"&gt;
+            &lt;!-- https://v1.tailwindcss.com/components/buttons --&gt;
+            &lt;a href="#" class="bg-blue-800 hover:bg-blue-100 text-white hover:text-black font-bold py-2 px-4 rounded"&gt;
+                Catálogo de cursos
+            &lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class="my-24"&gt;
+        &lt;h1 class="text-center text-3xl text-gray-600"&gt;En Soluciones++&lt;/h1&gt;
+        &lt;p class="text-center text-gray-500 text-sm mb-6"&gt;
+            Trabajamos duro para seguir encontrando soluciones a tus aplicaciones web y de escritorio
+        &lt;/p&gt;
+        &lt;div class="container"&gt;
+            {{-- CONTENIDO DE LA PÁGINA --}}
+            &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 py-4"&gt;
+                
+                &lt;p&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. At voluptate, veritatis quidem non deleniti quam sint cum sequi alias minima, ad dolorem earum enim blanditiis inventore nobis et, atque temporibus!&lt;/p&gt;
+                &lt;p&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto officia recusandae pariatur expedita, corrupti reprehenderit nihil, maiores perferendis debitis rem cumque? Rem consequatur voluptates dolores et accusamus quasi laborum reprehenderit?&lt;/p&gt;
+                &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut nam odio ducimus nihil aperiam totam, eveniet architecto neque ipsam blanditiis, nulla dolorem laborum iusto est cumque, eius qui quam voluptas!&lt;/p&gt;
+                &lt;p&gt;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus officiis corporis magni doloremque expedita, dignissimos omnis eius velit unde. Rerum dolorem, exercitationem animi earum odit in nulla repudiandae necessitatibus cumque!&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;
+            &lt;div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"&gt;
+                &lt;h2 class="text-gray-600 text-center text-xl mb-6"&gt;CONTENIDO DE LA PÁGINA&lt;/h2&gt;
+                &lt;p&gt;Lorem ipsum dolor sit amet consectetur adipisicing elit. At voluptate, veritatis quidem non deleniti quam sint cum sequi alias minima, ad dolorem earum enim blanditiis inventore nobis et, atque temporibus!&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/x-app-layout&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="616" data-line-end="631">Importar los estilos propios y de <strong>fontawesome-free</strong> en <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="618" data-line-end="631" class="language-php">&lt;!DOCTYPE html&gt;
+&lt;html lang=<span class="hljs-string">"{{ str_replace('_', '-', app()-&gt;getLocale()) }}"</span>&gt;
+    &lt;head&gt;
+        ≡
+        &lt;!-- Styles --&gt;
+        ≡
+        &lt;link rel=<span class="hljs-string">"stylesheet"</span> href=<span class="hljs-string">"{{ asset('css/sefar.css') }}"</span>&gt;
+        &lt;link rel=<span class="hljs-string">"stylesheet"</span> href=<span class="hljs-string">"{{ asset('vendor/fontawesome-free/css/all.min.css') }}"</span>&gt;
+        ≡
+    &lt;/head&gt;
+    ≡­
+&lt;/html&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="631" data-line-end="677">Crear archivo de <strong>estilos resources\css\commom.css</strong>:<pre><code class="has-line-data" data-line-start="633" data-line-end="676" class="language-css">.container{
+    @apply max-w-7xl mx-auto px-4;
+}
+
+.card{
+    @apply bg-white shadow-lg rounded overflow-hidden;
+}
+
+.card-body{
+    @apply px-6 py-4;
+}
+
+.card-title{
+    @apply text-xl text-gray-700 mb-2 leading-6;
+}
+
+.embed-responsive{
+    position: relative;
+    overflow: hidden;
+    padding-top: 56.25%;
+}
+
+.embed-responsive iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+@media(min-width:640px){
+    .container{
+        @apply px-6;
+    }
+}
+
+@media(min-width:1024px){
+    .container{
+        @apply px-8;
+    }
+}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="676" data-line-end="677"><a href="https://tailwindcss.com/docs/container">Documentación Tailwind Container</a></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="677" data-line-end="704">Crear archivo de <strong>resources\css\buttons.css</strong><pre><code class="has-line-data" data-line-start="679" data-line-end="703" class="language-css">.btn {
+    @apply font-bold py-2 px-4 rounded;
+}
+
+.btn-block{
+    @apply block text-center w-full;
+}
+
+.btn-primary {
+    @apply bg-blue-500 text-white;
+}
+
+.btn-primary:hover {
+    @apply bg-blue-700;
+}
+
+.btn-danger {
+    @apply bg-red-500 text-white;
+}
+
+.btn-danger:hover {
+    @apply bg-red-700;
+}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="703" data-line-end="704"><a href="https://v1.tailwindcss.com/components/buttons">Tailwind Buttons Component</a></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="704" data-line-end="710">Importar <strong>resources\css\commom.css</strong> en <strong>resources\css\app.css</strong>:<pre><code class="has-line-data" data-line-start="706" data-line-end="710" class="language-php">≡
+@import <span class="hljs-string">'commom.css'</span>;
+@import <span class="hljs-string">'buttons.css'</span>;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="710" data-line-end="726">Compilar los nuevos estilos:
+<ul>
+<li class="has-line-data" data-line-start="711" data-line-end="712">$ npm run watch</li>
+<li class="has-line-data" data-line-start="712" data-line-end="719">En caso de error:
+<ul>
+<li class="has-line-data" data-line-start="713" data-line-end="714">$ npm uninstall cross-env (Luego borrar el directorio node_modules)</li>
+<li class="has-line-data" data-line-start="714" data-line-end="715">$ npm install --global cross-env</li>
+<li class="has-line-data" data-line-start="715" data-line-end="716">$ npm install --no-bin-links</li>
+<li class="has-line-data" data-line-start="716" data-line-end="717">$ npm audit fix --force</li>
+<li class="has-line-data" data-line-start="717" data-line-end="718">$ npm install</li>
+<li class="has-line-data" data-line-start="718" data-line-end="719">$ npm run watch</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="719" data-line-end="726">Otra posible solución:
+<ul>
+<li class="has-line-data" data-line-start="720" data-line-end="721">Eliminar direcotorio node_modules</li>
+<li class="has-line-data" data-line-start="721" data-line-end="722">Eliminar package-lock.json</li>
+<li class="has-line-data" data-line-start="722" data-line-end="723">$ npm cache clear --force</li>
+<li class="has-line-data" data-line-start="723" data-line-end="724">$ npm install cross-env</li>
+<li class="has-line-data" data-line-start="724" data-line-end="725">$ npm install</li>
+<li class="has-line-data" data-line-start="725" data-line-end="726">$ npm run dev</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="726" data-line-end="731">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="727" data-line-end="728">$ git add .</li>
+<li class="has-line-data" data-line-start="728" data-line-end="729">$ git commit -m “Diseño del Frontend de la aplicación”</li>
+<li class="has-line-data" data-line-start="729" data-line-end="731">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=731 data-line-end=732><a id="Implementacin_de_roles_y_permisos_731"></a>Implementación de roles y permisos</h2>
+<ul>
+<li class="has-line-data" data-line-start="732" data-line-end="733"><a href="https://hackerthemes.com/bootstrap-cheatsheet">https://hackerthemes.com/bootstrap-cheatsheet</a></li>
+<li class="has-line-data" data-line-start="733" data-line-end="734"><a href="https://github.com/jeroennoten/Laravel-AdminLTE/wiki">https://github.com/jeroennoten/Laravel-AdminLTE/wiki</a></li>
+</ul>
+<ol>
+<li class="has-line-data" data-line-start="734" data-line-end="736">Crear controlador para administrar roles:
+<ul>
+<li class="has-line-data" data-line-start="735" data-line-end="736">$ php artisan make:controller Admin/RoleController -r</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="736" data-line-end="815">Definir los métodos del controlador <strong>app\Http\Controllers\Admin\RoleController.php</strong>:<pre><code class="has-line-data" data-line-start="738" data-line-end="810" class="language-php">≡
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RoleController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
+</span>{
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-variable">$roles</span> = Role::all();
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.roles.index'</span>, compact(<span class="hljs-string">'roles'</span>));
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-variable">$permissions</span> = Permission::all();
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.roles.create'</span>, compact(<span class="hljs-string">'permissions'</span>));
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">store</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>)</span>
+    </span>{
+        <span class="hljs-variable">$request</span>-&gt;validate([
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'required'</span>,
+            <span class="hljs-string">'permissions'</span> =&gt; <span class="hljs-string">'required'</span>
+        ]);
+        
+        <span class="hljs-variable">$role</span> = Role::create([
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-variable">$request</span>-&gt;name
+        ]);
+
+        <span class="hljs-variable">$role</span>-&gt;permissions()-&gt;attach(<span class="hljs-variable">$request</span>-&gt;permissions);
+
+        <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'admin.roles.index'</span>)-&gt;with(<span class="hljs-string">'info'</span>, <span class="hljs-string">'El rol se creo satisfactoriamente'</span>);
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span><span class="hljs-params">(Role <span class="hljs-variable">$role</span>)</span>
+    </span>{
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.roles.show'</span>, compact(<span class="hljs-string">'role'</span>));
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">edit</span><span class="hljs-params">(Role <span class="hljs-variable">$role</span>)</span>
+    </span>{
+        <span class="hljs-variable">$permissions</span> = Permission::all();
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.roles.edit'</span>, compact(<span class="hljs-string">'role'</span>, <span class="hljs-string">'permissions'</span>));
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>, Role <span class="hljs-variable">$role</span>)</span>
+    </span>{
+        <span class="hljs-variable">$request</span>-&gt;validate([
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'required'</span>,
+            <span class="hljs-string">'permissions'</span> =&gt; <span class="hljs-string">'required'</span>
+        ]);
+
+        <span class="hljs-variable">$role</span>-&gt;update([
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-variable">$request</span>-&gt;name
+        ]);
+
+        <span class="hljs-variable">$role</span>-&gt;permissions()-&gt;sync(<span class="hljs-variable">$request</span>-&gt;permissions);
+        
+        <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'admin.roles.edit'</span>, <span class="hljs-variable">$role</span>);
+    }
+
+    ≡
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">destroy</span><span class="hljs-params">(Role <span class="hljs-variable">$role</span>)</span>
+    </span>{
+        <span class="hljs-variable">$role</span>-&gt;delete();
+        <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'admin.roles.index'</span>)-&gt;with(<span class="hljs-string">'info'</span>, <span class="hljs-string">'El rol se eliminó con éxito'</span>);
+    }
+}
+</code></pre>
+<ul>
+<li class="has-line-data" data-line-start="810" data-line-end="811">Importar la definición de los modelos <strong>Permission</strong> y <strong>Role</strong>:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="812" data-line-end="815" class="language-php"><span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Permission</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Role</span>;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="815" data-line-end="818">Publicar vista de AdminLTE:
+<ul>
+<li class="has-line-data" data-line-start="816" data-line-end="817">$ php artisan adminlte:install --only=main_views</li>
+<li class="has-line-data" data-line-start="817" data-line-end="818"><strong>Nota</strong>: En <strong>resources\views\vendor\adminlte\page.blade.php</strong> es de donde se extienden las plantillas.</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="818" data-line-end="821">Instalar Laravel Collective para hacer formularios:
+<ul>
+<li class="has-line-data" data-line-start="819" data-line-end="820">$ composer require laravelcollective/html</li>
+<li class="has-line-data" data-line-start="820" data-line-end="821"><a href="https://laravelcollective.com/docs/6.x/html">Documentación Laravel Collective</a></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="821" data-line-end="886">Crear vistas del CRUD Role <strong>resources\views\admin\roles\index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="823" data-line-end="886" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Roles | Solucioens++')
+
+@section('content_header')
+    &lt;h1&gt;Lista de roles&lt;/h1&gt;
+@stop
+
+@section('content')
+    @if (session('info'))
+        &lt;div class="alert alert-primary" role="alert"&gt;
+            &lt;strong&gt;¡Éxito!&lt;/strong&gt; {{ session('info') }}
+            important alert message.
+        &lt;/div&gt;
+        
+    @endif
+
+    &lt;div class="card"&gt;
+        &lt;div class="card-header"&gt;
+            &lt;a href="{{ route('admin.roles.create') }}"&gt;Crear rol&lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+            &lt;table class="table table-striped"&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th&gt;ID&lt;/th&gt;
+                        &lt;th&gt;Name&lt;/th&gt;
+                        &lt;th colspan="2"&gt;&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    @forelse ($roles as $role)
+                        &lt;tr&gt;
+                            &lt;td&gt;{{ $role-&gt;id }}&lt;/td&gt;
+                            &lt;td&gt;{{ $role-&gt;name }}&lt;/td&gt;
+                            &lt;td width="10px"&gt;
+                                &lt;a class="btn btn-secondary" href="{{ route('admin.roles.edit', $role) }}"&gt;Editar&lt;/a&gt;
+                            &lt;/td&gt;
+                            &lt;td width="10px"&gt;
+                                &lt;form action="{{ route('admin.roles.destroy', $role) }}" method="POST"&gt;
+                                    @method('delete')
+                                    @csrf
+                                    &lt;button class="btn btn-danger" type="submit"&gt;Eliminar&lt;/button&gt;
+                                &lt;/form&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    @empty
+                        &lt;tr&gt;
+                            &lt;td colspan="4"&gt;No hay ningún rol registrado&lt;/td&gt;
+                        &lt;/tr&gt;
+                    @endforelse
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="886" data-line-end="913">Crear vistas del CRUD Role <strong>resources\views\admin\roles\create.blade.php</strong>:<pre><code class="has-line-data" data-line-start="888" data-line-end="913" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Crear rol | Soluciones++')
+
+@section('content_header')
+    &lt;h1&gt;Crear nuevo rol&lt;/h1&gt;
+@stop
+
+@section('content')
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            {!! Form::open(['route' =&gt; 'admin.roles.store']) !!}
+                @include('admin.roles.partials.form')
+                {!! Form::submit('Crear Rol', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="913" data-line-end="940">Crear vistas del CRUD Role <strong>resources\views\admin\roles\show.blade.php</strong>:<pre><code class="has-line-data" data-line-start="915" data-line-end="940" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Editar rol | Soluciones++')
+
+@section('content_header')
+    &lt;h1&gt;Mostrar rol&lt;/h1&gt;
+@stop
+
+@section('content')
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            {!! Form::model($role, ['route' =&gt; ['admin.roles.update', $role], 'method' =&gt; 'put']) !!}
+                @include('admin.roles.partials.form')
+                {!! Form::submit('Actualizar Rol', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="940" data-line-end="967">Crear vistas del CRUD Role <strong>resources\views\admin\roles\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="942" data-line-end="967" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Editar rol | Soluciones++')
+
+@section('content_header')
+    &lt;h1&gt;Editar rol&lt;/h1&gt;
+@stop
+
+@section('content')
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            {!! Form::model($role, ['route' =&gt; ['admin.roles.update', $role], 'method' =&gt; 'put']) !!}
+                @include('admin.roles.partials.form')
+                {!! Form::submit('Actualizar Rol', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="967" data-line-end="995">Crear formulario para el rol como <strong>resources\views\admin\roles\partials\form.blade.php</strong>:<pre><code class="has-line-data" data-line-start="969" data-line-end="995" class="language-php">&lt;div class="form-group"&gt;
+    {!! Form::label('name', 'Nombre: ') !!}
+    {!! Form::text('name', null, ['class' =&gt; 'form-control' . ($errors-&gt;has('name') ? ' is-invalid' :  ''), 'placeholder' =&gt; 'Escriba un nombre']) !!}
+    @error('name')
+        &lt;span class="invalid-feedback"&gt;
+            &lt;strong&gt;{{ $message }}&lt;/strong&gt;
+        &lt;/span&gt;
+    @enderror
+&lt;/div&gt;
+&lt;strong&gt;Permisos&lt;/strong&gt;
+@error('permissions')
+    &lt;br&gt;
+    &lt;small class="text-danger"&gt;
+        &lt;strong&gt;{{ $message }}&lt;/strong&gt;
+    &lt;/small&gt;
+    &lt;br&gt;
+@enderror
+@foreach ($permissions as $permission)
+    &lt;div&gt;
+        &lt;label&gt;
+            {!! Form::checkbox('permissions[]', $permission-&gt;id, null, ['class' =&gt; 'mr-1']) !!}
+            {{ $permission-&gt;name }}
+        &lt;/label&gt;
+    &lt;/div&gt;
+@endforeach
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="995" data-line-end="1010">Modificar el archivo de rutas <strong>routes\admin.php</strong>:<pre><code class="has-line-data" data-line-start="997" data-line-end="1010" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Support</span>\<span class="hljs-title">Facades</span>\<span class="hljs-title">Route</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>\<span class="hljs-title">HomeController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>\<span class="hljs-title">RoleController</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>\<span class="hljs-title">UserController</span>;
+
+Route::get(<span class="hljs-string">''</span>, [HomeController::class, <span class="hljs-string">'index'</span>])-&gt;middleware(<span class="hljs-string">'can:Admin'</span>)-&gt;name(<span class="hljs-string">'home'</span>);
+
+Route::resource(<span class="hljs-string">'roles'</span>, RoleController::class)-&gt;names(<span class="hljs-string">'roles'</span>);
+
+Route::resource(<span class="hljs-string">'users'</span>, UserController::class)-&gt;only([<span class="hljs-string">'index'</span>, <span class="hljs-string">'edit'</span>, <span class="hljs-string">'update'</span>])-&gt;names(<span class="hljs-string">'users'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1010" data-line-end="1061">Modificar el archivo de configuración <strong>config\adminlte.php</strong>:<pre><code class="has-line-data" data-line-start="1012" data-line-end="1061" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">return</span> [
+    ≡
+    <span class="hljs-string">'logo'</span> =&gt; <span class="hljs-string">'&lt;b&gt;Soluciones++&lt;/b&gt;'</span>,
+    <span class="hljs-string">'logo_img'</span> =&gt; <span class="hljs-string">'assets/images/logo.png'</span>,
+    ≡
+    <span class="hljs-string">'logo_img_alt'</span> =&gt; <span class="hljs-string">'Logo Soluciones++'</span>,
+
+    ≡
+    <span class="hljs-string">'dashboard_url'</span> =&gt; <span class="hljs-string">'/'</span>,
+    ≡
+
+    <span class="hljs-string">'menu'</span> =&gt; [
+        [
+            <span class="hljs-string">'text'</span>      =&gt; <span class="hljs-string">'search'</span>,
+            <span class="hljs-string">'search'</span>    =&gt; <span class="hljs-keyword">true</span>,
+            <span class="hljs-string">'topnav'</span>    =&gt; <span class="hljs-keyword">true</span>,
+        ],
+        [
+            <span class="hljs-string">'text'</span> =&gt; <span class="hljs-string">'blog'</span>,
+            <span class="hljs-string">'url'</span>  =&gt; <span class="hljs-string">'admin/blog'</span>,
+            <span class="hljs-string">'can'</span>  =&gt; <span class="hljs-string">'manage-blog'</span>,
+        ],
+        [
+            <span class="hljs-string">'text'</span>  =&gt; <span class="hljs-string">'Dashboard'</span>,
+            <span class="hljs-string">'route'</span> =&gt; <span class="hljs-string">'admin.home'</span>,
+            <span class="hljs-string">'icon'</span>  =&gt; <span class="hljs-string">'fas fa-fw fa-tachometer-alt'</span>,
+            <span class="hljs-string">'can'</span>   =&gt; <span class="hljs-string">'Ver dashboard'</span>
+        ],
+        [
+            <span class="hljs-string">'text'</span>      =&gt; <span class="hljs-string">'Lista de roles'</span>,
+            <span class="hljs-string">'route'</span>     =&gt; <span class="hljs-string">'admin.roles.index'</span>,
+            <span class="hljs-string">'icon'</span>      =&gt; <span class="hljs-string">'fas fa-fw fa-users-cog'</span>,
+            <span class="hljs-string">'can'</span>       =&gt; <span class="hljs-string">'Listar role'</span>,
+            <span class="hljs-string">'active'</span>    =&gt; [<span class="hljs-string">'admin/roles*'</span>],
+        ],
+        [
+            <span class="hljs-string">'text'</span>      =&gt; <span class="hljs-string">'Usuarios'</span>,
+            <span class="hljs-string">'route'</span>     =&gt; <span class="hljs-string">'admin.users.index'</span>,
+            <span class="hljs-string">'icon'</span>      =&gt; <span class="hljs-string">'fas fa-fw fa-users'</span>,
+            <span class="hljs-string">'can'</span>       =&gt; <span class="hljs-string">'Leer usuarios'</span>,
+            <span class="hljs-string">'active'</span>    =&gt; [<span class="hljs-string">'admin/users*'</span>],
+        ],
+    ],
+    ≡
+    <span class="hljs-string">'livewire'</span> =&gt; <span class="hljs-keyword">true</span>,
+];
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1061" data-line-end="1063">Crear controlador <strong>User</strong> para CRUD de usuarios:
+<ul>
+<li class="has-line-data" data-line-start="1062" data-line-end="1063">$ php artisan make:controller Admin\UserController -r</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1063" data-line-end="1112">Programar el controlador <strong>app\Http\Controllers\Admin\UserController.php</strong>:<pre><code class="has-line-data" data-line-start="1065" data-line-end="1112" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Admin</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>\<span class="hljs-title">Controller</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">User</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Request</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Spatie</span>\<span class="hljs-title">Permission</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">Role</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
+</span>{
+    <span class="hljs-comment">/**
+    * Display a listing of the resource.
+    *
+    * <span class="hljs-doctag">@return</span> \Illuminate\Http\Response
+    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.users.index'</span>);
+    }
+
+    <span class="hljs-comment">/**
+    * Show the form for editing the specified resource.
+    *
+    * <span class="hljs-doctag">@param</span>  int  $id
+    * <span class="hljs-doctag">@return</span> \Illuminate\Http\Response
+    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">edit</span><span class="hljs-params">(User <span class="hljs-variable">$user</span>)</span>
+    </span>{
+        <span class="hljs-variable">$roles</span> = Role::all();
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'admin.users.edit'</span>, compact(<span class="hljs-string">'user'</span>, <span class="hljs-string">'roles'</span>));
+    }
+
+    <span class="hljs-comment">/**
+    * Update the specified resource in storage.
+    *
+    * <span class="hljs-doctag">@param</span>  \Illuminate\Http\Request  $request
+    * <span class="hljs-doctag">@param</span>  int  $id
+    * <span class="hljs-doctag">@return</span> \Illuminate\Http\Response
+    */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>, User <span class="hljs-variable">$user</span>)</span>
+    </span>{
+        <span class="hljs-variable">$user</span>-&gt;roles()-&gt;sync(<span class="hljs-variable">$request</span>-&gt;roles);
+        <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'admin.users.edit'</span>, <span class="hljs-variable">$user</span>);
+    }
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1112" data-line-end="1132">Crear vistas del CRUD User <strong>resources\views\admin\users\index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1114" data-line-end="1132" class="language-php">@extends(<span class="hljs-string">'adminlte::page'</span>)
+
+@section(<span class="hljs-string">'title'</span>, <span class="hljs-string">'usuarios | Soluciones++'</span>)
+
+@section(<span class="hljs-string">'content_header'</span>)
+    &lt;h1&gt;Lista de usuarios&lt;/h1&gt;
+@stop
+
+@section(<span class="hljs-string">'content'</span>)
+    @livewire(<span class="hljs-string">'admin.users-index'</span>)
+@stop
+
+@section(<span class="hljs-string">'css'</span>)
+@stop
+
+@section(<span class="hljs-string">'js'</span>)
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1132" data-line-end="1169">Crear vistas del CRUD User <strong>resources\views\admin\users\edit.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1134" data-line-end="1169" class="language-php">@extends('adminlte::page')
+
+@section('title', 'Editar usuario | Soluciones++')
+
+@section('content_header')
+    &lt;h1&gt;Editar usuario&lt;/h1&gt;
+@stop
+
+@section('content')
+    &lt;div class="card"&gt;
+        &lt;div class="card-body"&gt;
+            &lt;h1 class="h5"&gt;Nombre:&lt;/h1&gt;
+            &lt;p class="form-control"&gt;{{ $user-&gt;name }}&lt;/p&gt;
+            &lt;h1 class="h5"&gt;Lista de roles&lt;/h1&gt;
+            {!! Form::model($user, ['route' =&gt; ['admin.users.update', $user], 'method' =&gt; 'put']) !!}
+                @foreach ($roles as $role)
+                    &lt;div&gt;
+                        &lt;label&gt;
+                            {!! Form::checkbox('roles[]', $role-&gt;id, null, ['class' =&gt; 'mr-1']) !!}
+                            {{ $role-&gt;name }}
+                        &lt;/label&gt;
+                    &lt;/div&gt;
+                @endforeach
+                {!! Form::submit('Asignar rol', ['class' =&gt; 'btn btn-primary mt-2']) !!}
+            {!! Form::close() !!}
+        &lt;/div&gt;
+    &lt;/div&gt;
+@stop
+
+@section('css')
+@stop
+
+@section('js')
+@stop
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1169" data-line-end="1171">Crear componente de livewire para administrar usuarios:
+<ul>
+<li class="has-line-data" data-line-start="1170" data-line-end="1171">$ php artisan make:livewire Admin/UsersIndex</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1171" data-line-end="1202">Programar controlador del componente <strong>app\Http\Livewire\Admin\UsersIndex.php</strong>:<pre><code class="has-line-data" data-line-start="1173" data-line-end="1202" class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Livewire</span>\<span class="hljs-title">Admin</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Models</span>\<span class="hljs-title">User</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Livewire</span>\<span class="hljs-title">Component</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Livewire</span>\<span class="hljs-title">WithPagination</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UsersIndex</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span>
+</span>{
+    <span class="hljs-keyword">use</span> <span class="hljs-title">WithPagination</span>;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-variable">$paginationTheme</span> = <span class="hljs-string">"bootstrap"</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$search</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-variable">$users</span> = User::where(<span class="hljs-string">'name'</span>, <span class="hljs-string">'LIKE'</span>, <span class="hljs-string">'%'</span> . <span class="hljs-variable">$this</span>-&gt;search . <span class="hljs-string">'%'</span>)
+                    -&gt;orWhere(<span class="hljs-string">'email'</span>, <span class="hljs-string">'LIKE'</span>, <span class="hljs-string">'%'</span> . <span class="hljs-variable">$this</span>-&gt;search . <span class="hljs-string">'%'</span>)
+                    -&gt;paginate(<span class="hljs-number">8</span>);
+        <span class="hljs-keyword">return</span> view(<span class="hljs-string">'livewire.admin.users-index'</span>, compact(<span class="hljs-string">'users'</span>));
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">limpiar_page</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-variable">$this</span>-&gt;reset(<span class="hljs-string">'page'</span>);
+    }
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1202" data-line-end="1245">Diseñar vista del componente <strong>resources\views\livewire\admin\users-index.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1204" data-line-end="1245" class="language-php">&lt;div&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-header"&gt;
+            &lt;input wire:keydown="limpiar_page" wire:model="search" class="form-control w-100" placeholder="Escriba un nombre ..."&gt;
+        &lt;/div&gt;
+        @if ($users-&gt;count())
+            &lt;div class="card-body"&gt;
+                &lt;table class="table table-striped"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;ID&lt;/th&gt;
+                            &lt;th&gt;Nombre&lt;/th&gt;
+                            &lt;th&gt;Email&lt;/th&gt;
+                            &lt;th&gt;&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        @foreach ($users as $user)
+                            &lt;tr&gt;
+                                &lt;td&gt;{{ $user-&gt;id }}&lt;/td&gt;
+                                &lt;td&gt;{{ $user-&gt;name }}&lt;/td&gt;
+                                &lt;td&gt;{{ $user-&gt;email }}&lt;/td&gt;
+                                &lt;td width="10px"&gt;
+                                    &lt;a class="btn btn-primary" href="{{ route('admin.users.edit', $user) }}"&gt;Editar&lt;/a&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        @endforeach
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+            &lt;div class="card-footer"&gt;
+                {{ $users-&gt;links() }}
+            &lt;/div&gt;
+        @else
+            &lt;div class="card-body"&gt;
+                &lt;strong&gt;No hay registros ...&lt;/strong&gt;
+            &lt;/div&gt;
+        @endif
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1245" data-line-end="1259">Crear el método <strong>__construct</strong> en el controlador <strong>app\Http\Controllers\Admin\RoleController.php</strong> para proteger las rutas <strong>roles</strong>:<pre><code class="has-line-data" data-line-start="1247" data-line-end="1259" class="language-php">≡
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RoleController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Listar role'</span>)-&gt;only(<span class="hljs-string">'index'</span>);
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Crear role'</span>)-&gt;only(<span class="hljs-string">'create'</span>, <span class="hljs-string">'store'</span>);
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Editar role'</span>)-&gt;only(<span class="hljs-string">'edit'</span>, <span class="hljs-string">'update'</span>);
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Eliminar role'</span>)-&gt;only(<span class="hljs-string">'destroy'</span>);
+    }
+    ≡
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1259" data-line-end="1271">Crear el método <strong>__construct</strong> en el controlador <strong>app\Http\Controllers\Admin\UserController.php</strong> para proteger las rutas <strong>users</strong>:<pre><code class="has-line-data" data-line-start="1261" data-line-end="1271" class="language-php">≡
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Leer usuarios'</span>)-&gt;only(<span class="hljs-string">'index'</span>);
+        <span class="hljs-variable">$this</span>-&gt;middleware(<span class="hljs-string">'can:Editar usuarios'</span>)-&gt;only(<span class="hljs-string">'edit'</span>, <span class="hljs-string">'update'</span>);
+    }
+    ≡
+}
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1271" data-line-end="1276">Crear commit:
+<ul>
+<li class="has-line-data" data-line-start="1272" data-line-end="1273">$ git add .</li>
+<li class="has-line-data" data-line-start="1273" data-line-end="1274">$ git commit -m “Implementación de roles y permisos”</li>
+<li class="has-line-data" data-line-start="1274" data-line-end="1276">$ git push -u origin main</li>
+</ul>
+</li>
+</ol>
+<h2 class="code-line" data-line-start=1276 data-line-end=1277><a id="Ajustes_finales_1276"></a>Ajustes finales</h2>
+<ol>
+<li class="has-line-data" data-line-start="1277" data-line-end="1281">Reemplazar el favicon de la aplicación por el de tu organización en <strong>public\favicon.ico</strong> y agregar el siguiente código dentro de la etiqueta heat de la plantilla <strong>resources\views\layouts\app.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1279" data-line-end="1281" class="language-php">&lt;link rel=<span class="hljs-string">"icon"</span> href=<span class="hljs-string">"favicon.ico"</span> type=<span class="hljs-string">"image/x-icon"</span>&gt;
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1281" data-line-end="1284">Crear vista <strong>resources\views\documentacion.blade.php</strong>:<pre><code class="has-line-data" data-line-start="1283" data-line-end="1284" class="language-php"></code></pre>
+</li>
+<li class="has-line-data" data-line-start="1284" data-line-end="1288">Agregar la ruta <strong>documentos</strong> en <strong>routes\web.php</strong>:<pre><code class="has-line-data" data-line-start="1286" data-line-end="1288" class="language-php">Route::view(<span class="hljs-string">'documentos'</span>, <span class="hljs-string">'documentacion'</span>)-&gt;name(<span class="hljs-string">'documentacion'</span>);
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1288" data-line-end="1289">ssss</li>
+</ol>
+<pre><code>≡
+```php
+```
+</code></pre>
+<h2 class="code-line" data-line-start=1297 data-line-end=1298><a id="Deploy_del_proyecto_en_Heroku_1297"></a>Deploy del proyecto en Heroku</h2>
+<ol>
+<li class="has-line-data" data-line-start="1298" data-line-end="1302">Crear en la raíz del proyecto el archivo <strong>Procfile</strong> (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:<pre><code class="has-line-data" data-line-start="1300" data-line-end="1302">web: vendor/bin/heroku-php-apache2 public/
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1302" data-line-end="1303">Ingresar a <a href="https://dashboard.heroku.com/apps">Heroku</a> e ir a <strong>Dashboard</strong>.</li>
+<li class="has-line-data" data-line-start="1303" data-line-end="1305">Crear un nuevo proyecto en <strong>New &gt; Create new app</strong>
+<ul>
+<li class="has-line-data" data-line-start="1304" data-line-end="1305">Nombre: <strong>laravelvue-2021</strong></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1305" data-line-end="1306">Ir a Deploy y dar clic en GitHub.</li>
+<li class="has-line-data" data-line-start="1306" data-line-end="1307">Clic en el botón Connect to GitHub e ingresar las credenciales.</li>
+<li class="has-line-data" data-line-start="1307" data-line-end="1308">Seleccionar el repositorio <strong>laravel_vue_2021</strong> y presionar el botón <strong>Connect</strong>.</li>
+<li class="has-line-data" data-line-start="1308" data-line-end="1309">Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón <strong>Enable Automatic Deploys</strong>.</li>
+<li class="has-line-data" data-line-start="1309" data-line-end="1310">Presionar el botón Deploy Branch.</li>
+<li class="has-line-data" data-line-start="1310" data-line-end="1311">Descargar e instalar <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a>.</li>
+<li class="has-line-data" data-line-start="1311" data-line-end="1313">En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
+<ul>
+<li class="has-line-data" data-line-start="1312" data-line-end="1313">$ heroku login</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1313" data-line-end="1317">Víncular con la aplicación de Heroku <strong>laravelvue-2021</strong>:
+<ul>
+<li class="has-line-data" data-line-start="1314" data-line-end="1316">$ git remote add heroku <a href="https://git.heroku.com/laravelvue-2021.git">git.heroku.com/laravelvue-2021.git</a>
+<ul>
+<li class="has-line-data" data-line-start="1315" data-line-end="1316">(git remote set-url Origin <a href="https://git.heroku.com/laravelvue-2021.git">git.heroku.com/laravelvue-2021.git</a>)</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1316" data-line-end="1317">$ heroku git:remote -a laravelvue-2021</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1317" data-line-end="1323">Registrar variables de entorno de la aplicación desde la terminal:
+<ul>
+<li class="has-line-data" data-line-start="1318" data-line-end="1319">$ heroku config:add APP_NAME=Laravel-Vue</li>
+<li class="has-line-data" data-line-start="1319" data-line-end="1320">$ heroku config:add APP_ENV=production</li>
+<li class="has-line-data" data-line-start="1320" data-line-end="1321">$ heroku config:add APP_KEY=base64:4vCNmy9+8/VoX1+btrJhzQmUoQH9rQRhhj3FJFKxvXs=</li>
+<li class="has-line-data" data-line-start="1321" data-line-end="1322">$ heroku config:add APP_DEBUG=false</li>
+<li class="has-line-data" data-line-start="1322" data-line-end="1323">$ heroku config:add APP_URL=https://laravelvue-2021.herokuapp.com</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1323" data-line-end="1334">Crear base de datos Postgre SQL desde la terminal:
+<ul>
+<li class="has-line-data" data-line-start="1324" data-line-end="1325">$ heroku addons:create heroku-postgresql:hobby-dev</li>
+<li class="has-line-data" data-line-start="1325" data-line-end="1326">$ heroku pg:credentials:url</li>
+<li class="has-line-data" data-line-start="1326" data-line-end="1327"><strong>Nota</strong>: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:</li>
+</ul>
+<pre><code class="has-line-data" data-line-start="1328" data-line-end="1334">Connection information for default credential.
+Connection info string:
+&quot;dbname=*** host=*** port=*** user=*** password=*** sslmode=require&quot;
+Connection URL:
+postgres://mmtmzssdyxkfyt:9<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c4f4f4a4e4a4f194b4c481e4c4a184c1d4d1e1d4b1f454b451f484e4a194b1844191e4b4b1a4f45494419484d4d481f191d451d4e4d454b4f1e1d4c441844483c">[email&#160;protected]</a>ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
+</code></pre>
+</li>
+<li class="has-line-data" data-line-start="1334" data-line-end="1341">Registrar variables de entorno de la base de datos desde la terminal:
+<ul>
+<li class="has-line-data" data-line-start="1335" data-line-end="1336">$ heroku config:add DB_CONNECTION=pgsql</li>
+<li class="has-line-data" data-line-start="1336" data-line-end="1337">$ heroku config:add DB_HOST=<a href="http://ec2-18-235-4-83.compute-1.amazonaws.com">ec2-18-235-4-83.compute-1.amazonaws.com</a></li>
+<li class="has-line-data" data-line-start="1337" data-line-end="1338">$ heroku config:add DB_PORT=5432</li>
+<li class="has-line-data" data-line-start="1338" data-line-end="1339">$ heroku config:add DB_DATABASE=db6unq9m90dvkv</li>
+<li class="has-line-data" data-line-start="1339" data-line-end="1340">$ heroku config:add DB_USERNAME=vcsyvufmsdpbhn</li>
+<li class="has-line-data" data-line-start="1340" data-line-end="1341">$ heroku config:add DB_PASSWORD=******</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1341" data-line-end="1346">Ejecutar migraciones:
+<ul>
+<li class="has-line-data" data-line-start="1342" data-line-end="1343">$ heroku run bash</li>
+<li class="has-line-data" data-line-start="1343" data-line-end="1345">~ $ php artisan migrate --seed
+<ul>
+<li class="has-line-data" data-line-start="1344" data-line-end="1345">Do you really wish to run this command? (yes/no) [no]: <strong>yes</strong></li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1345" data-line-end="1346">~ $ exit</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1346" data-line-end="1348">Salir de Heroku:
+<ul>
+<li class="has-line-data" data-line-start="1347" data-line-end="1348">$ heroku logout</li>
+</ul>
+</li>
+<li class="has-line-data" data-line-start="1348" data-line-end="1350">Desconectar con repositorio Heroku:
+<ul>
+<li class="has-line-data" data-line-start="1349" data-line-end="1350">$ git remote rm heroku</li>
+</ul>
+</li>
+</ol>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>

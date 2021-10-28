@@ -1273,3 +1273,125 @@
     + $ git add .
     + $ git commit -m "Implementación de roles y permisos"
     + $ git push -u origin main
+
+## Ajustes finales
+1. Reemplazar el favicon de la aplicación por el de tu organización en **public\favicon.ico** y agregar el siguiente código dentro de la etiqueta heat de la plantilla **resources\views\layouts\app.blade.php**:
+    ```php
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    ```
+2. Colocar una imagen para la portada de la vista **documentacion** en formato png en **public\assets\images\documentacion\documentos.png**.
+3. Crear vista **resources\views\documentacion.blade.php**:
+    ```php
+    <x-app-layout>
+        <section class="bg-cover" style="background-image: url({{ asset('assets/images/documentacion/documentos.png') }})">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
+                <div class="w-full md:w-3/4 lg:w-1/2">
+                    <h1 class="text-white font-bold text-4xl">Paso a paso para la construcción del proyecto</h1>
+                    <p class="text-white text-lg mt-2 mb-4">
+                        <strong class="text-gray-300">Soluciones++</strong>, en donde un clic menos (-) importa!!!</p>
+                </div>
+            </div>
+        </section>
+        <section class="mt-10">
+            <h1 class="text-gray-600 text-center text-3xl mb-6">PASO A PASO</h1>
+            <p class="text-gray-600 text-center text-xl mb-6">
+                Aplicación base para desarrollar cualquier aplicación que requiera de un sistema
+                completo de roles y permisos.
+            </p>
+        </section>
+        <section class="my-10">
+            <div class="container">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <iframe
+                        title="Inline Frame Example"
+                        width="100%"
+                        height="800"
+                        src="{{ asset('paso-paso.html') }}">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+        {{-- <section class="my-24">
+            <h1 class="text-center text-3xl text-gray-600">En Soluciones++</h1>
+            <p class="text-center text-gray-500 text-sm mb-6">
+                Trabajamos duro para seguir encontrando soluciones a tus aplicaciones web y de escritorio
+            </p>
+        </section> --}}
+    </x-app-layout>
+    ```
+4. Agregar la ruta **documentos** en **routes\web.php**:
+    ```php
+    Route::view('documentos', 'documentacion')->name('documentacion');
+    ```
+5. Agregar el menú para ver la documentación en **resources\views\navigation-menu.blade.php**:
+    ```php
+    @php
+        $nav_links = [
+            ≡
+            [
+                'name' => 'Documentacion',
+                'route' => route('documentacion'),
+                'active' => request()->routeIs('documentacion')
+            ]
+        ];
+    @endphp
+    ≡
+    ```
+7. Crear commit:
+    + $ git add .
+    + $ git commit -m "Ajustes finales"
+    + $ git push -u origin main
+
+## Deploy del proyecto en Heroku
+1. Crear en la raíz del proyecto el archivo **Procfile** (sin extensión) para elegir un servidor apache en Heroku y también indicarle la ubicación del archivo incial index.php:
+    ```
+    web: vendor/bin/heroku-php-apache2 public/
+    ```
+2. Ingresar a [Heroku](https://dashboard.heroku.com/apps) e ir a **Dashboard**.
+3. Crear un nuevo proyecto en **New > Create new app**
+    + Nombre: **laravelvue-2021**
+4. Ir a Deploy y dar clic en GitHub.
+5. Clic en el botón Connect to GitHub e ingresar las credenciales.
+6. Seleccionar el repositorio **laravel_vue_2021** y presionar el botón **Connect**.
+7. Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón **Enable Automatic Deploys**.
+8. Presionar el botón Deploy Branch.
+9. Descargar e instalar [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+10. En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
+    + $ heroku login
+11. Víncular con la aplicación de Heroku **laravelvue-2021**:
+    + $ git remote add heroku git.heroku.com/laravelvue-2021.git
+        + (git remote set-url Origin git.heroku.com/laravelvue-2021.git)
+    + $ heroku git:remote -a laravelvue-2021
+12. Registrar variables de entorno de la aplicación desde la terminal:
+    + $ heroku config:add APP_NAME=Laravel-Vue
+    + $ heroku config:add APP_ENV=production
+    + $ heroku config:add APP_KEY=base64:4vCNmy9+8/VoX1+btrJhzQmUoQH9rQRhhj3FJFKxvXs=
+    + $ heroku config:add APP_DEBUG=false
+    + $ heroku config:add APP_URL=https://laravelvue-2021.herokuapp.com
+13. Crear base de datos Postgre SQL desde la terminal:
+    + $ heroku addons:create heroku-postgresql:hobby-dev
+    + $ heroku pg:credentials:url
+    + **Nota**: la salida de la última línea de comando nos servirá para configurar las variables de entorno de la base de datos:
+    ```
+    Connection information for default credential.
+    Connection info string:
+    "dbname=*** host=*** port=*** user=*** password=*** sslmode=require"
+    Connection URL:
+    postgres://mmtmzssdyxkfyt:9336263e704b06d0a1ba7c979c426e7d8eb77f3958e4114cea9a21973ba08d84@ec2-35-168-145-180.compute-1.amazonaws.com:5432/dbhkpp3vfen6vd
+    ```
+14. Registrar variables de entorno de la base de datos desde la terminal:
+    + $ heroku config:add DB_CONNECTION=pgsql
+    + $ heroku config:add DB_HOST=ec2-18-235-4-83.compute-1.amazonaws.com
+    + $ heroku config:add DB_PORT=5432
+    + $ heroku config:add DB_DATABASE=db6unq9m90dvkv
+    + $ heroku config:add DB_USERNAME=vcsyvufmsdpbhn
+    + $ heroku config:add DB_PASSWORD=******
+15. Ejecutar migraciones:
+    + $ heroku run bash
+    + ~ $ php artisan migrate --seed
+        + Do you really wish to run this command? (yes/no) [no]: **yes**
+    + ~ $ exit
+16. Salir de Heroku:
+    + $ heroku logout
+17. Desconectar con repositorio Heroku:
+    + $ git remote rm heroku
