@@ -1349,25 +1349,25 @@
     ```
 2. Ingresar a [Heroku](https://dashboard.heroku.com/apps) e ir a **Dashboard**.
 3. Crear un nuevo proyecto en **New > Create new app**
-    + Nombre: **laravelvue-2021**
+    + Nombre: **laravel-permission-2021**
 4. Ir a Deploy y dar clic en GitHub.
 5. Clic en el botón Connect to GitHub e ingresar las credenciales.
-6. Seleccionar el repositorio **laravel_vue_2021** y presionar el botón **Connect**.
+6. Seleccionar el repositorio **laravel-permission2021** y presionar el botón **Connect**.
 7. Para tener siempre la ultima actualización de nuestro proyecto se recomienda presionar el botón **Enable Automatic Deploys**.
 8. Presionar el botón Deploy Branch.
 9. Descargar e instalar [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 10. En la terminal en la raíz del proyecto en local e iniciar sesión en Heroku:
     + $ heroku login
-11. Víncular con la aplicación de Heroku **laravelvue-2021**:
-    + $ git remote add heroku git.heroku.com/laravelvue-2021.git
-        + (git remote set-url Origin git.heroku.com/laravelvue-2021.git)
-    + $ heroku git:remote -a laravelvue-2021
+11. Víncular con la aplicación de Heroku **laravel-permission-2021**:
+    + $ git remote add heroku git.heroku.com/laravel-permission-2021.git
+        + (git remote set-url Origin git.heroku.com/laravel-permission-2021.git)
+    + $ heroku git:remote -a laravel-permission-2021
 12. Registrar variables de entorno de la aplicación desde la terminal:
-    + $ heroku config:add APP_NAME=Laravel-Vue
+    + $ heroku config:add APP_NAME="Sistema de Roles y Permisos"
     + $ heroku config:add APP_ENV=production
-    + $ heroku config:add APP_KEY=base64:4vCNmy9+8/VoX1+btrJhzQmUoQH9rQRhhj3FJFKxvXs=
+    + $ heroku config:add APP_KEY=base64:JeN4tGolfHwFl2gMIDXbWcfdmkLypUx0dlFAQl3XC8Y=
     + $ heroku config:add APP_DEBUG=false
-    + $ heroku config:add APP_URL=https://laravelvue-2021.herokuapp.com
+    + $ heroku config:add APP_URL=https://laravel-permission-2021.herokuapp.com
 13. Crear base de datos Postgre SQL desde la terminal:
     + $ heroku addons:create heroku-postgresql:hobby-dev
     + $ heroku pg:credentials:url
